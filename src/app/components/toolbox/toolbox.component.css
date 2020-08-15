@@ -8,17 +8,18 @@
 }
 
 .icon {
+    cursor: pointer;
     float: left;
     padding: 5px;
     color: white;
     user-select: none;
-    transition: color ease-in-out .25s;
+    transition: color ease-in-out .2s;
 
     /* svg icon  */
     stroke-width: 20;
     stroke: white;
     fill: transparent;
-    transition: stroke ease-in-out .25s;
+    transition: stroke ease-in-out .55s;
 }
 
 .icon:hover {

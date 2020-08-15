@@ -11,12 +11,14 @@ export class EllipseModel extends ShapeModel implements IShape {
 	rx: number;
 	ry: number;
 	origin: number[];
+	dragging = false;
 
 	constructor(renderer: Renderer2, public style: any) {
 		super();
 		this.renderer = renderer;
 		this.element = this.renderer.createElement(this.shape, 'svg');
 		this.renderer.setAttribute(this.element, 'style', this.styleString);
+		this.renderer.setAttribute(this.element, 'graphx-id', this.id);
 	}
 
 	render(): void {
@@ -24,6 +26,18 @@ export class EllipseModel extends ShapeModel implements IShape {
 		this.renderer.setAttribute(this.element, 'cy', `${this.y}`);
 		this.renderer.setAttribute(this.element, 'rx', `${this.rx}`);
 		this.renderer.setAttribute(this.element, 'ry', `${this.ry}`);
+	}
+
+	startDrag(pos): void {
+		this.dragging = true;
+		const offsetX = pos[0] - this.origin[0];
+		const offsetY = pos[1] - this.origin[1];
+	}
+
+	drag(pos): void {}
+
+	endDrag(): void {
+		this.dragging = false;
 	}
 
 	set start(val: number[]) {

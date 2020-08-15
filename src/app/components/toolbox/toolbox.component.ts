@@ -14,7 +14,7 @@ export class ToolboxComponent implements OnInit {
 
 	ngOnInit(): void {
 		// set initial tooling options
-		this.toolService.currentTool = this.toolService.toolsOptions.draw;
+		this.toolService.currentTool = this.toolService.toolsOptions.select;
 		this.toolService.currentShape = this.toolService.shapeOptions.line;
 		this.toolService.strokeColor = '#000000'; // black
 		this.toolService.fillColor = 'none'; // no fill

@@ -11,12 +11,14 @@ export class LineModel extends ShapeModel implements IShape {
 	x2: number;
 	y2: number;
 	origin: number[];
+	dragging = false;
 
 	constructor(renderer: Renderer2, public style: any) {
 		super();
 		this.renderer = renderer;
 		this.element = this.renderer.createElement(this.shape, 'svg');
 		this.renderer.setAttribute(this.element, 'style', this.styleString);
+		this.renderer.setAttribute(this.element, 'graphx-id', this.id);
 	}
 
 	render(): void {
@@ -24,6 +26,17 @@ export class LineModel extends ShapeModel implements IShape {
 		this.renderer.setAttribute(this.element, 'y1', `${this.y1}`);
 		this.renderer.setAttribute(this.element, 'x2', `${this.x2}`);
 		this.renderer.setAttribute(this.element, 'y2', `${this.y2}`);
+	}
+	startDrag(pos): void {
+		this.dragging = true;
+		const offsetX = pos[0] - this.origin[0];
+		const offsetY = pos[1] - this.origin[1];
+	}
+
+	drag(pos): void {}
+
+	endDrag(): void {
+		this.dragging = false;
 	}
 
 	set start(val: number[]) {
