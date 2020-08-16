@@ -103,3 +103,9 @@ input[type="color"] {
     stroke-dasharray:none;
     stroke-opacity: 1;
 }
+
+.color-picker-element {
+    position: absolute;
+    top: 30px;
+    visibility: hidden;
+}

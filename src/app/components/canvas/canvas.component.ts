@@ -7,7 +7,6 @@ import { PolygonModel } from '../../models/shapes/polygon.model';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { IShapeHashMap } from 'src/app/interfaces/IShapeHashMap.interface';
 import { ToolInputService } from 'src/app/services/toolInput.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
 	selector: 'app-canvas',
@@ -46,15 +45,20 @@ export class CanvasComponent implements AfterViewInit {
 	}
 
 	// mouse down event handler
-    @HostListener('mousedown', ['$event']) onMouseDown(e): void {
-        // left mouse button click
+	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
+		// left mouse button click
 		if (e.button === 0) {
 			switch (this.toolService.currentTool) {
 				case this.toolService.toolsOptions.select: {
+					if (this.currentObject) {
+						this.currentObject.toggleSelect();
+						this.currentObject = null;
+					}
 					const hitObject = document.querySelectorAll(':hover');
 					const hitObjectId = hitObject.item(hitObject.length - 1).getAttribute('graphx-id');
 					this.currentObject = this.shapes[hitObjectId];
 					if (this.currentObject) {
+						this.currentObject.toggleSelect();
 						this.currentObject.startDrag([e.clientX, e.clientY]);
 					}
 					break;
@@ -97,7 +101,7 @@ export class CanvasComponent implements AfterViewInit {
 			return;
 		}
 
-        // right mouse button click
+		// right mouse button click
 		if (e.button === 2) {
 			e.preventDefault(); // halt default context menu
 			if (this.currentObject) {

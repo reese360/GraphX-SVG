@@ -8,7 +8,8 @@ export class PolygonModel extends ShapeModel implements IShape {
 	points: number[] = [];
 	origin: number[];
 	currentEnd: number[];
-	dragging = false;
+	dragging: boolean = false;
+	selected: boolean = false;
 
 	constructor(public renderer: Renderer2, public style: any) {
 		super();
@@ -32,6 +33,12 @@ export class PolygonModel extends ShapeModel implements IShape {
 
 	endDrag(): void {
 		this.dragging = false;
+	}
+
+	toggleSelect(): void {
+		this.selected = !this.selected;
+		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
+		else this.renderer.removeClass(this.element, 'selectedObject');
 	}
 
 	set start(val: number[]) {

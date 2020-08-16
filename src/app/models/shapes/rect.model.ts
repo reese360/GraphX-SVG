@@ -13,7 +13,8 @@ export class RectModel extends ShapeModel implements IShape {
 	origin: number[];
 	offsetX: number;
 	offsetY: number;
-	dragging = false;
+	dragging: boolean = false;
+	selected: boolean = false;
 
 	constructor(renderer: Renderer2, public style: any) {
 		super();
@@ -49,6 +50,12 @@ export class RectModel extends ShapeModel implements IShape {
 		this.dragging = false;
 		this.offsetX = null;
 		this.offsetY = null;
+	}
+
+	toggleSelect(): void {
+		this.selected = !this.selected;
+		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
+		else this.renderer.removeClass(this.element, 'selectedObject');
 	}
 
 	set start(val: number[]) {

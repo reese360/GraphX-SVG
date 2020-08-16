@@ -5,10 +5,12 @@ import { AppComponent } from './app.component';
 import { ToolboxComponent } from './components/toolbox/toolbox.component';
 import { CanvasComponent } from './components/canvas/canvas.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ColorSketchModule } from 'ngx-color/sketch';
+
 
 @NgModule({
 	declarations: [AppComponent, ToolboxComponent, CanvasComponent],
-	imports: [BrowserModule, FontAwesomeModule],
+	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule],
 	providers: [],
 	bootstrap: [AppComponent],
 })

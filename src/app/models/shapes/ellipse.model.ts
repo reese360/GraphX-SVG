@@ -49,7 +49,10 @@ export class EllipseModel extends ShapeModel implements IShape {
         this.dragging = false;
         this.offsetX = null;
         this.offsetY = null;
-	}
+    }
+    
+    toggleSelect(): void {}
+
 
 	set start(val: number[]) {
 		this.origin = [val[0], val[1]];

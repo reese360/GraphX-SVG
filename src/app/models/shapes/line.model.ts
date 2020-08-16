@@ -42,7 +42,9 @@ export class LineModel extends ShapeModel implements IShape {
 		this.dragging = false;
 		this.offsetX = null;
 		this.offsetY = null;
-	}
+    }
+
+    toggleSelect(): void { }
 
 	set start(val: number[]) {
 		this.x1 = val[0];

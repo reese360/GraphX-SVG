@@ -31,7 +31,7 @@
 	<div class="colorBox" title="Fill Color">
         <div class="color-col-1">
             <div class="color-icon">
-                <i class="fas fa-fill-drip" (click)="updateColors('fcp', 'transparent')"></i>
+                <i class="fas fa-fill-drip" (click)="updateColors(null, 'fcp')"></i>
             </div>
         </div>
         <div class="color-col-2">
@@ -39,21 +39,21 @@
                 <path class="no-color" d="M 6.3895625,6.4195626 C 93.580437,93.610437 93.580437,93.610437 93.580437,93.610437"/>
                 <path class="no-color" d="M 6.3894001,93.6106 C 93.830213,6.4194003 93.830213,6.4194003 93.830213,6.4194003"/>
             </svg>
-            <div class="color color-pick-stack" id="fill-color-display"  [style.background-color]="fillColorDisplay"></div>
-            <input #fcp id="stroke-color-picker" type="color" class="color color-pick-stack" (change)="updateColors('fcp', fcp.value)"/>
+            <div #fcpDisplay class="color color-pick-stack" id="fill-color-display" [style.background-color]="fillColor"></div>
+            <color-sketch #fcp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'fcp')"></color-sketch>
         </div>
 	</div>
 	<div class="colorBox" title="Stroke Color">
         <div class="color-col-1"><div class="color-icon">
-            <i class="fas fa-paint-brush" (click)="updateColors('scp', 'transparent')"></i>
+            <i class="fas fa-paint-brush" (click)="updateColors(null, 'scp')"></i>
         </div></div>
         <div class="color-col-2">
             <svg class="color-pick-stack" svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="20" height="10" viewBox="0 0 100 100" id="svg8978">
                 <path class="no-color" d="M 6.3895625,6.4195626 C 93.580437,93.610437 93.580437,93.610437 93.580437,93.610437"/>
                 <path class="no-color" d="M 6.3894001,93.6106 C 93.830213,6.4194003 93.830213,6.4194003 93.830213,6.4194003"/>
             </svg>
-            <div class="color color-pick-stack" id="stroke-color-display" [style.background-color]="strokeColorDisplay"></div>
-            <input #scp id="stroke-color-picker" type="color" class="color color-pick-stack" (change)="updateColors('scp', scp.value)"/>
+            <div #scpDisplay class="color color-pick-stack" id="stroke-color-display" [style.background-color]="strokeColor"></div>
+            <color-sketch #scp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'scp')"></color-sketch>
         </div>
-	</div>
+    </div>
 </div>

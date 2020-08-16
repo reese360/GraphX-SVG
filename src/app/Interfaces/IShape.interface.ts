@@ -15,4 +15,5 @@ export interface IShape {
     startDrag(pos: [number, number]): void;
 	drag(pos: [number, number]): void;
     endDrag(): void;
+    toggleSelect(): void;
 }
