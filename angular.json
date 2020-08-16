@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"svgDraw": {
+		"ngGraphX": {
 			"projectType": "application",
 			"schematics": {},
 			"root": "",
@@ -13,7 +13,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist/svgDraw",
+						"outputPath": "dist/ngGraphX",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"polyfills": "src/polyfills.ts",
@@ -57,18 +57,18 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "svgDraw:build"
+						"browserTarget": "ngGraphX:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "svgDraw:build:production"
+							"browserTarget": "ngGraphX:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "svgDraw:build"
+						"browserTarget": "ngGraphX:build"
 					}
 				},
 				"test": {
@@ -94,16 +94,16 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "e2e/protractor.conf.js",
-						"devServerTarget": "svgDraw:serve"
+						"devServerTarget": "ngGraphX:serve"
 					},
 					"configurations": {
 						"production": {
-							"devServerTarget": "svgDraw:serve:production"
+							"devServerTarget": "ngGraphX:serve:production"
 						}
 					}
 				}
 			}
 		}
 	},
-	"defaultProject": "svgDraw"
+	"defaultProject": "ngGraphX"
 }

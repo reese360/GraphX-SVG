@@ -37,16 +37,18 @@ export class RectModel extends ShapeModel implements IShape {
 	}
 
 	drag(pos): void {
-        const dx = pos[0] - this.offsetX;
-        const dy = pos[1] - this.offsetY;
-        this.origin = [dx, dy];
-        this.x = dx;
-        this.y = dy;
-        this.render();
-    }
+		const dx = pos[0] - this.offsetX;
+		const dy = pos[1] - this.offsetY;
+		this.origin = [dx, dy];
+		this.x = dx;
+		this.y = dy;
+		this.render();
+	}
 
 	endDrag(): void {
 		this.dragging = false;
+		this.offsetX = null;
+		this.offsetY = null;
 	}
 
 	set start(val: number[]) {

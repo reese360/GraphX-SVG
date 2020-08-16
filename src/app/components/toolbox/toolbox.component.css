@@ -13,13 +13,12 @@
     padding: 5px;
     color: white;
     user-select: none;
-    transition: color ease-in-out .2s;
+    transition: color ease-in-out .25s, stroke ease-in-out .25s;
 
     /* svg icon  */
-    stroke-width: 20;
+    stroke-width: 24;
     stroke: white;
     fill: transparent;
-    transition: stroke ease-in-out .55s;
 }
 
 .icon:hover {

@@ -9,7 +9,9 @@ export class EllipseModel extends ShapeModel implements IShape {
 	x: number;
 	y: number;
 	rx: number;
-	ry: number;
+    ry: number;
+    offsetX: number;
+    offsetY: number;
 	origin: number[];
 	dragging = false;
 
@@ -30,14 +32,23 @@ export class EllipseModel extends ShapeModel implements IShape {
 
 	startDrag(pos): void {
 		this.dragging = true;
-		const offsetX = pos[0] - this.origin[0];
-		const offsetY = pos[1] - this.origin[1];
+		this.offsetX = pos[0] - this.origin[0];
+		this.offsetY = pos[1] - this.origin[1];
 	}
 
-	drag(pos): void {}
+	drag(pos): void {
+        const dx = pos[0] - this.offsetX;
+        const dy = pos[1] - this.offsetY;
+        this.origin = [dx, dy];
+        this.x = dx;
+        this.y = dy;
+        this.render();
+    }
 
 	endDrag(): void {
-		this.dragging = false;
+        this.dragging = false;
+        this.offsetX = null;
+        this.offsetY = null;
 	}
 
 	set start(val: number[]) {

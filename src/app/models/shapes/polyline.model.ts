@@ -2,20 +2,15 @@ import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
 
-export class LineModel extends ShapeModel implements IShape {
-	shape: string = 'line';
+export class PolylineModel extends ShapeModel implements IShape {
+	shape: string = 'polyline';
 	element: any;
-	renderer: Renderer2;
-	x1: number;
-	y1: number;
-	x2: number;
-    y2: number;
-    offsetX: number;
-    offsetY: number;
+	points: number[] = [];
 	origin: number[];
+	currentEnd: number[];
 	dragging = false;
 
-	constructor(renderer: Renderer2, public style: any) {
+	constructor(public renderer: Renderer2, public style: any) {
 		super();
 		this.renderer = renderer;
 		this.element = this.renderer.createElement(this.shape, 'svg');
@@ -24,34 +19,28 @@ export class LineModel extends ShapeModel implements IShape {
 	}
 
 	render(): void {
-		this.renderer.setAttribute(this.element, 'x1', `${this.x1}`);
-		this.renderer.setAttribute(this.element, 'y1', `${this.y1}`);
-		this.renderer.setAttribute(this.element, 'x2', `${this.x2}`);
-		this.renderer.setAttribute(this.element, 'y2', `${this.y2}`);
+		this.renderer.setAttribute(this.element, 'points', this.pointString + `${this.currentEnd[0]},${this.currentEnd[1]}`);
 	}
 
 	startDrag(pos): void {
 		this.dragging = true;
-		const offsetX = pos[0] - this.origin[0];
-		const offsetY = pos[1] - this.origin[1];
 	}
 
-	drag(pos): void {}
+	drag(pos): void {
+		this.render();
+	}
 
 	endDrag(): void {
 		this.dragging = false;
-		this.offsetX = null;
-		this.offsetY = null;
 	}
 
 	set start(val: number[]) {
-		this.x1 = val[0];
-		this.y1 = val[1];
+		this.points.push(val[0]);
+		this.points.push(val[1]);
 	}
 
 	set end(val: number[]) {
-		this.x2 = val[0];
-		this.y2 = val[1];
+		this.currentEnd = val;
 		this.render();
 	}
 
@@ -61,5 +50,13 @@ export class LineModel extends ShapeModel implements IShape {
 			style += `${key}: ${this.style[key]}; `;
 		});
 		return style;
+	}
+
+	get pointString(): string {
+		let ps = '';
+		for (let point in this.points) {
+			ps += `${this.points[point]}, `;
+		}
+		return ps;
 	}
 }

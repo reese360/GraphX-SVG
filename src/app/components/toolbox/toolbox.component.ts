@@ -10,15 +10,15 @@ export class ToolboxComponent implements OnInit {
 	strokeColorDisplay: string;
 	fillColorDisplay: string;
 
-	constructor(public toolService: ToolInputService) {}
-
-	ngOnInit(): void {
+	constructor(public toolService: ToolInputService) {
 		// set initial tooling options
-		this.toolService.currentTool = this.toolService.toolsOptions.select;
-		this.toolService.currentShape = this.toolService.shapeOptions.line;
+		this.toolService.currentTool = this.toolService.toolsOptions.draw;
+		this.toolService.currentShape = this.toolService.shapeOptions.polyline;
 		this.toolService.strokeColor = '#000000'; // black
 		this.toolService.fillColor = 'none'; // no fill
 	}
+
+	ngOnInit(): void {}
 
 	updateTool(tool: string): void {
 		this.toolService.currentTool = this.toolService.toolsOptions[tool];
@@ -26,6 +26,7 @@ export class ToolboxComponent implements OnInit {
 
 	updateShape(shape: string): void {
 		this.toolService.currentShape = this.toolService.shapeOptions[shape];
+		this.toolService.currentTool = this.toolService.toolsOptions.draw; // activate draw tool on shape change
 	}
 
 	updateColors(element: string, newColor: string): void {
