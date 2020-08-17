@@ -1,12 +1,12 @@
 <div id="tool-container">
-	<div [ngClass]="toolService.currentTool == '0' ? 'icon selected-tool' : 'icon'" title="Select Tool" (click)="updateTool('select')">
-		<i class="fas fa-mouse-pointer"></i>
-	</div>
-	<div [ngClass]="toolService.currentTool == '1' ? 'icon selected-tool' : 'icon'" title="Draw Tool" (click)="updateTool('draw')">
+    <div [ngClass]="toolService.currentTool == '0' ? 'icon selected-tool' : 'icon'" title="Select Tool" (click)="updateTool('select')">
+        <i class="fas fa-mouse-pointer"></i>
+    </div>
+    <div [ngClass]="toolService.currentTool == '1' ? 'icon selected-tool' : 'icon'" title="Draw Tool" (click)="updateTool('draw')">
 		<i class="fas fa-pencil-alt"></i>
 	</div>
 	<div class="icon">
-		<i>&nbsp;</i> <!-- spacer between tooling groups -->
+        <div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
 	</div>
 	<div [ngClass]="toolService.currentShape == '0' ? 'icon selected-tool' : 'icon'" title="Line" (click)="updateShape('line')">
 		<i class="fas fa-slash"></i>
@@ -18,7 +18,7 @@
 		<i class="far fa-circle"></i>
 	</div>
 	<div [ngClass]="toolService.currentShape == '3' ? 'icon selected-tool' : 'icon'" title="Polygon"  (click)="updateShape('polygon')">
-		<svg viewBox="0 0 200 200" width="16px" height="16px">
+		<svg viewBox="0 0 200 200" width="16px" height="14px">
             <polygon points="148,183.138438763306 52,183.138438763306 4,100 52,16.8615612366939 148,16.8615612366939 196,100"/>
 		</svg>
     </div>
@@ -27,7 +27,23 @@
 	</div>
 	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
 		<i class="fas fa-signature"></i>
-	</div>
+    </div>
+    <div class="icon">
+		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+    </div>
+    <div class="colorBox" title="Stroke Color">
+        <div class="color-col-1"><div class="color-icon">
+            <i class="fas fa-paint-brush" (click)="updateColors(null, 'scp')"></i>
+        </div></div>
+        <div class="color-col-2">
+            <svg class="color-pick-stack" svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="20" height="10" viewBox="0 0 100 100" id="svg8978">
+                <path class="no-color" d="M 6.3895625,6.4195626 C 93.580437,93.610437 93.580437,93.610437 93.580437,93.610437"/>
+                <path class="no-color" d="M 6.3894001,93.6106 C 93.830213,6.4194003 93.830213,6.4194003 93.830213,6.4194003"/>
+            </svg>
+            <div #scpDisplay class="color color-pick-stack" id="stroke-color-display" [style.background-color]="strokeColor"></div>
+            <color-sketch #scp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'scp')"></color-sketch>
+        </div>
+    </div>
 	<div class="colorBox" title="Fill Color">
         <div class="color-col-1">
             <div class="color-icon">
@@ -43,17 +59,5 @@
             <color-sketch #fcp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'fcp')"></color-sketch>
         </div>
 	</div>
-	<div class="colorBox" title="Stroke Color">
-        <div class="color-col-1"><div class="color-icon">
-            <i class="fas fa-paint-brush" (click)="updateColors(null, 'scp')"></i>
-        </div></div>
-        <div class="color-col-2">
-            <svg class="color-pick-stack" svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="20" height="10" viewBox="0 0 100 100" id="svg8978">
-                <path class="no-color" d="M 6.3895625,6.4195626 C 93.580437,93.610437 93.580437,93.610437 93.580437,93.610437"/>
-                <path class="no-color" d="M 6.3894001,93.6106 C 93.830213,6.4194003 93.830213,6.4194003 93.830213,6.4194003"/>
-            </svg>
-            <div #scpDisplay class="color color-pick-stack" id="stroke-color-display" [style.background-color]="strokeColor"></div>
-            <color-sketch #scp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'scp')"></color-sketch>
-        </div>
-    </div>
+	
 </div>

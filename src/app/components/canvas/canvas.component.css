@@ -1,12 +1,20 @@
 svg {
-    height: 90vh;
-    width: 75vw;
-    border: 1px solid black;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #bebebe;
     background-color: #FFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.svg-container {
+    height: 600px;
+    width: 800px;
+    resize: both;
 }
 
 .selectedObject{
-    outline: 1px dashed blue;
+    outline: 1px dashed var(--highlight);
     outline-offset: 10px;
-    z-index: 10;
+    cursor: move;
 }

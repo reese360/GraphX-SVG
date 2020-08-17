@@ -10,7 +10,7 @@ import { ToolInputService } from 'src/app/services/toolInput.service';
 
 @Component({
 	selector: 'app-canvas',
-	template: `<svg #svgCanvas (contextmenu)="onMouseDown($event)"></svg>`,
+	template: `<div class="svg-container"><svg #svgCanvas (contextmenu)="onMouseDown($event)"></svg></div>`,
 	styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements AfterViewInit {
@@ -29,7 +29,7 @@ export class CanvasComponent implements AfterViewInit {
 		this.offsetY = this.element.nativeElement.getBoundingClientRect().y;
 
 		// ! preliminary drawing of an svg object
-		// ! can be used in future development to load a saved svg
+		// ! concept can be used in future development to load a saved svg
 		const testSvg = new RectModel(this.renderer, { stroke: 'black', fill: 'lightgray', 'stroke-width': 2 });
 		testSvg.start = [400, 100];
 		testSvg.end = [600, 300];
