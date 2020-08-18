@@ -1,0 +1,21 @@
+<div #strokeDropDownBtn (click)="toggleDropDown()" title="Stroke Width" class="dropbtn" [ngClass]="dropDownOpen ? 'displayOpen' : 'displayClosed'">
+    <div style="pointer-events: none;" >
+        <svg viewBox="0 0 100 30" height="30px" width="100px">
+            <line [attr.x1]="strokeDisplay[0]" [attr.y1]="strokeDisplay[1]" [attr.x2]="strokeDisplay[2]" [attr.y2]="strokeDisplay[3]" [attr.style]="strokeDisplay[4]" [ngClass]="dropDownOpen ? 'displayOpen' : 'displayClosed'" />
+        </svg>
+    </div>
+    <!-- <div style="pointer-events: none;">
+        <svg  viewBox="0 0 256 256" height="30" width="15">
+            <polygon class="chevron-svg" points="225.813,48.907 128,146.72 30.187,48.907 0,79.093 128,207.093 256,79.093"/>
+        </svg>
+    </div> -->
+</div>
+<div #strokeDropDownContent id="myDropdown" class="dropdown-content" t>
+    <div *ngFor="let opt of strokeOptions; index as i">
+        <div (click)="updateSize(i)" [attr.title]="strokeOptions[i][5]">
+            <svg viewBox="0 0 100 30" height="30px" width="100px">
+                <line [attr.x1]="strokeOptions[i][0]" [attr.y1]="strokeOptions[i][1]" [attr.x2]="strokeOptions[i][2]" [attr.y2]="strokeOptions[i][3]" [attr.style]="strokeOptions[i][4]" />
+            </svg>
+        </div>   
+    </div>
+</div>

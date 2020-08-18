@@ -10,16 +10,19 @@ import { ToolInputService } from 'src/app/services/toolInput.service';
 
 @Component({
 	selector: 'app-canvas',
-	template: `<div class="svg-container"><svg #svgCanvas (contextmenu)="onMouseDown($event)"></svg></div>`,
+	template: `<svg #svgCanvas (contextmenu)="onMouseDown($event)" [attr.height]="height" [attr.width]="width" [attr.viewBox]="defViewBox"></svg>`,
 	styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements AfterViewInit {
-	@ViewChild('svgCanvas') element: ElementRef; // reference to svg element in dom
+    @ViewChild('svgCanvas') element: ElementRef; // reference to svg element in dom
+    width: number = 1000; // width of svg 
+    height: number = 800; // height of svg
+    defViewBox: string = `0 0 ${this.width} ${this.height}`
+
 	offsetX: number; // offset position x of svg element
 	offsetY: number; // offset position y of svg element
 	currentObject: IShape; // current shape being drawn
 	shapes: IShapeHashMap = {}; // hash map to hold refs to shape objects
-	clickTimeout: number = 200; // time between clicks to determine single or double
 
 	constructor(private renderer: Renderer2, private toolService: ToolInputService) {}
 
@@ -66,28 +69,28 @@ export class CanvasComponent implements AfterViewInit {
 				case this.toolService.toolsOptions.draw: {
 					switch (this.toolService.currentShape) {
 						case this.toolService.shapeOptions.line: {
-							this.currentObject = new LineModel(this.renderer, { stroke: this.toolService.strokeColor, 'stroke-width': 2 });
+							this.currentObject = new LineModel(this.renderer, { stroke: this.toolService.strokeColor, 'stroke-width': this.toolService.strokeSize });
 							break;
 						}
 						case this.toolService.shapeOptions.rectangle: {
-							this.currentObject = new RectModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': 2 });
+							this.currentObject = new RectModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': this.toolService.strokeSize });
 							break;
 						}
 						case this.toolService.shapeOptions.ellipse: {
-							this.currentObject = new EllipseModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': 2 });
+							this.currentObject = new EllipseModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': this.toolService.strokeSize });
 							break;
 						}
 						case this.toolService.shapeOptions.polyline: {
 							if (!this.currentObject) {
 								// if currently drawing do not create new object
-								this.currentObject = new PolylineModel(this.renderer, { stroke: this.toolService.strokeColor, fill: 'none', 'stroke-width': 2 });
+								this.currentObject = new PolylineModel(this.renderer, { stroke: this.toolService.strokeColor, fill: 'none', 'stroke-width': this.toolService.strokeSize });
 							}
 							break;
 						}
 						case this.toolService.shapeOptions.polygon: {
 							if (!this.currentObject) {
 								// if currently drawing do not create new object
-								this.currentObject = new PolygonModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': 2 });
+								this.currentObject = new PolygonModel(this.renderer, { stroke: this.toolService.strokeColor, fill: this.toolService.fillColor, 'stroke-width': this.toolService.strokeSize });
 							}
 							break;
 						}

@@ -12,10 +12,10 @@
 		<i class="fas fa-slash"></i>
 	</div>
 	<div [ngClass]="toolService.currentShape == '1' ? 'icon selected-tool' : 'icon'" title="Rectangle" (click)="updateShape('rectangle')">
-		<i class="far fa-square"></i>
+		<i class="fas fa-square"></i>
 	</div>
 	<div [ngClass]="toolService.currentShape == '2' ? 'icon selected-tool' : 'icon'" title="Ellipse"  (click)="updateShape('ellipse')">
-		<i class="far fa-circle"></i>
+		<i class="fas fa-circle"></i>
 	</div>
 	<div [ngClass]="toolService.currentShape == '3' ? 'icon selected-tool' : 'icon'" title="Polygon"  (click)="updateShape('polygon')">
 		<svg viewBox="0 0 200 200" width="16px" height="14px">
@@ -27,6 +27,28 @@
 	</div>
 	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
 		<i class="fas fa-signature"></i>
+    </div>
+   
+    <div class="icon">
+		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Toggle Grid">
+		<i class="fas fa-border-all"></i>
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Group Objects">
+		<i class="fas fa-object-group"></i>
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Ungroup Objects">
+		<i class="fas fa-object-ungroup"></i>
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Move Forward">
+		<i class="fas fa-arrow-up"></i>
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Move Backward">
+        <i class="fas fa-arrow-down"></i>
+    </div>
+	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Rotate">
+        <i class="fas fa-sync"></i>
     </div>
     <div class="icon">
 		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
@@ -58,6 +80,8 @@
             <div #fcpDisplay class="color color-pick-stack" id="fill-color-display" [style.background-color]="fillColor"></div>
             <color-sketch #fcp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'fcp')"></color-sketch>
         </div>
-	</div>
-	
+    </div>
+    <div class="icon">
+        <app-stroke-width></app-stroke-width>
+    </div>
 </div>

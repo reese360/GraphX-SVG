@@ -16,5 +16,6 @@ export class ToolInputService {
 	public currentTool: string;
 	public currentShape: string;
 	public strokeColor: string;
-	public fillColor: string;
+    public fillColor: string;
+    public strokeSize: number;
 }
