@@ -9,11 +9,12 @@ export class EllipseModel extends ShapeModel implements IShape {
 	x: number;
 	y: number;
 	rx: number;
-    ry: number;
-    offsetX: number;
-    offsetY: number;
+	ry: number;
+	offsetX: number;
+	offsetY: number;
 	origin: number[];
 	dragging = false;
+	selected: boolean = false;
 
 	constructor(renderer: Renderer2, public style: any) {
 		super();
@@ -37,22 +38,35 @@ export class EllipseModel extends ShapeModel implements IShape {
 	}
 
 	drag(pos): void {
-        const dx = pos[0] - this.offsetX;
-        const dy = pos[1] - this.offsetY;
-        this.origin = [dx, dy];
-        this.x = dx;
-        this.y = dy;
-        this.render();
-    }
+		const dx = pos[0] - this.offsetX;
+		const dy = pos[1] - this.offsetY;
+		this.origin = [dx, dy];
+		this.x = dx;
+		this.y = dy;
+		this.render();
+	}
 
 	endDrag(): void {
-        this.dragging = false;
-        this.offsetX = null;
-        this.offsetY = null;
-    }
-    
-    toggleSelect(): void {}
+		this.dragging = false;
+		this.offsetX = null;
+		this.offsetY = null;
+	}
 
+	toggleSelect(): void {
+		this.selected = !this.selected;
+		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
+		else this.renderer.removeClass(this.element, 'selectedObject');
+	}
+
+    async updateProperties(): Promise<void> {
+        const action = new Promise(() => {
+            this.renderer.setAttribute(this.element, 'cx', `${this.x}`);
+            this.renderer.setAttribute(this.element, 'cy', `${this.y}`);
+            this.renderer.setAttribute(this.element, 'rx', `${this.rx}`);
+            this.renderer.setAttribute(this.element, 'ry', `${this.ry}`);
+            this.renderer.setAttribute(this.element, 'style', this.styleString);
+        });
+	}
 
 	set start(val: number[]) {
 		this.origin = [val[0], val[1]];

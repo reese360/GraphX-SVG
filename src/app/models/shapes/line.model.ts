@@ -45,6 +45,8 @@ export class LineModel extends ShapeModel implements IShape {
     }
 
     toggleSelect(): void { }
+    updateProperties(): void{}
+
 
 	set start(val: number[]) {
 		this.x1 = val[0];

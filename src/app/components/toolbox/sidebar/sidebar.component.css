@@ -1,0 +1,33 @@
+@import '../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css'; font awesome icon pack
+
+:root {
+    --background-color: #e9e9e9;
+}
+
+#sidebar {
+    font-size: 16px;
+    background-color:#e9e9e9;
+    border: 1px solid gray;
+    border-top: none;
+    height: 100vh;
+    width: 35px;
+
+}
+
+.icon {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 35px;
+    border-bottom: 1px solid gray;
+    height: 35px;
+    min-width: 35px;
+    cursor: pointer;
+    color: #000;
+    user-select: none;
+    transition: color ease-in-out .25s, stroke ease-in-out .25s, fill ease-in-out .25s;
+
+    /* svg icon  */
+    stroke-width: 20;
+    stroke: #000;
+    fill: #000;
+}

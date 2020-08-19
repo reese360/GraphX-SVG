@@ -58,6 +58,14 @@ export class RectModel extends ShapeModel implements IShape {
 		else this.renderer.removeClass(this.element, 'selectedObject');
 	}
 
+	async updateProperties(): Promise<void> {
+		this.renderer.setAttribute(this.element, 'x', `${this.x}`);
+		this.renderer.setAttribute(this.element, 'y', `${this.y}`);
+		this.renderer.setAttribute(this.element, 'width', `${this.width}`);
+		this.renderer.setAttribute(this.element, 'height', `${this.height}`);
+		this.renderer.setAttribute(this.element, 'style', this.styleString);
+	}
+
 	set start(val: number[]) {
 		this.origin = [val[0], val[1]];
 		this.x = val[0];

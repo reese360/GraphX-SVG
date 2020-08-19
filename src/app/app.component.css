@@ -1,4 +1,21 @@
 #app {
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
+  display: grid;
+  grid-template-areas: "topbar topbar" "canvas sidebar";
+  grid-template-columns: calc(100vw - 37px) 37px;
+  grid-template-rows: 32px calc(100vh - 32px);
+}
+
+#tools {
+    grid-area: topbar;
+}
+
+#canvas {
+    grid-area: canvas;
+}
+
+#sidebar{
+    grid-area: sidebar;
 }

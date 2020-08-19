@@ -2,12 +2,25 @@
 
 .dropbtn {
     cursor: pointer;
-    width: 125px;
+    width: 145px;
     height: 30px;
-    /* display: grid;
-    grid-template-columns: 150px 15px;
-    grid-template-rows: 30px; */
+    display: grid;
+    grid-template-columns: 125px 25px;
+    grid-template-rows: 30px;
   }
+
+  .down-arrow {
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    width: 25px;
+    font-size: 12px;
+    pointer-events: none;
+    background-color: var(--highlight);
+    color: white;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+}
 
   .dropdown {
     position: relative;
@@ -33,7 +46,9 @@
     display: block;
   }
   
-  .dropdown-content div:hover {background-color: var(--highlight);}
+  .dropdown-content div:hover {
+      background-color: var(--highlight);
+}
   
   .show {display: block;}
 

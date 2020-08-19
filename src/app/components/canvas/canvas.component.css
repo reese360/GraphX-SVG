@@ -1,6 +1,10 @@
+.svg-container {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
 svg {
-    /* height: 600px;
-    width: 800px; */
     border: 1px solid #bebebe;
     background-color: #FFF;
     margin-left: 10px;

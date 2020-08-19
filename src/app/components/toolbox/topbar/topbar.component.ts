@@ -1,10 +1,10 @@
 import { Component, OnInit, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { ToolInputService } from '../../services/toolInput.service';
+import { ToolInputService } from '../../../services/toolInput.service';
 
 @Component({
 	selector: 'app-toolbox',
-	templateUrl: './toolbox.component.html',
-	styleUrls: ['./toolbox.component.css'],
+	templateUrl: './topbar.component.html',
+	styleUrls: ['./topbar.component.css'],
 })
 export class ToolboxComponent implements AfterViewInit {
 	@ViewChild('scp', { read: ElementRef }) strokeColorPicker: ElementRef;
@@ -24,8 +24,8 @@ export class ToolboxComponent implements AfterViewInit {
 		this.toolService.fillColor = 'none'; // no fill
 	}
 
-    ngAfterViewInit(): void {
-        // window event listeners to open/close color pickers
+	ngAfterViewInit(): void {
+		// window event listeners to open/close color pickers
 		this.renderer.listen('window', 'click', (e: Event) => {
 			if (e.target === this.strokeColorDisplay.nativeElement) {
 				this.renderer.setStyle(this.strokeColorPicker.nativeElement, 'visibility', 'visible');
@@ -43,8 +43,11 @@ export class ToolboxComponent implements AfterViewInit {
 		});
 	}
 
-	updateTool(tool: string): void {
-		this.toolService.currentTool = this.toolService.toolsOptions[tool];
+	toolAction(button: string) {}
+
+	// change the currently selected tool
+	changeTool(tool: string): void {
+		this.toolService.changeTool(this.toolService.toolsOptions[tool]);
 	}
 
 	updateShape(shape: string): void {
@@ -58,12 +61,12 @@ export class ToolboxComponent implements AfterViewInit {
 			switch (element) {
 				case 'scp': {
 					this.strokeColor = colorStr;
-					this.toolService.strokeColor = colorStr;
+					this.toolService.changeStrokeColor(colorStr);
 					break;
 				}
 				case 'fcp': {
 					this.fillColor = colorStr;
-					this.toolService.fillColor = colorStr;
+					this.toolService.changeFillColor(colorStr);
 					break;
 				}
 			}
@@ -71,12 +74,13 @@ export class ToolboxComponent implements AfterViewInit {
 			switch (element) {
 				case 'scp': {
 					this.strokeColor = 'transparent';
-					this.toolService.strokeColor = 'none';
+					this.toolService.changeStrokeColor('none');
 					break;
 				}
 				case 'fcp': {
 					this.fillColor = 'transparent';
-					this.toolService.fillColor = 'none';
+					this.toolService.changeFillColor('none');
+
 					break;
 				}
 			}

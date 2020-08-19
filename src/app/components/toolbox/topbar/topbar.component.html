@@ -1,11 +1,29 @@
 <div id="tool-container">
-    <div [ngClass]="toolService.currentTool == '0' ? 'icon selected-tool' : 'icon'" title="Select Tool" (click)="updateTool('select')">
+    <div class="icon" title="Save" (click)="toolAction('save')">
+        <i class="fas fa-save"></i>
+    </div>
+    <div class="icon" title="Open" (click)="toolAction('open')">
+        <i class="fas fa-folder-open"></i>
+    </div>
+    <div class="icon" title="Import" (click)="toolAction('import')">
+        <i class="fas fa-file-import"></i>
+    </div>
+    <div class="icon" title="Export" (click)="toolAction('export')">
+        <i class="fas fa-file-export"></i>
+    </div>
+    <div class="icon">
+        <div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+	</div>
+    <div [ngClass]="toolService.currentTool == '0' ? 'icon selected-tool' : 'icon'" title="Select Tool" (click)="changeTool('select')">
         <i class="fas fa-mouse-pointer"></i>
     </div>
-    <div [ngClass]="toolService.currentTool == '1' ? 'icon selected-tool' : 'icon'" title="Draw Tool" (click)="updateTool('draw')">
+    <div [ngClass]="toolService.currentTool == '1' ? 'icon selected-tool' : 'icon'" title="Draw Tool" (click)="changeTool('draw')">
 		<i class="fas fa-pencil-alt"></i>
-	</div>
-	<div class="icon">
+    </div>
+    <div [ngClass]="toolService.currentTool == '2' ? 'icon selected-tool' : 'icon'"  title="Pan" (click)="changeTool('pan')">
+		<i class="fas fa-hand-paper"></i>
+    </div>
+    <div class="icon">
         <div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
 	</div>
 	<div [ngClass]="toolService.currentShape == '0' ? 'icon selected-tool' : 'icon'" title="Line" (click)="updateShape('line')">
@@ -28,35 +46,18 @@
 	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
 		<i class="fas fa-signature"></i>
     </div>
-   
-    <div class="icon">
-		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
-    </div>
-	<div class="icon" title="Toggle Grid">
-		<i class="fas fa-border-all"></i>
-    </div>
-	<div class="icon" title="Group Objects">
-		<i class="fas fa-object-group"></i>
-    </div>
-	<div class="icon" title="Ungroup Objects">
-		<i class="fas fa-object-ungroup"></i>
-    </div>
-	<div class="icon" title="Move Forward">
-		<i class="fas fa-arrow-up"></i>
-    </div>
-	<div class="icon" title="Move Backward">
-        <i class="fas fa-arrow-down"></i>
-    </div>
-	<div class="icon"title="Rotate">
-        <i class="fas fa-sync"></i>
-    </div>
+	<div [ngClass]="toolService.currentShape == '6' ? 'icon selected-tool' : 'icon'" title="Text"  (click)="updateShape('text')">
+		<i class="fas fa-font"></i>
+    </div>	
     <div class="icon">
 		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
     </div>
     <div class="colorBox" title="Stroke Color">
-        <div class="color-col-1"><div class="color-icon">
-            <i class="fas fa-paint-brush" (click)="updateColors(null, 'scp')"></i>
-        </div></div>
+        <div class="color-col-1">
+            <div class="color-icon" (click)="updateColors(null,'scp')">
+                <i class="fas fa-paint-brush"></i>
+            </div>
+        </div>
         <div class="color-col-2">
             <svg class="color-pick-stack" svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" version="1.0" width="20" height="10" viewBox="0 0 100 100" id="svg8978">
                 <path class="no-color" d="M 6.3895625,6.4195626 C 93.580437,93.610437 93.580437,93.610437 93.580437,93.610437"/>
@@ -68,8 +69,8 @@
     </div>
 	<div class="colorBox" title="Fill Color">
         <div class="color-col-1">
-            <div class="color-icon">
-                <i class="fas fa-fill-drip" (click)="updateColors(null, 'fcp')"></i>
+            <div class="color-icon" (click)="updateColors(null,'fcp')">
+                <i class="fas fa-fill-drip"></i>
             </div>
         </div>
         <div class="color-col-2">
