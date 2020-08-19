@@ -11,14 +11,11 @@ import { SelectorService } from 'src/app/services/selector.service';
 
 @Component({
 	selector: 'app-canvas',
-	// template: `<div class="svg-container">
-	// 	<svg #svgCanvas (contextmenu)="onMouseDown($event)" [attr.height]="height" [attr.width]="width" [attr.viewBox]="defViewBox"></svg>
-	// </div>`,
 	templateUrl: './canvas.component.html',
 	styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements AfterViewInit {
-	@ViewChild('svgCanvas') element: ElementRef; // reference to svg element in dom
+	@ViewChild('svg') element: ElementRef; // reference to svg element in dom
 	@ViewChild('svgContainer') container: ElementRef; // reference to svg element in dom
 	width: number = 1000; // width of svg
 	height: number = 800; // height of svg
@@ -29,7 +26,9 @@ export class CanvasComponent implements AfterViewInit {
 	offsetX: number; // offset position x of svg element
 	offsetY: number; // offset position y of svg element
 	currentObject: IShape; // current shape being drawn
-	shapes: IShapeHashMap = {}; // hash map to hold refs to shape objects
+    shapes: IShapeHashMap = {}; // hash map to hold refs to shape objects
+    canvasOffsetX: number = 10;
+    canvasOffsetY: number = 10;
 
 	constructor(private renderer: Renderer2, private toolService: ToolInputService, private selectorService: SelectorService) {
 		this.toolService.ToolEvent.subscribe((val) => {
@@ -41,6 +40,9 @@ export class CanvasComponent implements AfterViewInit {
 		const containerSize = this.container.nativeElement.getBoundingClientRect();
 		const vbox = `0 0 ${containerSize.width} ${containerSize.height}`;
 		this.renderer.setAttribute(this.element.nativeElement, 'viewBox', vbox);
+
+		this.offsetX = this.element.nativeElement.getBoundingClientRect().x;
+		this.offsetY = this.element.nativeElement.getBoundingClientRect().y;
 
 		// ! preliminary drawing of an svg object
 		// ! concept can be used in future development to load a saved svg
@@ -69,7 +71,14 @@ export class CanvasComponent implements AfterViewInit {
 	}
 
 	// window resize event handler
-	@HostListener('window:resize', ['$event']) resize(e): void {}
+	@HostListener('window:resize', ['$event']) resize(e): void {
+		const containerSize = this.container.nativeElement.getBoundingClientRect();
+		const vbox = `0 0 ${containerSize.width} ${containerSize.height}`;
+		this.renderer.setAttribute(this.element.nativeElement, 'viewBox', vbox);
+
+		this.offsetX = this.element.nativeElement.getBoundingClientRect().x;
+		this.offsetY = this.element.nativeElement.getBoundingClientRect().y;
+	}
 
 	// mouse down event handler
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
@@ -128,8 +137,6 @@ export class CanvasComponent implements AfterViewInit {
 							break;
 						}
 					}
-					this.offsetX = this.element.nativeElement.getBoundingClientRect().x;
-					this.offsetY = this.element.nativeElement.getBoundingClientRect().y;
 					this.currentObject.start = [e.clientX - this.offsetX, e.clientY - this.offsetY];
 					this.currentObject.end = [e.clientX - this.offsetX, e.clientY - this.offsetY];
 					this.renderer.appendChild(this.element.nativeElement, this.currentObject.element);
@@ -149,8 +156,14 @@ export class CanvasComponent implements AfterViewInit {
 		}
 	}
 
+	updateMouseCoords(pos: [number, number]): void {
+		this.toolService.updateMouseCoords(pos);
+	}
+
 	// mouse move event handler
 	@HostListener('mousemove', ['$event']) onMouseMove(e): void {
+		this.updateMouseCoords([e.clientX - this.offsetX - this.canvasOffsetX, e.clientY - this.offsetY - this.canvasOffsetY]);
+
 		switch (this.toolService.currentTool) {
 			case this.toolService.toolsOptions.select: {
 				if (this.selectorService.canDrag) {
@@ -176,7 +189,7 @@ export class CanvasComponent implements AfterViewInit {
 	@HostListener('mouseup', ['$event']) onMouseUp(e): void {
 		switch (this.toolService.currentTool) {
 			case this.toolService.toolsOptions.select: {
-				this.selectorService.dragging = false;
+				this.selectorService.endDrag();
 				break;
 			}
 			case this.toolService.toolsOptions.draw: {

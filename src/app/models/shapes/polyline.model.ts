@@ -34,9 +34,9 @@ export class PolylineModel extends ShapeModel implements IShape {
 		this.dragging = false;
 	}
 
-    toggleSelect(): void { }
-    updateProperties(): void{}
-    
+	toggleSelect(): void {}
+
+	async updateProperties(): Promise<void> {}
 
 	set start(val: number[]) {
 		this.points.push(val[0]);

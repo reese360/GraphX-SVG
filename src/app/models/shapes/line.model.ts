@@ -44,8 +44,11 @@ export class LineModel extends ShapeModel implements IShape {
 		this.offsetY = null;
     }
 
-    toggleSelect(): void { }
-    updateProperties(): void{}
+    toggleSelect(): void {
+
+    }
+
+    async updateProperties(): Promise<void>{}
 
 
 	set start(val: number[]) {

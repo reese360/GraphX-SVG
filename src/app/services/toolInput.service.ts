@@ -17,6 +17,9 @@ export class ToolInputService {
 		pan: 2,
 	};
 
+	public mouseCoords: number[];
+	public mouseCoordsEvent: Subject<number[]> = new Subject<number[]>();
+
 	public strokeColor: string;
 	public strokeColorEvent: Subject<string> = new Subject<string>();
 
@@ -31,6 +34,11 @@ export class ToolInputService {
 
 	public currentShape: string;
 	public ShapeEvent: Subject<string> = new Subject<string>();
+
+	updateMouseCoords(pos: number[]): void {
+		this.mouseCoordsEvent.next(pos);
+		this.mouseCoords = pos;
+	}
 
 	changeTool(tool: string): void {
 		this.ToolEvent.next(tool);

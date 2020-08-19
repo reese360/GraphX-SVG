@@ -16,12 +16,20 @@ export class ToolboxComponent implements AfterViewInit {
 	strokeColor: string;
 	fillColor: string;
 
+    mouseX: number = 0;
+    mouseY: number = 0;
+
 	constructor(public toolService: ToolInputService, public renderer: Renderer2) {
 		// set initial tooling options
 		this.toolService.currentTool = this.toolService.toolsOptions.select;
 		this.toolService.currentShape = this.toolService.shapeOptions.polyline;
 		this.toolService.strokeColor = '#000000'; // black
 		this.toolService.fillColor = 'none'; // no fill
+
+		this.toolService.mouseCoordsEvent.subscribe((pos) => {
+			this.mouseX = pos[0];
+			this.mouseY = pos[1];
+		});
 	}
 
 	ngAfterViewInit(): void {

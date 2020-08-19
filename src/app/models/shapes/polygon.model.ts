@@ -7,9 +7,13 @@ export class PolygonModel extends ShapeModel implements IShape {
 	element: any;
 	points: number[] = [];
 	origin: number[];
+	offsetX: number;
+	offsetY: number;
 	currentEnd: number[];
 	dragging: boolean = false;
 	selected: boolean = false;
+	dragDx: number;
+	dragDy: number;
 
 	constructor(public renderer: Renderer2, public style: any) {
 		super();
@@ -25,23 +29,46 @@ export class PolygonModel extends ShapeModel implements IShape {
 
 	startDrag(pos): void {
 		this.dragging = true;
+		this.offsetX = pos[0];
+		this.offsetY = pos[1];
 	}
 
 	drag(pos): void {
-		this.render();
+		this.dragDx = pos[0] - this.offsetX;
+		this.dragDy = pos[1] - this.offsetY;
+		this.style['transform'] = `translate(${this.dragDx}px, ${this.dragDy}px)`;
+		this.renderer.setAttribute(this.element, 'style', this.styleString);
 	}
 
-	endDrag(): void {
+	async endDrag(): Promise<void> {
 		this.dragging = false;
+		new Promise(() => {
+			if (this.dragDx && this.dragDy) {
+				for (let p = 0; p < this.points.length; p += 2) {
+					this.points[p] += this.dragDx;
+					this.points[p + 1] += this.dragDy;
+				}
+				this.currentEnd = [(this.currentEnd[0] += this.dragDx), (this.currentEnd[1] += this.dragDy)];
+				delete this.style['transform'];
+				this.renderer.setAttribute(this.element, 'style', this.styleString);
+				this.render();
+				this.dragDx = null;
+				this.dragDy = null;
+			}
+		});
 	}
 
 	toggleSelect(): void {
 		this.selected = !this.selected;
 		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
 		else this.renderer.removeClass(this.element, 'selectedObject');
-    }
-    updateProperties(): void{}
+	}
 
+	async updateProperties(): Promise<void> {
+		const action = new Promise(() => {
+			this.renderer.setAttribute(this.element, 'style', this.styleString);
+		});
+	}
 
 	set start(val: number[]) {
 		this.points.push(val[0]);

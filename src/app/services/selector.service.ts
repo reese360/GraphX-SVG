@@ -68,6 +68,13 @@ export class SelectorService {
 		});
 	}
 
+	endDrag(): void {
+		Object.keys(this.selectedShapes).forEach((shape) => {
+			this.selectedShapes[shape].endDrag();
+		});
+		this.dragging = false;
+	}
+
 	// returns if id of shape is selected
 	lookup(id: number): boolean {
 		return id in this.selectedShapes ? true : false;

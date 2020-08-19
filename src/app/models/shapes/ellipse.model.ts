@@ -59,7 +59,7 @@ export class EllipseModel extends ShapeModel implements IShape {
 	}
 
     async updateProperties(): Promise<void> {
-        const action = new Promise(() => {
+        new Promise(() => {
             this.renderer.setAttribute(this.element, 'cx', `${this.x}`);
             this.renderer.setAttribute(this.element, 'cy', `${this.y}`);
             this.renderer.setAttribute(this.element, 'rx', `${this.rx}`);
