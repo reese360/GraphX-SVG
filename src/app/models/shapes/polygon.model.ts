@@ -41,7 +41,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 		else this.renderer.removeClass(this.element, 'selectedObject');
     }
     updateProperties(): void{}
-    
+
 
 	set start(val: number[]) {
 		this.points.push(val[0]);

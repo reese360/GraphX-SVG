@@ -1,4 +1,4 @@
-import { IShape } from '../interfaces/IShape.interface';
+import { IShape } from '../Interfaces/IShape.interface';
 import { IShapeHashMap } from '../interfaces/IShapeHashMap.interface';
 import { Injectable } from '@angular/core';
 import { ToolInputService } from './toolInput.service';

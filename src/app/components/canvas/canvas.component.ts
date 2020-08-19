@@ -11,13 +11,15 @@ import { SelectorService } from 'src/app/services/selector.service';
 
 @Component({
 	selector: 'app-canvas',
-	template: `<div class="svg-container">
-		<svg #svgCanvas (contextmenu)="onMouseDown($event)" [attr.height]="height" [attr.width]="width" [attr.viewBox]="defViewBox"></svg>
-	</div>`,
+	// template: `<div class="svg-container">
+	// 	<svg #svgCanvas (contextmenu)="onMouseDown($event)" [attr.height]="height" [attr.width]="width" [attr.viewBox]="defViewBox"></svg>
+	// </div>`,
+	templateUrl: './canvas.component.html',
 	styleUrls: ['./canvas.component.css'],
 })
 export class CanvasComponent implements AfterViewInit {
 	@ViewChild('svgCanvas') element: ElementRef; // reference to svg element in dom
+	@ViewChild('svgContainer') container: ElementRef; // reference to svg element in dom
 	width: number = 1000; // width of svg
 	height: number = 800; // height of svg
 	vbWidth: number = 1000; // viewBox width
@@ -31,29 +33,39 @@ export class CanvasComponent implements AfterViewInit {
 
 	constructor(private renderer: Renderer2, private toolService: ToolInputService, private selectorService: SelectorService) {
 		this.toolService.ToolEvent.subscribe((val) => {
-            this.resetServices();
+			this.resetServices();
 		});
 	}
 
 	ngAfterViewInit(): void {
+		const containerSize = this.container.nativeElement.getBoundingClientRect();
+		const vbox = `0 0 ${containerSize.width} ${containerSize.height}`;
+		this.renderer.setAttribute(this.element.nativeElement, 'viewBox', vbox);
+
 		// ! preliminary drawing of an svg object
 		// ! concept can be used in future development to load a saved svg
-		const testSvg = new RectModel(this.renderer, { stroke: 'black', fill: 'lightgreen', 'stroke-width': 2 });
-		testSvg.start = [400, 100];
-		testSvg.end = [600, 300];
-		this.renderer.appendChild(this.element.nativeElement, testSvg.element);
-		this.shapes[testSvg.id] = testSvg;
+		const testSvg1 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
+		testSvg1.start = [200, 200];
+		testSvg1.end = [300, 300];
+		this.renderer.appendChild(this.element.nativeElement, testSvg1.element);
+		this.shapes[testSvg1.id] = testSvg1;
 
-		const testSvg2 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
-		testSvg2.start = [200, 200];
-		testSvg2.end = [300, 300];
+		const testSvg2 = new RectModel(this.renderer, { stroke: 'black', fill: 'lightgreen', 'stroke-width': 2 });
+		testSvg2.start = [400, 100];
+		testSvg2.end = [600, 300];
 		this.renderer.appendChild(this.element.nativeElement, testSvg2.element);
 		this.shapes[testSvg2.id] = testSvg2;
+
+		const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
+		testSvg3.points = [800, 100, 900, 300];
+		testSvg3.end = [700, 300];
+		this.renderer.appendChild(this.element.nativeElement, testSvg3.element);
+		this.shapes[testSvg3.id] = testSvg3;
 	}
 
 	// reset service handlers
 	resetServices(): void {
-        this.selectorService.deselect();
+		this.selectorService.deselect();
 	}
 
 	// window resize event handler
