@@ -9,6 +9,7 @@ export class PolylineModel extends ShapeModel implements IShape {
 	origin: number[];
 	currentEnd: number[];
 	dragging = false;
+	selected: boolean;
 
 	constructor(public renderer: Renderer2, public style: any) {
 		super();
@@ -34,7 +35,15 @@ export class PolylineModel extends ShapeModel implements IShape {
 		this.dragging = false;
 	}
 
-	toggleSelect(): void {}
+	select(): void {
+		this.selected = true;
+		this.renderer.addClass(this.element, 'selectedObject');
+	}
+
+	deselect(): void {
+		this.selected = false;
+		this.renderer.removeClass(this.element, 'selectedObject');
+	}
 
 	async updateProperties(): Promise<void> {}
 
@@ -62,5 +71,9 @@ export class PolylineModel extends ShapeModel implements IShape {
 			ps += `${this.points[point]}, `;
 		}
 		return ps;
+	}
+
+	get elementString(): string {
+		return `<${this.shape} />`;
 	}
 }

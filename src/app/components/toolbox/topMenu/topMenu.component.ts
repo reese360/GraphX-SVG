@@ -1,37 +1,60 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ToolInputService } from '../../../services/toolInput.service';
 
 @Component({
-	selector: 'app-toolbox',
-	templateUrl: './topbar.component.html',
-	styleUrls: ['./topbar.component.css'],
+	selector: 'app-top-menu',
+	templateUrl: './topMenu.component.html',
+	styleUrls: ['./topMenu.component.css'],
 })
-export class ToolboxComponent implements AfterViewInit {
+export class TopMenuComponent implements AfterViewInit {
 	@ViewChild('scp', { read: ElementRef }) strokeColorPicker: ElementRef;
 	@ViewChild('fcp', { read: ElementRef }) fillColorPicker: ElementRef;
 	@ViewChild('scpDisplay', { read: ElementRef }) strokeColorDisplay: ElementRef;
 	@ViewChild('fcpDisplay', { read: ElementRef }) fillColorDisplay: ElementRef;
-	strokePickerOpen: Boolean = false;
-	fillPickerOpen: Boolean = false;
+
+	strokePickerOpen: boolean = false;
+	fillPickerOpen: boolean = false;
 	strokeColor: string;
 	fillColor: string;
 
-    mouseX: number = 0;
-    mouseY: number = 0;
+	zoomLevelDisplay: string = '100%';
+	mouseX: number = 0;
+	mouseY: number = 0;
+
+	strokeWidthOptions: string[][] = [
+		['0', '15', '100', '15', 'stroke-width: 2; stroke-linecap: square;', '2'],
+		['0', '15', '100', '15', 'stroke-width: 4; stroke-linecap: square;', '4'],
+		['0', '15', '100', '15', 'stroke-width: 6; stroke-linecap: square;', '6'],
+		['0', '15', '100', '15', 'stroke-width: 10; stroke-linecap: square;', '10'],
+		['0', '15', '100', '15', 'stroke-width: 14; stroke-linecap: square;', '14'],
+		['0', '15', '100', '15', 'stroke-width: 20; stroke-linecap: round;', '20'],
+	];
+
+	dashArrayOptions: string[][] = [
+		['0', '15', '100', '15', 'stroke-width: 2; stroke-dasharray: none', 'none'],
+		['0', '15', '100', '15', 'stroke-width: 2; stroke-dasharray: 1', '1'],
+		['0', '15', '100', '15', 'stroke-width: 2; stroke-dasharray: 2;', '2'],
+		['0', '15', '100', '15', 'stroke-width: 2; stroke-dasharray: 4;', '4'],
+	];
 
 	constructor(public toolService: ToolInputService, public renderer: Renderer2) {
 		// set initial tooling options
 		this.toolService.currentTool = this.toolService.toolsOptions.select;
 		this.toolService.currentShape = this.toolService.shapeOptions.polyline;
-		this.toolService.strokeColor = '#000000'; // black
+		this.toolService.strokeColor = '#000'; // black
 		this.toolService.fillColor = 'none'; // no fill
 
+		// subscription for mouse coord display
 		this.toolService.mouseCoordsEvent.subscribe((pos) => {
 			this.mouseX = pos[0];
 			this.mouseY = pos[1];
 		});
-	}
 
+		// subscription for zoom level
+		this.toolService.zoomLevelEvent.subscribe((level) => {
+			this.zoomLevelDisplay = `${100 * level}%`;
+		});
+	}
 	ngAfterViewInit(): void {
 		// window event listeners to open/close color pickers
 		this.renderer.listen('window', 'click', (e: Event) => {
@@ -56,6 +79,19 @@ export class ToolboxComponent implements AfterViewInit {
 	// change the currently selected tool
 	changeTool(tool: string): void {
 		this.toolService.changeTool(this.toolService.toolsOptions[tool]);
+	}
+
+	updateStrokeStyle(style: string, selection: string): void {
+		switch (style) {
+			case 'stroke-width': {
+				this.toolService.updateStrokeWidth(Number(selection));
+				break;
+			}
+			case 'stroke-dasharray': {
+				this.toolService.updateStrokeDash(selection);
+				break;
+			}
+		}
 	}
 
 	updateShape(shape: string): void {

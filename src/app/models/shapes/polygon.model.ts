@@ -28,7 +28,6 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	startDrag(pos): void {
-		this.dragging = true;
 		this.offsetX = pos[0];
 		this.offsetY = pos[1];
 	}
@@ -41,7 +40,6 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	async endDrag(): Promise<void> {
-		this.dragging = false;
 		new Promise(() => {
 			if (this.dragDx && this.dragDy) {
 				for (let p = 0; p < this.points.length; p += 2) {
@@ -49,19 +47,23 @@ export class PolygonModel extends ShapeModel implements IShape {
 					this.points[p + 1] += this.dragDy;
 				}
 				this.currentEnd = [(this.currentEnd[0] += this.dragDx), (this.currentEnd[1] += this.dragDy)];
+				this.dragDx = null;
+				this.dragDy = null;
 				delete this.style['transform'];
 				this.renderer.setAttribute(this.element, 'style', this.styleString);
 				this.render();
-				this.dragDx = null;
-				this.dragDy = null;
 			}
 		});
 	}
 
-	toggleSelect(): void {
-		this.selected = !this.selected;
-		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
-		else this.renderer.removeClass(this.element, 'selectedObject');
+	select(): void {
+		this.selected = true;
+		this.renderer.addClass(this.element, 'selectedObject');
+	}
+
+	deselect(): void {
+		this.selected = false;
+		this.renderer.removeClass(this.element, 'selectedObject');
 	}
 
 	async updateProperties(): Promise<void> {
@@ -94,5 +96,9 @@ export class PolygonModel extends ShapeModel implements IShape {
 			ps += `${this.points[point]}, `;
 		}
 		return ps;
+	}
+
+	get elementString(): string {
+		return `<${this.shape} />`;
 	}
 }

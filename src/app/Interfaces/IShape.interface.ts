@@ -9,12 +9,14 @@ export interface IShape {
 	end: number[];
 	element: any;
 	origin: number[];
-	dragging: boolean;
+    dragging: boolean;
+    elementString: string;
 
 	render(): void;
     startDrag(pos: [number, number]): void;
 	drag(pos: [number, number]): void;
     endDrag(): void;
-    toggleSelect(): void;
+    select(): void;
+    deselect(): void;
     updateProperties(): void;
 }

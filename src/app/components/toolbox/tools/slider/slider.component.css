@@ -1,0 +1,34 @@
+@import '../../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+
+.slider {
+    height: calc(100vh - 32px);
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 32px;
+    right: 37px;
+    background-color: #e9e9e9;
+    overflow-x: hidden;
+    transition: ease .5s;
+    border-left: 1px solid gray;
+    visibility: hidden;
+    user-select: none;
+  }
+
+  .slider-content{
+    color: gray;
+    padding-top: 20px;
+    padding-left: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .slider-title{
+      font-size: 30px;
+  }
+
+  .displayOpen {
+    width: 400px;
+    visibility: visible;
+
+  }

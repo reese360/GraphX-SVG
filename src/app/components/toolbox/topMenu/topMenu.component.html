@@ -83,12 +83,15 @@
         </div>
     </div>
     <div class="icon">
-        <app-stroke-width></app-stroke-width>
+        <app-drop-down [dropDownOptions]="strokeWidthOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-width', $event)"></app-drop-down>
     </div>
     <div class="icon">
-		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+        <app-drop-down [dropDownOptions]="dashArrayOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-dasharray', $event)"></app-drop-down>
     </div>
     <div class="mouse-coordinate-display">
-        <span>(x:{{mouseX}}, y:{{mouseY}})</span>
+       <span>x:{{mouseX}} y:{{mouseY}}</span>&nbsp;<i class="fas fa-mouse"></i>
+    </div>
+    <div class="zoom-level-display">
+        <span>{{ zoomLevelDisplay }}</span>&nbsp;<i class="fas fa-binoculars"></i>
     </div>
 </div>

@@ -11,6 +11,7 @@
     background-color: #e9e9e9;
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
+    min-width: 1200px;
 }
 
 .icon {
@@ -137,7 +138,19 @@
 .mouse-coordinate-display {
     width: 120px;
     height: 30px;
-    font-family: "Lucida Console", Monaco, monospace;
+    /* font-family: "Lucida Console", Monaco, monospace; */
+    float: right;
+    text-align: center;
+    line-height: 30px;
+    font-size: 11px;
+    border-left: 1px solid gray;
+    user-select: none;
+}
+
+.zoom-level-display {
+    width: 50px;
+    height: 30px;
+    /* font-family: "Lucida Console", Monaco, monospace; */
     float: right;
     text-align: center;
     line-height: 30px;

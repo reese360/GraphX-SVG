@@ -1,6 +1,7 @@
 {
 	"extends": "tslint:recommended",
 	"rules": {
+        "no-string-literal": false,
         "no-unused-expression": false,
         "object-literal-sort-keys": false,
 		"align": {
@@ -32,7 +33,7 @@
 		"no-redundant-jsdoc": true,
 		"no-switch-case-fall-through": true,
 		"no-var-requires": false,
-		"object-literal-key-quotes": [true, "as-needed"],
+		"object-literal-key-quotes": [false, "as-needed"],
 		"space-before-function-paren": {
 			"options": {
 				"anonymous": "never",

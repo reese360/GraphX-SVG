@@ -1,5 +1,5 @@
 <div id="svg-container" #svgContainer>
-    <svg #svg [attr.width]="svgContainer.offsetWidth" [attr.height]="svgContainer.offsetHeight" (contextmenu)="onMouseDown($event)">
-        <rect #svgCanvas [attr.x]="canvasOffsetX" [attr.y]="canvasOffsetY" [attr.width]="width" [attr.height]="height" style="fill: #ffffff; stroke: #bebebe; stroke-width: 1;" />
+    <svg id="svg" #svg preserveAspectRatio="xMidYMid meet" [attr.width]="svgContainer.offsetWidth" [attr.height]="svgContainer.offsetHeight" (contextmenu)="onMouseDown($event)">
+        <rect id="svgCanvas" #svgCanvas x="0" y="0" [attr.width]="width" [attr.height]="height" style="fill: #ffffff; stroke: gray; stroke-width: 1;" />
     </svg>
 </div>

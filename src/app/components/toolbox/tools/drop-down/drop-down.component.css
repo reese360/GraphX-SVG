@@ -1,8 +1,8 @@
-@import '../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css'; /* font awesome icon pack */
+@import '../../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css'; /* font awesome icon pack */
 
 .dropbtn {
     cursor: pointer;
-    width: 145px;
+    width: 150px;
     height: 30px;
     display: grid;
     grid-template-columns: 125px 25px;

@@ -52,20 +52,24 @@ export class EllipseModel extends ShapeModel implements IShape {
 		this.offsetY = null;
 	}
 
-	toggleSelect(): void {
-		this.selected = !this.selected;
-		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
-		else this.renderer.removeClass(this.element, 'selectedObject');
+	select(): void {
+		this.selected = true;
+		this.renderer.addClass(this.element, 'selectedObject');
 	}
 
-    async updateProperties(): Promise<void> {
-        new Promise(() => {
-            this.renderer.setAttribute(this.element, 'cx', `${this.x}`);
-            this.renderer.setAttribute(this.element, 'cy', `${this.y}`);
-            this.renderer.setAttribute(this.element, 'rx', `${this.rx}`);
-            this.renderer.setAttribute(this.element, 'ry', `${this.ry}`);
-            this.renderer.setAttribute(this.element, 'style', this.styleString);
-        });
+	deselect(): void {
+		this.selected = false;
+		this.renderer.removeClass(this.element, 'selectedObject');
+	}
+
+	async updateProperties(): Promise<void> {
+		new Promise(() => {
+			this.renderer.setAttribute(this.element, 'cx', `${this.x}`);
+			this.renderer.setAttribute(this.element, 'cy', `${this.y}`);
+			this.renderer.setAttribute(this.element, 'rx', `${this.rx}`);
+			this.renderer.setAttribute(this.element, 'ry', `${this.ry}`);
+			this.renderer.setAttribute(this.element, 'style', this.styleString);
+		});
 	}
 
 	set start(val: number[]) {
@@ -89,4 +93,8 @@ export class EllipseModel extends ShapeModel implements IShape {
 		});
 		return style;
 	}
+
+    get elementString(): string {
+        return `<${this.shape} />`
+    }
 }

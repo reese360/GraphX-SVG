@@ -1,4 +1,4 @@
-import { Observable, Subject } from 'rxjs';
+import {  Subject } from 'rxjs';
 
 export class ToolInputService {
 	public shapeOptions: any = {
@@ -20,6 +20,9 @@ export class ToolInputService {
 	public mouseCoords: number[];
 	public mouseCoordsEvent: Subject<number[]> = new Subject<number[]>();
 
+	public zoomLevel: number;
+	public zoomLevelEvent: Subject<number> = new Subject<number>();
+
 	public strokeColor: string;
 	public strokeColorEvent: Subject<string> = new Subject<string>();
 
@@ -29,15 +32,27 @@ export class ToolInputService {
 	public strokeSize: number;
 	public strokeSizeEvent: Subject<number> = new Subject<number>();
 
+	public strokeDashArray: string;
+	public strokeDashArrayEvent: Subject<string> = new Subject<string>();
+
 	public currentTool: string;
 	public ToolEvent: Subject<string> = new Subject<string>();
 
 	public currentShape: string;
 	public ShapeEvent: Subject<string> = new Subject<string>();
 
-	updateMouseCoords(pos: number[]): void {
-		this.mouseCoordsEvent.next(pos);
-		this.mouseCoords = pos;
+	async updateMouseCoords(pos: number[]): Promise<void> {
+		new Promise(() => {
+			this.mouseCoordsEvent.next(pos);
+			this.mouseCoords = pos;
+		});
+	}
+
+	async updateZoomLevel(level: number): Promise<void> {
+		new Promise(() => {
+			this.zoomLevelEvent.next(level);
+			this.zoomLevel = level;
+		});
 	}
 
 	changeTool(tool: string): void {
@@ -50,9 +65,14 @@ export class ToolInputService {
 		this.currentShape = shape;
 	}
 
-	changeStrokeSize(size: number): void {
-		this.strokeSizeEvent.next(size);
+	updateStrokeWidth(size: number): void {
 		this.strokeSize = size;
+		this.strokeSizeEvent.next(size);
+	}
+
+	updateStrokeDash(dashArray: string): void {
+		this.strokeDashArray = dashArray;
+		this.strokeDashArrayEvent.next(dashArray);
 	}
 
 	changeStrokeColor(color: string): void {

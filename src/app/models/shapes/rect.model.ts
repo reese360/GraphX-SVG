@@ -52,10 +52,14 @@ export class RectModel extends ShapeModel implements IShape {
 		this.offsetY = null;
 	}
 
-	toggleSelect(): void {
-		this.selected = !this.selected;
-		if (this.selected) this.renderer.addClass(this.element, 'selectedObject');
-		else this.renderer.removeClass(this.element, 'selectedObject');
+	select(): void {
+		this.selected = true;
+		this.renderer.addClass(this.element, 'selectedObject');
+	}
+
+	deselect(): void {
+		this.selected = false;
+		this.renderer.removeClass(this.element, 'selectedObject');
 	}
 
 	async updateProperties(): Promise<void> {
@@ -88,5 +92,9 @@ export class RectModel extends ShapeModel implements IShape {
 			style += `${key}: ${this.style[key]}; `;
 		});
 		return style;
-	}
+    }
+
+    get elementString(): string {
+        return `<${this.shape} x="${this.x}" y="${this.y} width="${this.width}" height="${this.height}"/>`
+    }
 }

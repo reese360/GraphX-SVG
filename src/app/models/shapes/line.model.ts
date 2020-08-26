@@ -13,8 +13,9 @@ export class LineModel extends ShapeModel implements IShape {
     offsetX: number;
     offsetY: number;
 	origin: number[];
-	dragging = false;
-
+    dragging = false;
+    selected: boolean;
+    
 	constructor(renderer: Renderer2, public style: any) {
 		super();
 		this.renderer = renderer;
@@ -44,9 +45,15 @@ export class LineModel extends ShapeModel implements IShape {
 		this.offsetY = null;
     }
 
-    toggleSelect(): void {
+    select(): void {
+		this.selected = true;
+		this.renderer.addClass(this.element, 'selectedObject');
+	}
 
-    }
+	deselect(): void {
+		this.selected = false;
+		this.renderer.removeClass(this.element, 'selectedObject');
+	}
 
     async updateProperties(): Promise<void>{}
 
@@ -68,5 +75,9 @@ export class LineModel extends ShapeModel implements IShape {
 			style += `${key}: ${this.style[key]}; `;
 		});
 		return style;
-	}
+    }
+
+    get elementString(): string {
+        return `<${this.shape} />`
+    }
 }

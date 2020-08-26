@@ -3,19 +3,26 @@
   width: 100vw;
   overflow: hidden;
   display: grid;
-  grid-template-areas: "topbar topbar" "canvas sidebar";
+  grid-template-areas: 
+    "top-menu top-menu"
+    "canvas side-menu"
+    "code-drawer code-drawer";
   grid-template-columns: calc(100vw - 37px) 37px;
-  grid-template-rows: 32px calc(100vh - 32px);
+  grid-template-rows: 32px calc(100vh - 32px - 32px) 32px;
 }
 
-#tools {
-    grid-area: topbar;
+#top-menu {
+    grid-area: top-menu;
 }
 
 #canvas {
     grid-area: canvas;
 }
 
-#sidebar{
-    grid-area: sidebar;
+#side-menu{
+    grid-area: side-menu;
+}
+
+#code-drawer {
+    grid-area: code-drawer;
 }

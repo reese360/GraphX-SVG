@@ -1,8 +1,9 @@
-<div id="sidebar">
-	<div class="icon test" title="Toggle Grid">
+<app-slider #slider></app-slider>
+<div id="sideMenu">
+	<div class="icon" title="Toggle Grid">
 		<i class="fas fa-border-all"></i>
 	</div>
-	<div class="icon" title="Properties">
+	<div class="icon" title="Properties" (click)="toggleItemDisplay('properties')">
 		<i class="fas fa-cog"></i>
 	</div>
 	<div class="icon" title="Zoom">
@@ -28,9 +29,6 @@
 	</div>
 	<div class="icon" title="Settings">
 		<i class="fas fa-sliders-h"></i>
-	</div>
-	<div class="icon" title="Source Code">
-		<i class="fas fa-code"></i>
 	</div>
 	<div class="icon" title="History">
 		<i class="fas fa-history"></i>
