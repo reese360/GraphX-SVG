@@ -3,24 +3,24 @@
   width: 100vw;
   overflow: hidden;
   display: grid;
-  grid-template-areas: 
-    "top-menu top-menu"
-    "canvas side-menu"
+  grid-template-areas:
+    "simple-menu simple-menu"
+    "graphx-canvas advanced-menu"
     "code-drawer code-drawer";
   grid-template-columns: calc(100vw - 37px) 37px;
   grid-template-rows: 32px calc(100vh - 32px - 32px) 32px;
 }
 
-#top-menu {
-    grid-area: top-menu;
+#simple-menu {
+    grid-area: simple-menu;
 }
 
-#canvas {
-    grid-area: canvas;
+#graphx-canvas {
+    grid-area: graphx-canvas;
 }
 
-#side-menu{
-    grid-area: side-menu;
+#advanced-menu{
+    grid-area: advanced-menu;
 }
 
 #code-drawer {

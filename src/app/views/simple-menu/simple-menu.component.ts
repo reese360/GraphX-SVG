@@ -1,12 +1,12 @@
-import { Component, Renderer2, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { ToolInputService } from '../../../services/toolInput.service';
+import { Component, Renderer2, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
+import { ToolInputService } from 'src/app/services/toolInput.service';
 
 @Component({
-	selector: 'app-top-menu',
-	templateUrl: './topMenu.component.html',
-	styleUrls: ['./topMenu.component.css'],
+  selector: 'app-simple-menu',
+  templateUrl: './simple-menu.component.html',
+  styleUrls: ['./simple-menu.component.css']
 })
-export class TopMenuComponent implements AfterViewInit {
+export class SimpleMenuComponent implements AfterViewInit {
 	@ViewChild('scp', { read: ElementRef }) strokeColorPicker: ElementRef;
 	@ViewChild('fcp', { read: ElementRef }) fillColorPicker: ElementRef;
 	@ViewChild('scpDisplay', { read: ElementRef }) strokeColorDisplay: ElementRef;

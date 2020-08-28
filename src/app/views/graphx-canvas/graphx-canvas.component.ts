@@ -1,24 +1,21 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, HostListener, Renderer2 } from '@angular/core';
-
-import { LineModel } from '../../models/shapes/line.model';
-import { RectModel } from '../../models/shapes/rect.model';
-import { EllipseModel } from '../../models/shapes/ellipse.model';
-import { PolylineModel } from '../../models/shapes/polyline.model';
-import { PolygonModel } from '../../models/shapes/polygon.model';
-
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { IShapeHashMap } from 'src/app/interfaces/IShapeHashMap.interface';
-
 import { ToolInputService } from 'src/app/services/toolInput.service';
 import { SelectorService } from 'src/app/services/selector.service';
-import { ObjectService } from '../../services/object.service';
+import { ObjectService } from 'src/app/services/object.service';
+import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
+import { RectModel } from 'src/app/models/shapes/rect.model';
+import { PolygonModel } from 'src/app/models/shapes/polygon.model';
+import { LineModel } from 'src/app/models/shapes/line.model';
+import { PolylineModel } from 'src/app/models/shapes/polyline.model';
 
 @Component({
-	selector: 'app-canvas',
-	templateUrl: './canvas.component.html',
-	styleUrls: ['./canvas.component.css'],
+  selector: 'app-graphx-canvas',
+  templateUrl: './graphx-canvas.component.html',
+  styleUrls: ['./graphx-canvas.component.css']
 })
-export class CanvasComponent implements AfterViewInit {
+export class GraphxCanvasComponent  implements AfterViewInit {
 	@ViewChild('svg') svgElementRef: ElementRef; // reference to svg element in dom
 	@ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
 	@ViewChild('svgCanvas') svgCanvasElementRef: ElementRef;
@@ -172,8 +169,8 @@ export class CanvasComponent implements AfterViewInit {
 							break;
 						}
 					}
-					this.currentObject.start = [e.clientX - this.offsetX, e.clientY - this.offsetY];
-					this.currentObject.end = [e.clientX - this.offsetX, e.clientY - this.offsetY];
+					this.currentObject.start = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
+					this.currentObject.end = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
 					this.renderer.appendChild(this.svgElementRef.nativeElement, this.currentObject.element);
 					break;
 				}
@@ -217,7 +214,7 @@ export class CanvasComponent implements AfterViewInit {
 			}
 			case this.toolService.toolsOptions.draw: {
 				if (this.currentObject) {
-					this.currentObject.end = [e.clientX - this.offsetX, e.clientY - this.offsetY];
+					this.currentObject.end = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
 				}
 				break;
 			}

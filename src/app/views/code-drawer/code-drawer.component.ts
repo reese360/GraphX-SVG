@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
-import { ObjectService } from 'src/app/services/object.service';
+import { ObjectService } from '../../services/object.service';
 
 @Component({
 	selector: 'app-code-drawer',
