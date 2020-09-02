@@ -11,10 +11,11 @@ import { CodeDrawerComponent } from './views/code-drawer/code-drawer.component';
 import { AdvancedMenuComponent } from './views/advanced-menu/advanced-menu.component';
 import { SimpleMenuComponent } from './views/simple-menu/simple-menu.component';
 import { GraphxCanvasComponent } from './views/graphx-canvas/graphx-canvas.component';
+import { ToggleButtonComponent } from './views/advanced-menu/components/slider/form-items/toggle-button/toggle-button.component';
 
 
 @NgModule({
-	declarations: [AppComponent, DropDownComponent, SliderComponent, CodeDrawerComponent, AdvancedMenuComponent, SimpleMenuComponent, GraphxCanvasComponent],
+	declarations: [AppComponent, DropDownComponent, SliderComponent, CodeDrawerComponent, AdvancedMenuComponent, SimpleMenuComponent, GraphxCanvasComponent, ToggleButtonComponent],
 	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule],
 	providers: [],
 	bootstrap: [AppComponent],

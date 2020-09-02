@@ -1,7 +1,7 @@
 @import '../../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
 .slider {
-    height: calc(100vh - 32px);
+    height: 100vh;
     width: 0;
     position: fixed;
     z-index: 1;
@@ -16,7 +16,6 @@
   }
 
   .slider-content{
-    color: gray;
     padding-top: 20px;
     padding-left: 20px;
     overflow: hidden;
@@ -25,10 +24,10 @@
 
   .slider-title{
       font-size: 30px;
+        color: gray;
   }
 
   .displayOpen {
-    width: 400px;
+    width: 300px;
     visibility: visible;
-
   }

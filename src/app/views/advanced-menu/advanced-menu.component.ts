@@ -8,11 +8,13 @@ import { SliderComponent } from './components/slider/slider.component';
 })
 export class AdvancedMenuComponent implements OnInit {
 	@ViewChild('slider') slider: SliderComponent;
+	currentView: string;
+
 	constructor() {}
 
 	ngOnInit(): void {}
 
-	toggleItemDisplay(item: string): void {
-		this.slider.toggleOpen();
+	toggleItemDisplay(view: string): void {
+		this.slider.toggleSlider(view);
 	}
 }
