@@ -24,7 +24,18 @@ input[type=number]::after {
 .ni-container {
     border: 1px solid var(--primary-border);
     display: grid;
-    grid-template-columns: auto 25px 25px
+}
+
+.ni-container.show-buttons {
+    grid-template-columns: auto 25px 25px;
+}
+
+.ni-container.hide-buttons {
+    grid-template-columns: auto;
+}
+
+.hide-buttons > .ni-button {
+    display: none;
 }
 
 .ni-container input {

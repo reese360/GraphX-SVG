@@ -1,13 +1,11 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    Renderer2,
-    Output,
-    EventEmitter,
-    ViewChild,
-    ElementRef
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+// component input data DTO
+export interface IOptionSelectorInput {
+    label: string,
+        options: string[],
+        default: number
+}
 
 @Component({
     selector: 'app-option-selector',
@@ -15,23 +13,16 @@ import {
     styleUrls: ['./option-selector.component.css'],
 })
 export class OptionSelectorComponent implements OnInit {
-    @Input() options: string[];
-    @Input() default: number;
-    @Input() label: string = '';
-    @Output() optionEvent = new EventEmitter();
-
-    selIdx: number = 0;
-
-    constructor(private renderer: Renderer2) {}
+    @Input() data: IOptionSelectorInput;
+    @Output() updateEvent = new EventEmitter();
+    public selectedIdx: number = 0; // currently selected options index
 
     ngOnInit(): void {
-        this.selIdx = this.default;
+        this.selectedIdx = this.data.default;
     }
 
     toggleOptions(idx: number): void {
-        this.selIdx = idx;
-        this.optionEvent.emit(idx);
+        this.selectedIdx = idx;
+        this.updateEvent.emit(idx);
     }
-
-
 }

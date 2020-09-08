@@ -9,7 +9,11 @@
     min-width: 280px;
     padding-top: 40px;
     display: grid;
-    grid-template-areas: "showGrid showGrid" "snapGrid snapGrid" "gridWidth gridHeight";
+    grid-template-areas:    "showGrid showGrid"
+                            "snapGrid snapGrid"
+                            "gridWidth gridHeight";
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     justify-content: center;
 }

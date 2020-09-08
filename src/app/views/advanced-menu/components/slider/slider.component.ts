@@ -6,7 +6,7 @@ import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input, AfterViewIn
     styleUrls: ['./slider.component.css'],
 })
 export class SliderComponent implements AfterViewInit {
-    // TODO: reset variables
+    // TODO: reset these to not have slider open at launch
     currentView: string = "grid"; // used to determine which menu item to display on slider /
     sliderOpen: boolean = false; // flag if slider is open
     @ViewChild('slider') sliderElRef: ElementRef;
