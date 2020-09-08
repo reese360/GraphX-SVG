@@ -1,3 +1,4 @@
+@import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
 
 @font-face {
     font-family: Ubuntu;
@@ -7,6 +8,7 @@
 :root {
     --highlight:  #00aad4;
     --default-background-color: #e9e9e9;
+    --border-color: gray;
     --font-ubuntu: Ubuntu;
 }
 
@@ -17,10 +19,9 @@ body {
     font-family: Ubuntu;
     overflow: hidden;
     
-    background-color: #eee;
+    /* background-color: #eee; */
     background-image: linear-gradient(45deg, whitesmoke 25%, transparent 25%, transparent 75%, whitesmoke 75%, whitesmoke),
     linear-gradient(45deg, whitesmoke 25%, transparent 25%, transparent 75%, whitesmoke 75%, whitesmoke);
     background-size: 20px 20px;
     background-position: 0 0, 10px 10px;
-    
 }

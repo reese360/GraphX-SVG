@@ -1,35 +1,38 @@
-import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } from '@angular/core';
 
 @Component({
-	selector: 'app-slider',
-	templateUrl: './slider.component.html',
-	styleUrls: ['./slider.component.css'],
+    selector: 'app-slider',
+    templateUrl: './slider.component.html',
+    styleUrls: ['./slider.component.css'],
 })
-export class SliderComponent implements OnInit {
-	currentView: string;
-	sliderOpen: boolean = false;
+export class SliderComponent implements AfterViewInit {
+    // TODO: reset variables
+    currentView: string = "grid"; // used to determine which menu item to display on slider /
+    sliderOpen: boolean = false; // flag if slider is open
+    @ViewChild('slider') sliderElRef: ElementRef;
 
-	@ViewChild('slider') sliderElRef: ElementRef;
+    constructor(private renderer: Renderer2) {}
 
-	constructor(private renderer: Renderer2) {}
+    ngAfterViewInit(): void {
+        this.toggleSlider(this.currentView);
+    }
 
-	ngOnInit(): void {}
-
-	toggleSlider(view: string): void {
-		if (!this.sliderOpen) {
-			// slider is NOT open
-			this.currentView = view;
-			this.sliderOpen = true;
-			this.renderer.addClass(this.sliderElRef.nativeElement, 'displayOpen');
-		} else {
-			// slider is open
-			if (this.currentView === view) {
-				// close slider
-				this.sliderOpen = false;
-				this.renderer.removeClass(this.sliderElRef.nativeElement, 'displayOpen');
-			} else {
-				this.currentView = view;
-			}
-		}
-	}
+    // opens/ closes slider and sets view
+    toggleSlider(view: string): void {
+        if (!this.sliderOpen) {
+            // slider is NOT open
+            this.currentView = view;
+            this.sliderOpen = true;
+            this.renderer.addClass(this.sliderElRef.nativeElement, 'displayOpen');
+        } else {
+            // slider is open
+            if (this.currentView === view) {
+                // close slider
+                this.sliderOpen = false;
+                this.renderer.removeClass(this.sliderElRef.nativeElement, 'displayOpen');
+            } else {
+                this.currentView = view;
+            }
+        }
+    }
 }

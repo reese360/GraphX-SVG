@@ -1,0 +1,8 @@
+<div class="os-container" [style.--options-count]="options.length">
+    <div class="os-label">{{ label }}</div>
+    <div class="os-options">
+        <div *ngFor="let option of options; index as i">
+            <div (click)="toggleOptions(i)" [ngClass]="selIdx == i ? 'os-option selected' : 'os-option'">{{option}}</div>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,3 @@
-@import '../../../../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
-
 .slider {
     height: 100vh;
     width: 0;
@@ -13,21 +11,23 @@
     border-left: 1px solid gray;
     visibility: hidden;
     user-select: none;
-  }
+}
 
-  .slider-content{
-    padding-top: 20px;
-    padding-left: 20px;
+.slider-content {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     overflow: hidden;
     white-space: nowrap;
-  }
+}
 
-  .slider-title{
-      font-size: 30px;
-        color: gray;
-  }
+/* remove this after moving menu items */
+.slider-title {
+    font-size: 30px;
+    color: gray;
+}
 
-  .displayOpen {
+.displayOpen {
     width: 300px;
     visibility: visible;
-  }
+}

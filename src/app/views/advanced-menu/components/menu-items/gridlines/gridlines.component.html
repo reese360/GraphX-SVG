@@ -1,0 +1,11 @@
+<div class="mi-container">
+    <div class="mi-title">
+        <i class="fas fa-border-all"></i> Grid Display
+    </div>
+    <div class="mi-content">
+        <app-option-selector [label]="gridDisplayLabel" [options]="gridDisplayOptions" [default]="gridDisplayDefault" (optionEvent)="toggleGridLines($event)"></app-option-selector>
+        <app-option-selector [label]="snapGridLabel" [options]="snapGridOptions" [default]="snapGridDefault" (optionEvent)="toggleSnapGrid($event)"></app-option-selector>
+        <app-number-input [label]="gridWidthLabel" [minimum]="gridWidthMin" [maximum]="gridWidthMax" [step]="gridWidthStep" [startingValue]="gridWidthStartVal"></app-number-input>
+        <app-number-input [label]="gridHeightLabel" [minimum]="gridHeightMin" [maximum]="gridHeightMax" [step]="gridHeightStep" [startingValue]="gridHeightStartVal"></app-number-input>
+    </div>
+</div>

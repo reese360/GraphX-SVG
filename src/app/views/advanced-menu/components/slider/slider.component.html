@@ -1,11 +1,7 @@
 <div #slider class="slider">
 	<div class="slider-content" [ngSwitch]="currentView">
 		<ng-container *ngSwitchCase="'grid'">
-			<div class="slider-title">
-				<i class="fas fa-border-all"></i> Gridlines
-            </div>
-        <app-toggle-button></app-toggle-button>
-
+            <app-gridlines></app-gridlines>
 		</ng-container>
 		<ng-container *ngSwitchCase="'properties'">
 			<div class="slider-title">
