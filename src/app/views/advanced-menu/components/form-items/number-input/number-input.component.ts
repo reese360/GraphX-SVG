@@ -1,5 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'app-number-input',
@@ -7,28 +6,36 @@ import { FormControl } from '@angular/forms';
     styleUrls: ['./number-input.component.css']
 })
 export class NumberInputComponent implements OnInit {
-    // @ViewChild('inputField') inputField: ElementRef;
-    inputField = new FormControl('');
-
     @Input() label: string;
     @Input() minimum: number;
     @Input() maximum: number;
     @Input() step: number;
-    @Input() startingValue: number;
+    @Input() value: number;
 
-    constructor() {}
+    @Output() valueUpdate = new EventEmitter(); // output value on change
 
     ngOnInit(): void {}
 
-    @HostListener('inputField') onChange(): void {
-        console.log(true);
+    updateInputValue(val: number): void {
+        if (val > this.maximum) this.value = this.maximum;
+        else if (val < this.minimum) this.value = this.minimum;
+        else this.value = Number(val);
+        this.valueUpdate.emit(this.value);
     }
 
-    incrementInput(val: number): void {
-        const value = Number(val) + 1;
+    // increments current value by step
+    incrementInputValue(): void {
+        if (this.value < this.maximum) {
+            this.value = Math.round(((this.value += this.step) / this.step) * this.step);
+            this.valueUpdate.emit(this.value);
+        }
     }
 
-    decrementInput(val: number): void {
-
+    // decrements current value by step
+    decrementInputValue(): void {
+        if (this.value > this.minimum) {
+            this.value = Math.round(((this.value -= this.step) / this.step) * this.step);
+            this.valueUpdate.emit(this.value);
+        }
     }
 }

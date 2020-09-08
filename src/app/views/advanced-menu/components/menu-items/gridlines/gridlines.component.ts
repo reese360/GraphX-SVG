@@ -20,16 +20,16 @@ export class GridlinesMenuItemComponent implements OnInit {
     snapGridDefault: number = 1;
 
     gridWidthLabel: string = "Grid Width";
-    gridWidthMin: number = 0;
-    gridWidthMax: number = 10;
-    gridWidthStep: number = 1;
-    gridWidthStartVal: number = 5;
+    gridWidthMin: number = 5;
+    gridWidthMax: number = 100;
+    gridWidthStep: number = 5;
+    gridWidthStartVal: number = 25;
 
     gridHeightLabel: string = "Grid Height";
-    gridHeightMin: number = 0;
-    gridHeightMax: number = 10;
-    gridHeightStep: number = 1;
-    gridHeightStartVal: number = 5;
+    gridHeightMin: number = 5;
+    gridHeightMax: number = 100;
+    gridHeightStep: number = 5;
+    gridHeightStartVal: number = 25;
 
     constructor() {}
 
@@ -40,6 +40,13 @@ export class GridlinesMenuItemComponent implements OnInit {
     }
 
     toggleSnapGrid(val): void {
+        console.log(val);
+    }
+
+    updateGridWidth(val): void {
+        console.log(val);
+    }
+    updateGridHeight(val): void {
         console.log(val);
     }
 }

@@ -3,9 +3,9 @@
         <i class="fas fa-border-all"></i> Grid Display
     </div>
     <div class="mi-content">
-        <app-option-selector [label]="gridDisplayLabel" [options]="gridDisplayOptions" [default]="gridDisplayDefault" (optionEvent)="toggleGridLines($event)"></app-option-selector>
-        <app-option-selector [label]="snapGridLabel" [options]="snapGridOptions" [default]="snapGridDefault" (optionEvent)="toggleSnapGrid($event)"></app-option-selector>
-        <app-number-input [label]="gridWidthLabel" [minimum]="gridWidthMin" [maximum]="gridWidthMax" [step]="gridWidthStep" [startingValue]="gridWidthStartVal"></app-number-input>
-        <app-number-input [label]="gridHeightLabel" [minimum]="gridHeightMin" [maximum]="gridHeightMax" [step]="gridHeightStep" [startingValue]="gridHeightStartVal"></app-number-input>
+        <app-option-selector id="showGrid" [label]="gridDisplayLabel" [options]="gridDisplayOptions" [default]="gridDisplayDefault" (optionEvent)="toggleGridLines($event)"></app-option-selector>
+        <app-option-selector id="snapGrid" [label]="snapGridLabel" [options]="snapGridOptions" [default]="snapGridDefault" (optionEvent)="toggleSnapGrid($event)"></app-option-selector>
+        <app-number-input id="gridWidth" [label]="gridWidthLabel" [minimum]="gridWidthMin" [maximum]="gridWidthMax" [step]="gridWidthStep" [value]="gridWidthStartVal" (valueUpdate)="updateGridWidth($event)"></app-number-input>
+        <app-number-input id="gridHeight" [label]="gridHeightLabel" [minimum]="gridHeightMin" [maximum]="gridHeightMax" [step]="gridHeightStep" [value]="gridHeightStartVal" (valueUpdate)="updateGridHeight($event)"></app-number-input>
     </div>
 </div>

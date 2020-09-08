@@ -1,10 +1,6 @@
-<div class="ni-container">
     <div class="ni-label">{{ label }}</div>
-</div>
-<div class="quantity">
-    <input type="number" [min]="minimum" [max]="maximum" [step]="step" [value]="startingValue">
-    <div class="quantity-nav">
-        <div class="quantity-button quantity-up" (click)="incrementInput(inputField.value)">+</div>
-        <div class="quantity-button quantity-down" (click)="decrementInput(inputField.value)">-</div>
+    <div class="ni-container">
+        <input type="number" [min]="minimum" [max]="maximum" [step]="step" [value]="value" (blur)="updateInputValue($event.target.value)" (keyup.enter)="updateInputValue($event.target.value)">
+        <div class="ni-button" (click)="incrementInputValue()"><i class="fas fa-angle-up"></i></div>
+        <div class="ni-button" (click)="decrementInputValue()"><i class="fas fa-angle-down"></i></div>
     </div>
-</div>

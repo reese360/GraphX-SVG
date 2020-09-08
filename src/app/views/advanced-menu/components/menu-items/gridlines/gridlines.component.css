@@ -1,6 +1,4 @@
-.mi-container {
-
-}
+.mi-container {}
 
 .mi-title {
     font-size: 30px;
@@ -8,7 +6,26 @@
 }
 
 .mi-content {
+    min-width: 280px;
     padding-top: 40px;
     display: grid;
+    grid-template-areas: "showGrid showGrid" "snapGrid snapGrid" "gridWidth gridHeight";
     grid-gap: 10px;
+    justify-content: center;
+}
+
+#showGrid {
+    grid-area: showGrid;
+}
+
+#snapGrid {
+    grid-area: snapGrid;
+}
+
+#gridWidth {
+    grid-area: gridWidth;
+}
+
+#gridHeight {
+    grid-area: gridHeight;
 }
