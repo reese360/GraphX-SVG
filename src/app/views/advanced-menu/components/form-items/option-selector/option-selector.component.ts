@@ -30,7 +30,7 @@ export class OptionSelectorComponent implements OnInit {
 
     toggleOptions(idx: number): void {
         this.selIdx = idx;
-        this.optionEvent.emit(this.options[idx]);
+        this.optionEvent.emit(idx);
     }
 
 

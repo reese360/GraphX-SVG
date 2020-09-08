@@ -4,6 +4,7 @@ import {
     ViewChild,
     ElementRef
 } from '@angular/core';
+import { OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
 
 @Component({
     selector: 'app-gridlines',
@@ -31,16 +32,22 @@ export class GridlinesMenuItemComponent implements OnInit {
     gridHeightStep: number = 5;
     gridHeightStartVal: number = 25;
 
-    constructor() {}
+    @ViewChild('showGrid') showGrid: OptionSelectorComponent;
+    @ViewChild('snapGrid') snapGrid: OptionSelectorComponent;
 
     ngOnInit(): void {}
 
     toggleGridLines(val): void {
-        console.log(val);
+        // disable grid snapping if grid display is off
+        if (val === 1 && this.snapGrid.selIdx !== 1) {
+            this.snapGrid.toggleOptions(1);
+        }
     }
 
     toggleSnapGrid(val): void {
-        console.log(val);
+        // grid display must be enabled to snap to grid -> toggle grid display
+        if (val === 0 && this.showGrid.selIdx !== 0)
+            this.showGrid.toggleOptions(0);
     }
 
     updateGridWidth(val): void {
