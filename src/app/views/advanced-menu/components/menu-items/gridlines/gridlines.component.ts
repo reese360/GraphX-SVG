@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IOptionSelectorInput, OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
 import { INumberPickerInput } from '../../form-items/number-input/number-input.component';
+import { ToolInputService } from 'src/app/services/toolInput.service';
 
 @Component({
     selector: 'app-gridlines',
@@ -26,20 +27,22 @@ export class GridlinesMenuItemComponent implements OnInit {
 
     gridWidthData: INumberPickerInput = {
         label: 'Grid Width',
-        minimum: 5,
-        maximum: 100,
-        step: 5,
-        value: 50
+        minimum: 10,
+        maximum: 500,
+        step: 10,
+        value: 100
     }
 
     gridHeightData: INumberPickerInput = {
         label: 'Grid Width',
-        minimum: 5,
-        maximum: 100,
-        step: 5,
-        value: 50
+        minimum: 10,
+        maximum: 500,
+        step: 10,
+        value: 100
     }
     //#endregion
+
+    constructor(private toolService: ToolInputService) {}
 
     ngOnInit(): void {}
 
@@ -49,6 +52,7 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (val === 1 && this.snapGrid.selectedIdx !== 1) {
             this.snapGrid.toggleOptions(1);
         }
+        this.toolService.toggleGridDisplay();
     }
 
     // enable/ disable snapping to grid
@@ -59,9 +63,9 @@ export class GridlinesMenuItemComponent implements OnInit {
     }
 
     updateGridWidth(val): void {
-        console.log(val);
+        this.toolService.updateGridWidth(val);
     }
     updateGridHeight(val): void {
-        console.log(val);
+        this.toolService.updateGridHeight(val);
     }
 }

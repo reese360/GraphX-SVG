@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
-import { IShapeHashMap } from 'src/app/interfaces/IShapeHashMap.interface';
 import { ToolInputService } from 'src/app/services/toolInput.service';
 import { SelectorService } from 'src/app/services/selector.service';
 import { ObjectService } from 'src/app/services/object.service';
@@ -9,7 +8,6 @@ import { RectModel } from 'src/app/models/shapes/rect.model';
 import { PolygonModel } from 'src/app/models/shapes/polygon.model';
 import { LineModel } from 'src/app/models/shapes/line.model';
 import { PolylineModel } from 'src/app/models/shapes/polyline.model';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
     selector: 'app-graphx-canvas',
@@ -19,10 +17,15 @@ import { ThrowStmt } from '@angular/compiler';
 export class GraphxCanvasComponent implements AfterViewInit {
     @ViewChild('svg') svgElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
-    @ViewChild('svgCanvas') svgCanvasElementRef: ElementRef;
-    width: number = 1000; // width of svg canvas
-    height: number = 800; // height of svg canvas
 
+    @ViewChild('gridElements') gridElementRef: ElementRef;
+    @ViewChild('canvasElements') canvasElementRef: ElementRef;
+
+    // canvas 'display' dimensions
+    canvasWidth: number = 1000;
+    canvasHeight: number = 800;
+
+    // svg viewBox dimensions
     vbX: number = -10;
     vbY: number = -10;
     vbWidth: number; // viewBox width
@@ -30,28 +33,49 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     offsetX: number; // offset position x of svg element
     offsetY: number; // offset position y of svg element
+
     currentObject: IShape; // current shape being drawn
-    // shapes: IShapeHashMap = {}; // TODO: remove this for object service's map
 
-    // canvasOffsetX: number = 0;
-    // canvasOffsetY: number = 0;
-
+    // panning variables
     panning: boolean = false;
     panOffsetX: number;
     panOffsetY: number;
 
+    // zoom variables
     zoomIdx: number = 3; // current zoom level (default at 100%)
     zoomLevels: number[] = [0.25, 0.5, 0.75, 1, 1.25, 1.5, 2];
     zoomHeight: number;
     zoomWidth: number;
 
-    gridLines: HTMLElement[] = []; // container to hold grid line elements
+    // grid variables
+    gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
+    gridDisplay: boolean = false;
+    gridWidth: number = 100;
+    gridHeight: number = 100;
 
     constructor(
         private renderer: Renderer2,
         private toolService: ToolInputService,
         private selectorService: SelectorService,
-        private objectService: ObjectService) {}
+        private objectService: ObjectService) {
+
+
+        this.toolService.showGridEvent.subscribe(() => {
+            this.gridDisplay = !this.gridDisplay;
+            if (this.gridDisplay) this.showGrid();
+            else this.hideGrid();
+        })
+
+        this.toolService.gridWidthEvent.subscribe((width) => {
+            this.gridWidth = width;
+            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+        });
+
+        this.toolService.gridHeightEvent.subscribe((height) => {
+            this.gridHeight = height;
+            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+        });
+    }
 
     ngAfterViewInit(): void {
         window.dispatchEvent(new Event('resize')); // get initial sizing of svg window
@@ -61,61 +85,68 @@ export class GraphxCanvasComponent implements AfterViewInit {
         const testSvg1 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
         testSvg1.start = [200, 200];
         testSvg1.end = [300, 300];
-        this.renderer.appendChild(this.svgElementRef.nativeElement, testSvg1.element);
+        this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
         this.objectService.add(testSvg1);
 
         const testSvg2 = new RectModel(this.renderer, { stroke: 'black', fill: 'lightgreen', 'stroke-width': 2 });
         testSvg2.start = [400, 100];
         testSvg2.end = [600, 300];
-        this.renderer.appendChild(this.svgElementRef.nativeElement, testSvg2.element);
+        this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg2.element);
         this.objectService.add(testSvg2);
 
         const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
         testSvg3.points = [800, 100, 900, 300];
         testSvg3.end = [700, 300];
-        this.renderer.appendChild(this.svgElementRef.nativeElement, testSvg3.element);
+        this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg3.element);
         this.objectService.add(testSvg3);
-
-        this.showGrid();
     }
 
     async showGrid(): Promise < void > {
-        const gridWidth = 100;
-        const gridHeight = 100;
-        return new Promise(() => {
+        return new Promise((res) => {
             // create template for line with styling
             const lineTemplate = this.renderer.createElement('line', 'svg');
-            this.renderer.setAttribute(lineTemplate, 'stroke', 'green');
+            this.renderer.setAttribute(lineTemplate, 'stroke', 'var(--highlight)');
             this.renderer.setAttribute(lineTemplate, 'stroke-width', '1');
             this.renderer.setAttribute(lineTemplate, 'opacity', '0.5');
             this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
 
             // horizontal gridlines
-            let nextY: number = Math.round(this.vbY / gridHeight) * gridHeight;
-            for (let i = 0; i < this.vbHeight / gridHeight; i++) {
+            let nextY: number = Math.round(this.vbY / this.gridHeight) * this.gridHeight;
+            for (let i = 0; i < this.vbHeight / this.gridHeight; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${this.vbX}`);
                 this.renderer.setAttribute(line, 'y1', `${nextY}`);
                 this.renderer.setAttribute(line, 'x2', `${this.vbWidth + this.vbX}`);
                 this.renderer.setAttribute(line, 'y2', `${nextY}`);
-                this.renderer.appendChild(this.svgElementRef.nativeElement, line);
+                this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
-                nextY += gridHeight;
+                nextY += this.gridHeight;
             }
 
             // vertical gridlines
-            let nextX: number = Math.round(this.vbX / gridWidth) * gridWidth;
-            for (let i = 0; i < this.vbWidth / gridWidth; i++) {
+            let nextX: number = Math.round(this.vbX / this.gridWidth) * this.gridWidth;
+            for (let i = 0; i < this.vbWidth / this.gridWidth; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${nextX}`);
                 this.renderer.setAttribute(line, 'y1', `${this.vbY}`);
                 this.renderer.setAttribute(line, 'x2', `${nextX}`);
                 this.renderer.setAttribute(line, 'y2', `${this.vbHeight + this.vbY}`);
-                this.renderer.appendChild(this.svgElementRef.nativeElement, line);
+                this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
-                nextX += gridWidth;
+                nextX += this.gridWidth;
             }
+            res();
         });
+    }
+
+    async hideGrid(): Promise < void > {
+        return new Promise((res) => {
+            if (this.gridLines.length) {
+                this.gridLines.forEach(line => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
+                this.gridLines = [];
+            }
+            res();
+        })
     }
 
     updateSvgViewBox(defViewBox: string): void {
@@ -152,6 +183,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
         // get offset position of svg
         this.offsetX = this.svgElementRef.nativeElement.getBoundingClientRect().x;
         this.offsetY = this.svgElementRef.nativeElement.getBoundingClientRect().y;
+
+        if (this.gridDisplay)
+            this.hideGrid().then((res) => this.showGrid());
     }
 
     // mouse down event handler
@@ -219,7 +253,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     }
                     this.currentObject.start = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
                     this.currentObject.end = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
-                    this.renderer.appendChild(this.svgElementRef.nativeElement, this.currentObject.element);
+                    this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
                 case this.toolService.toolsOptions.pan: {
@@ -246,8 +280,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         if (this.panning) {
             this.panOffsetX = e.clientX - this.offsetX;
             this.panOffsetY = e.clientY - this.offsetY;
-            this.gridLines.forEach(line => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
-            this.gridLines = []; // gridlines will redraw after pan
+            this.hideGrid();
         }
     }
 
@@ -303,7 +336,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.vbY -= e.clientY - this.panOffsetY - this.offsetY;
             this.panOffsetX = null;
             this.panOffsetY = null;
-            this.showGrid();
+            if (this.gridDisplay) this.showGrid();
         }
     }
 

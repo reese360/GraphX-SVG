@@ -14,7 +14,7 @@ export class SliderComponent implements AfterViewInit {
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit(): void {
-        // this.toggleSlider(this.currentView);
+        this.toggleSlider(this.currentView);
     }
 
     // opens/ closes slider and sets view
@@ -23,13 +23,13 @@ export class SliderComponent implements AfterViewInit {
             // slider is NOT open
             this.currentView = view;
             this.sliderOpen = true;
-            this.renderer.addClass(this.sliderElRef.nativeElement, 'displayOpen');
+            this.renderer.addClass(this.sliderElRef.nativeElement, 'display-open');
         } else {
             // slider is open
             if (this.currentView === view) {
                 // close slider
                 this.sliderOpen = false;
-                this.renderer.removeClass(this.sliderElRef.nativeElement, 'displayOpen');
+                this.renderer.removeClass(this.sliderElRef.nativeElement, 'display-open');
             } else {
                 this.currentView = view;
             }
