@@ -14,19 +14,19 @@ export class GridlinesMenuItemComponent implements OnInit {
     @ViewChild('gridWidth') gridWidth: NumberInputComponent;
     @ViewChild('gridHeight') gridHeight: NumberInputComponent;
 
-    isLinked: boolean = true;
+    isLinked: boolean = true; // toggle for linking/unlinking grid width and height
 
     //#region form inputs
     gridDisplayData: IOptionSelectorInput = {
         label: 'Show Grid',
-        options: ['On', 'Off'],
-        default: 1
+        options: ['Off', 'On'],
+        default: 0
     }
 
     snapGridInput: IOptionSelectorInput = {
         label: 'Snap to Grid',
-        options: ['On', 'Off'],
-        default: 1
+        options: ['Off', 'On'],
+        default: 0
     }
 
     gridWidthData: INumberPickerInput = {
@@ -51,33 +51,34 @@ export class GridlinesMenuItemComponent implements OnInit {
     ngOnInit(): void {}
 
     // enable/ disable displaying gridlines
-    toggleGridLines(val): void {
+    toggleGridLines(option): void {
         // disable grid snapping if grid display is off
-        if (val === 1 && this.snapGrid.selectedIdx !== 1) {
-            this.snapGrid.toggleOptions(1);
+        if (option === 0 && this.snapGrid.selectedIdx !== 0) {
+            this.snapGrid.toggleOptions(0);
         }
-        this.toolService.toggleGridDisplay();
+        this.toolService.toggleGridDisplay(option);
     }
 
     // enable/ disable snapping to grid
-    toggleSnapGrid(val): void {
+    toggleSnapGrid(option): void {
         // grid display must be enabled to snap to grid -> toggle grid display
-        if (val === 0 && this.showGrid.selectedIdx !== 0)
-            this.showGrid.toggleOptions(0);
+        if (option === 1 && this.showGrid.selectedIdx !== 1)
+            this.showGrid.toggleOptions(1);
+        this.toolService.toggleGridSnap(option);
     }
 
-    updateGridWidth(val): void {
+    updateGridWidth(dimWidth): void {
         if (this.isLinked) {
-            this.gridHeight.data.value = val;
+            this.gridHeight.data.value = dimWidth;
         }
-        this.toolService.updateGridDimensions([val, this.gridHeight.data.value]);
+        this.toolService.updateGridDimensions([dimWidth, this.gridHeight.data.value]);
     }
 
-    updateGridHeight(val): void {
+    updateGridHeight(dimHeight): void {
         if (this.isLinked) {
-            this.gridWidth.data.value = val;
+            this.gridWidth.data.value = dimHeight;
         }
-        this.toolService.updateGridDimensions([this.gridWidth.data.value, val]);
+        this.toolService.updateGridDimensions([this.gridWidth.data.value, dimHeight]);
 
     }
 

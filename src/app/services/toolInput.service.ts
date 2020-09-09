@@ -41,11 +41,14 @@ export class ToolInputService {
     public currentShape: string;
     public ShapeEvent: Subject < string > = new Subject < string > ();
 
-    public showGrid: boolean;
+    public snapGrid: boolean;
     public showGridEvent: Subject < boolean > = new Subject < boolean > ();
 
     public gridDimensions: number[];
     public gridDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+
+    public gridSnap: boolean;
+    public gridSnapEvent: Subject < boolean > = new Subject < boolean > ();
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -91,10 +94,17 @@ export class ToolInputService {
         this.fillColor = color;
     }
 
-    async toggleGridDisplay(): Promise < void > {
+    async toggleGridDisplay(dispOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.showGrid = !this.showGrid; // toggle grid display
-            this.showGridEvent.next(this.showGrid)
+            this.snapGrid = dispOption; // toggle grid display
+            this.showGridEvent.next(this.snapGrid)
+        })
+    }
+
+    async toggleGridSnap(snapOption: boolean): Promise < void > {
+        return new Promise(() => {
+            this.snapGrid = snapOption;
+            this.gridSnapEvent.next(this.snapGrid)
         })
     }
 

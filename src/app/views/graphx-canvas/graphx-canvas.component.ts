@@ -15,6 +15,7 @@ import { PolylineModel } from 'src/app/models/shapes/polyline.model';
     styleUrls: ['./graphx-canvas.component.css']
 })
 export class GraphxCanvasComponent implements AfterViewInit {
+    //#region variable declarations
     @ViewChild('svg') svgElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
 
@@ -50,7 +51,10 @@ export class GraphxCanvasComponent implements AfterViewInit {
     // grid variables
     gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
     gridDisplay: boolean = false;
-    gridDimensions: number[];
+    gridDimensions: number[] = [100, 100];
+    gridSnap: boolean = false;
+
+    //#endregion
 
     constructor(
         private renderer: Renderer2,
@@ -59,11 +63,17 @@ export class GraphxCanvasComponent implements AfterViewInit {
         private objectService: ObjectService) {
 
         // subscription to display grid
-        this.toolService.showGridEvent.subscribe(() => {
-            this.gridDisplay = !this.gridDisplay;
-            if (this.gridDisplay) this.showGrid();
-            else this.hideGrid();
-        })
+        this.toolService.showGridEvent.subscribe((option) => {
+            this.gridDisplay = option;
+            if (this.gridDisplay)
+                this.showGrid();
+            else
+                this.hideGrid();
+        });
+
+        this.toolService.gridSnapEvent.subscribe((option) => {
+            this.gridSnap = option;
+        });
 
         // subscription to grid dimensions
         this.toolService.gridDimensionsEvent.subscribe((dim) => {
@@ -146,6 +156,20 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     updateSvgViewBox(defViewBox: string): void {
         this.renderer.setAttribute(this.svgElementRef.nativeElement, 'viewBox', defViewBox);
+    }
+
+    // calculates user mouse position relative to screen/offset/grid-snap
+    calculateUserPositioning(clientX: number, clientY: number): number[] {
+        // mouse position relative to screen
+        let mouseX = clientX - this.offsetX + this.vbX;
+        let mouseY = clientY - this.offsetY + this.vbY;
+
+        // snap to gridlines if enabled
+        if (this.gridSnap) {
+            mouseX = Math.round(mouseX / this.gridDimensions[0]) * this.gridDimensions[0];
+            mouseY = Math.round(mouseY / this.gridDimensions[1]) * this.gridDimensions[1];
+        }
+        return [mouseX, mouseY]
     }
 
     // mousewheel listener for zoom controls
@@ -246,8 +270,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
                             break;
                         }
                     }
-                    this.currentObject.start = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
-                    this.currentObject.end = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
+                    console.log(this.gridSnap);
+                    this.currentObject.start = this.calculateUserPositioning(e.clientX, e.clientY);
+                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
@@ -292,7 +317,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             }
             case this.toolService.toolsOptions.draw: {
                 if (this.currentObject) {
-                    this.currentObject.end = [e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY];
+                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
                 }
                 break;
             }
@@ -339,7 +364,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         // console.log(e.key);
     }
 
-    // updates toolservice mouse coordinates
+    // updates toolService mouse coordinates
     // BUG: does not work correctly at zoom levels != 100%
     updateMouseCoords(pos: [number, number]): void {
         this.toolService.updateMouseCoords(pos);
