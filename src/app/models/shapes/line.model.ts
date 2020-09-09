@@ -15,7 +15,7 @@ export class LineModel extends ShapeModel implements IShape {
 	origin: number[];
     dragging = false;
     selected: boolean;
-    
+
 	constructor(renderer: Renderer2, public style: any) {
 		super();
 		this.renderer = renderer;
@@ -31,7 +31,7 @@ export class LineModel extends ShapeModel implements IShape {
 		this.renderer.setAttribute(this.element, 'y2', `${this.y2}`);
 	}
 
-	startDrag(pos): void {
+	startDrag(pos: number[]): void {
 		this.dragging = true;
 		const offsetX = pos[0] - this.origin[0];
 		const offsetY = pos[1] - this.origin[1];

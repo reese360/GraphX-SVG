@@ -29,7 +29,7 @@ export class GridlinesMenuItemComponent implements OnInit {
         minimum: 5,
         maximum: 100,
         step: 5,
-        value: 25
+        value: 50
     }
 
     gridHeightData: INumberPickerInput = {
@@ -37,7 +37,7 @@ export class GridlinesMenuItemComponent implements OnInit {
         minimum: 5,
         maximum: 100,
         step: 5,
-        value: 25
+        value: 50
     }
     //#endregion
 

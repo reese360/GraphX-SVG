@@ -14,7 +14,7 @@ export class SliderComponent implements AfterViewInit {
     constructor(private renderer: Renderer2) {}
 
     ngAfterViewInit(): void {
-        this.toggleSlider(this.currentView);
+        // this.toggleSlider(this.currentView);
     }
 
     // opens/ closes slider and sets view

@@ -9,6 +9,7 @@ import { RectModel } from 'src/app/models/shapes/rect.model';
 import { PolygonModel } from 'src/app/models/shapes/polygon.model';
 import { LineModel } from 'src/app/models/shapes/line.model';
 import { PolylineModel } from 'src/app/models/shapes/polyline.model';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
     selector: 'app-graphx-canvas',
@@ -30,7 +31,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     offsetX: number; // offset position x of svg element
     offsetY: number; // offset position y of svg element
     currentObject: IShape; // current shape being drawn
-    shapes: IShapeHashMap = {}; // TODO: remove this for object service's map
+    // shapes: IShapeHashMap = {}; // TODO: remove this for object service's map
 
     // canvasOffsetX: number = 0;
     // canvasOffsetY: number = 0;
@@ -44,7 +45,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
     zoomHeight: number;
     zoomWidth: number;
 
-    constructor(private renderer: Renderer2, private toolService: ToolInputService, private selectorService: SelectorService, private objectService: ObjectService) {}
+    gridLines: HTMLElement[] = []; // container to hold grid line elements
+
+    constructor(
+        private renderer: Renderer2,
+        private toolService: ToolInputService,
+        private selectorService: SelectorService,
+        private objectService: ObjectService) {}
 
     ngAfterViewInit(): void {
         window.dispatchEvent(new Event('resize')); // get initial sizing of svg window
@@ -72,8 +79,43 @@ export class GraphxCanvasComponent implements AfterViewInit {
         this.showGrid();
     }
 
-    showGrid(): void{
+    async showGrid(): Promise < void > {
+        const gridWidth = 100;
+        const gridHeight = 100;
+        return new Promise(() => {
+            // create template for line with styling
+            const lineTemplate = this.renderer.createElement('line', 'svg');
+            this.renderer.setAttribute(lineTemplate, 'stroke', 'green');
+            this.renderer.setAttribute(lineTemplate, 'stroke-width', '1');
+            this.renderer.setAttribute(lineTemplate, 'opacity', '0.5');
+            this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
 
+            // horizontal gridlines
+            let nextY: number = Math.round(this.vbY / gridHeight) * gridHeight;
+            for (let i = 0; i < this.vbHeight / gridHeight; i++) {
+                const line = lineTemplate.cloneNode(true);
+                this.renderer.setAttribute(line, 'x1', `${this.vbX}`);
+                this.renderer.setAttribute(line, 'y1', `${nextY}`);
+                this.renderer.setAttribute(line, 'x2', `${this.vbWidth + this.vbX}`);
+                this.renderer.setAttribute(line, 'y2', `${nextY}`);
+                this.renderer.appendChild(this.svgElementRef.nativeElement, line);
+                this.gridLines.push(line);
+                nextY += gridHeight;
+            }
+
+            // vertical gridlines
+            let nextX: number = Math.round(this.vbX / gridWidth) * gridWidth;
+            for (let i = 0; i < this.vbWidth / gridWidth; i++) {
+                const line = lineTemplate.cloneNode(true);
+                this.renderer.setAttribute(line, 'x1', `${nextX}`);
+                this.renderer.setAttribute(line, 'y1', `${this.vbY}`);
+                this.renderer.setAttribute(line, 'x2', `${nextX}`);
+                this.renderer.setAttribute(line, 'y2', `${this.vbHeight + this.vbY}`);
+                this.renderer.appendChild(this.svgElementRef.nativeElement, line);
+                this.gridLines.push(line);
+                nextX += gridWidth;
+            }
+        });
     }
 
     updateSvgViewBox(defViewBox: string): void {
@@ -196,7 +238,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         if (e.button === 2) {
             e.preventDefault(); // halt default context menu
             if (this.currentObject) {
-                this.shapes[this.currentObject.id] = this.currentObject;
+                this.objectService.add(this.currentObject);
                 this.currentObject = null;
             }
         }
@@ -204,6 +246,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
         if (this.panning) {
             this.panOffsetX = e.clientX - this.offsetX;
             this.panOffsetY = e.clientY - this.offsetY;
+            this.gridLines.forEach(line => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
+            this.gridLines = []; // gridlines will redraw after pan
         }
     }
 
@@ -246,7 +290,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     return;
                 }
                 if (this.currentObject) {
-                    this.shapes[this.currentObject.id] = this.currentObject;
+                    this.objectService.add(this.currentObject);
                     this.currentObject = null;
                 }
                 break;
@@ -259,6 +303,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.vbY -= e.clientY - this.panOffsetY - this.offsetY;
             this.panOffsetX = null;
             this.panOffsetY = null;
+            this.showGrid();
         }
     }
 
