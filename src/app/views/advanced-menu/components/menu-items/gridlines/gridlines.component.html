@@ -1,0 +1,12 @@
+<div class="mi-container">
+    <div class="mi-title">
+        <i class="fas fa-border-all"></i> Grid Display
+    </div>
+    <div class="mi-content">
+        <app-option-selector id="showGrid" [data]="gridDisplayData" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
+        <app-option-selector id="snapGrid" [data]="snapGridInput" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
+        <app-number-input id="gridWidth" [data]="gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
+        <div id="linkIcon" (click)="toggleLink()"><i [ngClass]="isLinked ? 'fas fa-link' : 'fas fa-unlink'"></i></div>
+        <app-number-input id="gridHeight" [data]="gridHeightData" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>
+    </div>
+</div>

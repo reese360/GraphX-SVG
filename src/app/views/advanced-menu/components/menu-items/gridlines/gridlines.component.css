@@ -1,0 +1,44 @@
+.mi-container {}
+
+.mi-title {
+    font-size: 30px;
+    color: gray;
+}
+
+.mi-content {
+    min-width: 280px;
+    padding-top: 40px;
+    display: grid;
+    grid-template-areas:    "showGrid showGrid showGrid"
+                            "snapGrid snapGrid snapGrid"
+                            "gridWidth linkIcon gridHeight";
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    grid-row-gap: 20px;
+    grid-column-gap: 5px;
+    justify-content: center;
+}
+
+#showGrid {
+    grid-area: showGrid;
+}
+
+#snapGrid {
+    grid-area: snapGrid;
+}
+
+#gridWidth {
+    grid-area: gridWidth;
+}
+
+#gridHeight {
+    grid-area: gridHeight;
+}
+
+#linkIcon {
+    grid-area: linkIcon;
+    justify-content: center;
+    line-height: 70px;
+    color: var(--primary-border);
+    cursor: pointer;
+}

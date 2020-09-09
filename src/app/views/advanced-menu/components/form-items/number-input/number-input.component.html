@@ -1,0 +1,12 @@
+    <div class="ni-label">{{ data.label }}</div>
+    <div class="ni-container" [ngClass]="showButtons ? 'show-buttons' : 'hide-buttons'">
+        <input type="number"
+        [min]="data.minimum"
+        [max]="data.maximum"
+        [step]="data.step"
+        [value]="data.value"
+        (blur)="updateInputValue($event.target.value)"
+        (keyup.enter)="updateInputValue($event.target.value)">
+        <div class="ni-button" (click)="incrementInputValue()"><i class="fas fa-angle-up"></i></div>
+        <div class="ni-button" (click)="decrementInputValue()"><i class="fas fa-angle-down"></i></div>
+    </div>

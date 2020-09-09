@@ -1,40 +1,40 @@
 <app-slider #slider></app-slider>
-<div id="sideMenu">
-	<div class="icon" title="Toggle Grid">
-		<i class="fas fa-border-all"></i>
+<div id="advanced-menu">
+	<div class="icon" title="Grid Display" (click)="toggleItemDisplay('grid')">
+        <i class="fas fa-border-all"></i>
 	</div>
 	<div class="icon" title="Properties" (click)="toggleItemDisplay('properties')">
 		<i class="fas fa-cog"></i>
 	</div>
-	<div class="icon" title="Zoom">
-		<i class="fas fa-binoculars"></i>
-	</div>
-	<div class="icon" title="Arrangement">
+	<div class="icon" title="Arrangement" (click)="toggleItemDisplay('arrangement')">
 		<i class="fas fa-expand-arrows-alt"></i>
 	</div>
-	<div class="icon" title="Rotate">
+	<!-- <div class="icon" title="Rotate">
 		<i class="fas fa-sync"></i>
-	</div>
-	<div class="icon" title="Geometry">
+	</div> -->
+	<div class="icon" title="Geometry" (click)="toggleItemDisplay('geometry')">
 		<i class="fas fa-ruler-combined"></i>
 	</div>
-	<div class="icon" title="Objects">
+	<div class="icon" title="Objects" (click)="toggleItemDisplay('objects')">
 		<i class="fas fa-cubes"></i>
 	</div>
-	<div class="icon" title="Typography">
+	<div class="icon" title="Typography" (click)="toggleItemDisplay('typography')">
 		<i class="fas fa-paragraph"></i>
 	</div>
-	<div class="icon" title="Library">
+	<div class="icon" title="Library" (click)="toggleItemDisplay('library')">
 		<i class="fas fa-university"></i>
 	</div>
-	<div class="icon" title="Settings">
+	<div class="icon" title="Settings" (click)="toggleItemDisplay('settings')">
 		<i class="fas fa-sliders-h"></i>
 	</div>
-	<div class="icon" title="History">
+	<div class="icon" title="History" (click)="toggleItemDisplay('history')">
 		<i class="fas fa-history"></i>
     </div>
-	<div class="icon" title="Documentation">
+	<div class="icon" title="Documentation" (click)="toggleItemDisplay('documentation')">
         <i class="fas fa-book"></i>
+    </div>
+	<div class="icon" title="About" (click)="toggleItemDisplay('about')">
+        <i class="fas fa-robot"></i>
     </div>
     <!-- <div class="icon" title="Group Objects">
 		<i class="fas fa-object-group"></i>
