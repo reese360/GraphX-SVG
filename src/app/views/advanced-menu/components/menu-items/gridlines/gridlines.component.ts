@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IOptionSelectorInput, OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
-import { INumberPickerInput } from '../../form-items/number-input/number-input.component';
+import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
 import { ToolInputService } from 'src/app/services/toolInput.service';
 
 @Component({
@@ -11,6 +11,10 @@ import { ToolInputService } from 'src/app/services/toolInput.service';
 export class GridlinesMenuItemComponent implements OnInit {
     @ViewChild('showGrid') showGrid: OptionSelectorComponent;
     @ViewChild('snapGrid') snapGrid: OptionSelectorComponent;
+    @ViewChild('gridWidth') gridWidth: NumberInputComponent;
+    @ViewChild('gridHeight') gridHeight: NumberInputComponent;
+
+    isLinked: boolean = true;
 
     //#region form inputs
     gridDisplayData: IOptionSelectorInput = {
@@ -63,9 +67,21 @@ export class GridlinesMenuItemComponent implements OnInit {
     }
 
     updateGridWidth(val): void {
-        this.toolService.updateGridWidth(val);
+        if (this.isLinked) {
+            this.gridHeight.data.value = val;
+        }
+        this.toolService.updateGridDimensions([val, this.gridHeight.data.value]);
     }
+
     updateGridHeight(val): void {
-        this.toolService.updateGridHeight(val);
+        if (this.isLinked) {
+            this.gridWidth.data.value = val;
+        }
+        this.toolService.updateGridDimensions([this.gridWidth.data.value, val]);
+
+    }
+
+    toggleLink(): void {
+        this.isLinked = !this.isLinked;
     }
 }

@@ -44,11 +44,8 @@ export class ToolInputService {
     public showGrid: boolean;
     public showGridEvent: Subject < boolean > = new Subject < boolean > ();
 
-    public gridWidth: number;
-    public gridWidthEvent: Subject < number > = new Subject < number > ();
-
-    public gridHeight: number;
-    public gridHeightEvent: Subject < number > = new Subject < number > ();
+    public gridDimensions: number[];
+    public gridDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -101,17 +98,10 @@ export class ToolInputService {
         })
     }
 
-    async updateGridWidth(w: number): Promise < void > {
+    async updateGridDimensions(dims: number[]): Promise < void > {
         return new Promise(() => {
-            this.gridWidthEvent.next(w);
-            this.gridWidth = w;
-        })
-    }
-
-    async updateGridHeight(h: number): Promise < void > {
-        return new Promise(() => {
-            this.gridHeightEvent.next(h);
-            this.gridHeight = h;
+            this.gridDimensionsEvent.next(dims);
+            this.gridDimensions = dims;
         })
     }
 }

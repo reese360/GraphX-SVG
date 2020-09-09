@@ -50,8 +50,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     // grid variables
     gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
     gridDisplay: boolean = false;
-    gridWidth: number = 100;
-    gridHeight: number = 100;
+    gridDimensions: number[];
 
     constructor(
         private renderer: Renderer2,
@@ -59,20 +58,16 @@ export class GraphxCanvasComponent implements AfterViewInit {
         private selectorService: SelectorService,
         private objectService: ObjectService) {
 
-
+        // subscription to display grid
         this.toolService.showGridEvent.subscribe(() => {
             this.gridDisplay = !this.gridDisplay;
             if (this.gridDisplay) this.showGrid();
             else this.hideGrid();
         })
 
-        this.toolService.gridWidthEvent.subscribe((width) => {
-            this.gridWidth = width;
-            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
-        });
-
-        this.toolService.gridHeightEvent.subscribe((height) => {
-            this.gridHeight = height;
+        // subscription to grid dimensions
+        this.toolService.gridDimensionsEvent.subscribe((dim) => {
+            this.gridDimensions = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
     }
@@ -111,8 +106,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
 
             // horizontal gridlines
-            let nextY: number = Math.round(this.vbY / this.gridHeight) * this.gridHeight;
-            for (let i = 0; i < this.vbHeight / this.gridHeight; i++) {
+            let nextY: number = Math.round(this.vbY / this.gridDimensions[1]) * this.gridDimensions[1];
+            for (let i = 0; i < this.vbHeight / this.gridDimensions[1]; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${this.vbX}`);
                 this.renderer.setAttribute(line, 'y1', `${nextY}`);
@@ -120,12 +115,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
                 this.renderer.setAttribute(line, 'y2', `${nextY}`);
                 this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
-                nextY += this.gridHeight;
+                nextY += this.gridDimensions[1];
             }
 
             // vertical gridlines
-            let nextX: number = Math.round(this.vbX / this.gridWidth) * this.gridWidth;
-            for (let i = 0; i < this.vbWidth / this.gridWidth; i++) {
+            let nextX: number = Math.round(this.vbX / this.gridDimensions[0]) * this.gridDimensions[0];
+            for (let i = 0; i < this.vbWidth / this.gridDimensions[0]; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${nextX}`);
                 this.renderer.setAttribute(line, 'y1', `${this.vbY}`);
@@ -133,7 +128,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
                 this.renderer.setAttribute(line, 'y2', `${this.vbHeight + this.vbY}`);
                 this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
-                nextX += this.gridWidth;
+                nextX += this.gridDimensions[0];
             }
             res();
         });
