@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } from '@angular/core';
 
 @Component({
     selector: 'app-slider',

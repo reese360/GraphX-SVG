@@ -50,6 +50,9 @@ export class ToolInputService {
     public gridSnap: boolean;
     public gridSnapEvent: Subject < boolean > = new Subject < boolean > ();
 
+    public gridOffset: number[];
+    public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
+
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
             this.mouseCoordsEvent.next(pos);
@@ -112,6 +115,13 @@ export class ToolInputService {
         return new Promise(() => {
             this.gridDimensionsEvent.next(dims);
             this.gridDimensions = dims;
+        })
+    }
+
+    async updateGridOffset(offset: number[]): Promise < void > {
+        return new Promise(() => {
+            this.gridOffsetEvent.next(offset);
+            this.gridOffset = offset;
         })
     }
 }

@@ -51,8 +51,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
     // grid variables
     gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
     gridDisplay: boolean = false;
-    gridDimensions: number[] = [100, 100];
     gridSnap: boolean = false;
+    gridDimensions: number[] = [100, 100];
+    gridOffset: number[] = [0, 0];
 
     //#endregion
 
@@ -78,6 +79,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
         // subscription to grid dimensions
         this.toolService.gridDimensionsEvent.subscribe((dim) => {
             this.gridDimensions = dim;
+            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+        });
+
+        // subscription to grid offset
+        this.toolService.gridOffsetEvent.subscribe((dim) => {
+            this.gridOffset = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
     }
@@ -116,7 +123,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
 
             // horizontal gridlines
-            let nextY: number = Math.round(this.vbY / this.gridDimensions[1]) * this.gridDimensions[1];
+            let nextY: number = (Math.round(this.vbY / this.gridDimensions[1]) * this.gridDimensions[1]) + this.gridOffset[1];
             for (let i = 0; i < this.vbHeight / this.gridDimensions[1]; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${this.vbX}`);
@@ -129,7 +136,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             }
 
             // vertical gridlines
-            let nextX: number = Math.round(this.vbX / this.gridDimensions[0]) * this.gridDimensions[0];
+            let nextX: number = (Math.round(this.vbX / this.gridDimensions[0]) * this.gridDimensions[0]) + this.gridOffset[0];
             for (let i = 0; i < this.vbWidth / this.gridDimensions[0]; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${nextX}`);
@@ -159,15 +166,15 @@ export class GraphxCanvasComponent implements AfterViewInit {
     }
 
     // calculates user mouse position relative to screen/offset/grid-snap
-    calculateUserPositioning(clientX: number, clientY: number): number[] {
+    calculateUserPosition(clientX: number, clientY: number): [number, number] {
         // mouse position relative to screen
         let mouseX = clientX - this.offsetX + this.vbX;
         let mouseY = clientY - this.offsetY + this.vbY;
 
         // snap to gridlines if enabled
         if (this.gridSnap) {
-            mouseX = Math.round(mouseX / this.gridDimensions[0]) * this.gridDimensions[0];
-            mouseY = Math.round(mouseY / this.gridDimensions[1]) * this.gridDimensions[1];
+            mouseX = (Math.round(mouseX / this.gridDimensions[0]) * this.gridDimensions[0]) + this.gridOffset[0];
+            mouseY = (Math.round(mouseY / this.gridDimensions[1]) * this.gridDimensions[1]) + this.gridOffset[1];
         }
         return [mouseX, mouseY]
     }
@@ -219,14 +226,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
                         if (e.ctrlKey) {
                             // ctrl key allows multiple selected objects
                             this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag([e.clientX, e.clientY]);
+                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
                         } else {
-                            // verify if object is already selected
-                            if (!this.selectorService.lookup(hitObjectId)) {
-                                this.selectorService.deselect();
-                            }
+                            // deselect if another object is selected
+                            if (!this.selectorService.lookup(hitObjectId)) this.selectorService.deselect();
+
                             this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag([e.clientX, e.clientY]);
+                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
                         }
                     } else {
                         // if no graphx object -> deselect all
@@ -271,8 +277,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
                         }
                     }
                     console.log(this.gridSnap);
-                    this.currentObject.start = this.calculateUserPositioning(e.clientX, e.clientY);
-                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
+                    this.currentObject.start = this.calculateUserPosition(e.clientX, e.clientY);
+                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
@@ -311,13 +317,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
         switch (this.toolService.currentTool) {
             case this.toolService.toolsOptions.select: {
                 if (this.selectorService.canDragSelection) {
-                    this.selectorService.dragTo([e.clientX, e.clientY]);
+                    this.selectorService.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
                 }
                 break;
             }
             case this.toolService.toolsOptions.draw: {
                 if (this.currentObject) {
-                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
+                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
                 }
                 break;
             }
