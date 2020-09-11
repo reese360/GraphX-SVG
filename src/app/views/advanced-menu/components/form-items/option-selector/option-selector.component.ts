@@ -4,7 +4,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export interface IOptionSelectorInput {
     label: string,
         options: string[],
-        default: number
+        value: number
 }
 
 @Component({
@@ -18,7 +18,7 @@ export class OptionSelectorComponent implements OnInit {
     public selectedIdx: number = 0; // currently selected options index
 
     ngOnInit(): void {
-        this.selectedIdx = this.data.default;
+        this.selectedIdx = this.data.value;
     }
 
     toggleOptions(idx: number): void {

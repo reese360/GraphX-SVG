@@ -1,6 +1,23 @@
 <div id="svg-container" #svgContainer>
-    <svg id="svg" #svg preserveAspectRatio="xMidYMid meet" [attr.width]="svgContainer.offsetWidth" [attr.height]="svgContainer.offsetHeight" (contextmenu)="onMouseDown($event)">
-        <rect id="svgCanvas" #svgCanvas x="0" y="0" [attr.width]="canvasWidth" [attr.height]="canvasHeight" stroke="gray" fill="white" stroke-width="2" shape-rendering="crispEdges"/>
+    <svg id="svg"
+    #svg
+    preserveAspectRatio="xMidYMid meet"
+    [attr.width]="svgContainer.offsetWidth"
+    [attr.height]="svgContainer.offsetHeight"
+    (contextmenu)="onMouseDown($event)">
+        <rect
+        id="svgCanvas"
+        [ngClass]="canvasDisplay ? 'show-canvas' : 'hide-canvas'"
+        #svgCanvas
+        x="0"
+        y="0"
+        [attr.width]="canvasWidth"
+        [attr.height]="canvasHeight"
+        stroke="gray"
+        [attr.fill-opacity]="canvasOpacity"
+        fill="white"
+        [attr.stroke-width]="canvasStrokeWidth"
+        shape-rendering="crispEdges"/>
         <g #canvasElements></g>
         <g #gridElements></g>
     </svg>

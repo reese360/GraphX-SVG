@@ -1,57 +1,55 @@
 <div #slider class="slider">
-	<div class="slider-content" [ngSwitch]="currentView">
-		<ng-container *ngSwitchCase="'grid'">
+    <div class="slider-content" [ngSwitch]="currentView">
+        <ng-container *ngSwitchCase="'grid'">
             <app-gridlines></app-gridlines>
-		</ng-container>
-		<ng-container *ngSwitchCase="'properties'">
-			<div class="slider-title">
-				<i class="fas fa-cog"></i> Properties
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'arrangement'">
-			<div class="slider-title">
-				<i class="fas fa-expand-arrows-alt"></i> Arrangement
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'geometry'">
-			<div class="slider-title">
-				<i class="fas fa-ruler-combined"></i> Geometry
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'objects'">
-			<div class="slider-title">
-				<i class="fas fa-cubes"></i> Objects
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'typography'">
-			<div class="slider-title">
-				<i class="fas fa-paragraph"></i> Typography
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'library'">
-			<div class="slider-title">
-				<i class="fas fa-university"></i> Library
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'settings'">
-			<div class="slider-title">
-				<i class="fas fa-sliders-h"></i> Settings
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'history'">
-			<div class="slider-title">
-				<i class="fas fa-history"></i> History
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'documentation'">
-			<div class="slider-title">
-				<i class="fas fa-book"></i> Documentation
-			</div>
-		</ng-container>
-		<ng-container *ngSwitchCase="'about'">
-			<div class="slider-title">
-				<i class="fas fa-robot"></i> About
-			</div>
-		</ng-container>
-	</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'properties'">
+            <div class="slider-title">
+                <i class="fas fa-cog"></i> Properties
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'arrangement'">
+            <div class="slider-title">
+                <i class="fas fa-expand-arrows-alt"></i> Arrangement
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'viewBox'">
+            <app-viewbox></app-viewbox>
+        </ng-container>
+        <ng-container *ngSwitchCase="'objects'">
+            <div class="slider-title">
+                <i class="fas fa-cubes"></i> Objects
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'typography'">
+            <div class="slider-title">
+                <i class="fas fa-paragraph"></i> Typography
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'library'">
+            <div class="slider-title">
+                <i class="fas fa-university"></i> Library
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'settings'">
+            <div class="slider-title">
+                <i class="fas fa-sliders-h"></i> Settings
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'history'">
+            <div class="slider-title">
+                <i class="fas fa-history"></i> History
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'documentation'">
+            <div class="slider-title">
+                <i class="fas fa-book"></i> Documentation
+            </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'about'">
+            <div class="slider-title">
+                <i class="fas fa-robot"></i> About
+            </div>
+        </ng-container>
+    </div>
 </div>

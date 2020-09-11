@@ -41,14 +41,29 @@ export class ToolInputService {
     public currentShape: string;
     public ShapeEvent: Subject < string > = new Subject < string > ();
 
-    public snapGrid: boolean;
+    private showGrid: boolean;
     public showGridEvent: Subject < boolean > = new Subject < boolean > ();
 
-    public gridDimensions: number[];
+    private gridDimensions: number[];
     public gridDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
 
-    public gridSnap: boolean;
+    private gridSnap: boolean;
     public gridSnapEvent: Subject < boolean > = new Subject < boolean > ();
+
+    private gridOffset: number[];
+    public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
+
+    private canvasDimensions: number[];
+    public canvasDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+
+    private canvasDisplay: boolean;
+    public canvasDisplayEvent: Subject < boolean > = new Subject < boolean > ();
+
+    private canvasOutline: boolean;
+    public canvasOutlineEvent: Subject < boolean > = new Subject < boolean > ();
+
+    private canvasOpacity: number;
+    public canvasOpacityEvent: Subject < number > = new Subject < number > ();
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -96,15 +111,15 @@ export class ToolInputService {
 
     async toggleGridDisplay(dispOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.snapGrid = dispOption; // toggle grid display
-            this.showGridEvent.next(this.snapGrid)
+            this.showGrid = dispOption; // toggle grid display
+            this.showGridEvent.next(this.showGrid)
         })
     }
 
     async toggleGridSnap(snapOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.snapGrid = snapOption;
-            this.gridSnapEvent.next(this.snapGrid)
+            this.gridSnap = snapOption;
+            this.gridSnapEvent.next(snapOption)
         })
     }
 
@@ -112,6 +127,41 @@ export class ToolInputService {
         return new Promise(() => {
             this.gridDimensionsEvent.next(dims);
             this.gridDimensions = dims;
+        })
+    }
+
+    async updateGridOffset(offset: number[]): Promise < void > {
+        return new Promise(() => {
+            this.gridOffsetEvent.next(offset);
+            this.gridOffset = offset;
+        })
+    }
+
+    async updateCanvasDimensions(dims: number[]): Promise < void > {
+        return new Promise(() => {
+            this.canvasDimensionsEvent.next(dims);
+            this.canvasDimensions = dims;
+        })
+    }
+
+    async toggleCanvas(dispOption: boolean): Promise < void > {
+        return new Promise(() => {
+            this.canvasDisplay = dispOption;
+            this.canvasDisplayEvent.next(dispOption);
+        });
+    }
+
+    async toggleCanvasOutline(dispOption: boolean): Promise < void > {
+        return new Promise(() => {
+            this.canvasOutline = dispOption;
+            this.canvasOutlineEvent.next(dispOption);
+        });
+    }
+
+    async updateCanvasOpacity(option: number): Promise < void > {
+        return new Promise(() => {
+            this.canvasOpacity = option;
+            this.canvasOpacityEvent.next(option);
         })
     }
 }

@@ -1,4 +1,4 @@
-.selectedObject{
+.selectedObject {
     outline: 1px dashed var(--highlight);
     outline-offset: 10px;
     cursor: move;
@@ -7,4 +7,12 @@
 #svg-container {
     height: 100%;
     width: 100%;
+}
+
+.show-canvas {
+    visibility: visible;
+}
+
+.hide-canvas {
+    visibility: hidden;
 }

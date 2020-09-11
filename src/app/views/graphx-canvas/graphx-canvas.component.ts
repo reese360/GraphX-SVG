@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { ToolInputService } from 'src/app/services/toolInput.service';
 import { SelectorService } from 'src/app/services/selector.service';
@@ -18,19 +18,23 @@ export class GraphxCanvasComponent implements AfterViewInit {
     //#region variable declarations
     @ViewChild('svg') svgElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
-
     @ViewChild('gridElements') gridElementRef: ElementRef;
     @ViewChild('canvasElements') canvasElementRef: ElementRef;
 
+    // faux svg viewbox == canvas
     // canvas 'display' dimensions
     canvasWidth: number = 1000;
     canvasHeight: number = 800;
+    canvasOpacity: string = "1"
+    canvasStrokeWidth: string = "1";
+    canvasDisplay: boolean = true;
 
+    //! 'SVG' refers to the global SVG not the faux 'Canvas'
     // svg viewBox dimensions
-    vbX: number = -10;
-    vbY: number = -10;
-    vbWidth: number; // viewBox width
-    vbHeight: number; // viewBox height
+    svgMinX: number = -10;
+    svgMinY: number = -10;
+    svgWidth: number; // viewBox width
+    svgHeight: number; // viewBox height
 
     offsetX: number; // offset position x of svg element
     offsetY: number; // offset position y of svg element
@@ -48,11 +52,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
     zoomHeight: number;
     zoomWidth: number;
 
-    // grid variables
+    // gridline variables
     gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
     gridDisplay: boolean = false;
-    gridDimensions: number[] = [100, 100];
     gridSnap: boolean = false;
+    gridDimensions: number[] = [100, 100];
+    gridOffset: number[] = [0, 0];
 
     //#endregion
 
@@ -62,6 +67,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
         private selectorService: SelectorService,
         private objectService: ObjectService) {
 
+
+        //#region gridline observables
         // subscription to display grid
         this.toolService.showGridEvent.subscribe((option) => {
             this.gridDisplay = option;
@@ -80,6 +87,33 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.gridDimensions = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
+
+        // subscription to grid offset
+        this.toolService.gridOffsetEvent.subscribe((dim) => {
+            this.gridOffset = dim;
+            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+        });
+        //#endregion
+
+        //#region viewbox observables
+        // subscription to viewbox dimensions
+        this.toolService.canvasDisplayEvent.subscribe((option) => {
+            this.canvasDisplay = option;
+        });
+
+        this.toolService.canvasDimensionsEvent.subscribe((dim) => {
+            this.canvasWidth = dim[0];
+            this.canvasHeight = dim[1];
+        });
+
+        this.toolService.canvasOpacityEvent.subscribe((option) => {
+            this.canvasOpacity = option.toString();
+        });
+
+        this.toolService.canvasOutlineEvent.subscribe((option) => {
+            this.canvasStrokeWidth = option.toString();
+        });
+        //#endregion
     }
 
     ngAfterViewInit(): void {
@@ -116,12 +150,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
 
             // horizontal gridlines
-            let nextY: number = Math.round(this.vbY / this.gridDimensions[1]) * this.gridDimensions[1];
-            for (let i = 0; i < this.vbHeight / this.gridDimensions[1]; i++) {
+            let nextY: number = (Math.round(this.svgMinY / this.gridDimensions[1]) * this.gridDimensions[1]) + this.gridOffset[1];
+            for (let i = 0; i < this.svgHeight / this.gridDimensions[1]; i++) {
                 const line = lineTemplate.cloneNode(true);
-                this.renderer.setAttribute(line, 'x1', `${this.vbX}`);
+                this.renderer.setAttribute(line, 'x1', `${this.svgMinX}`);
                 this.renderer.setAttribute(line, 'y1', `${nextY}`);
-                this.renderer.setAttribute(line, 'x2', `${this.vbWidth + this.vbX}`);
+                this.renderer.setAttribute(line, 'x2', `${this.svgWidth + this.svgMinX}`);
                 this.renderer.setAttribute(line, 'y2', `${nextY}`);
                 this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
@@ -129,13 +163,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
             }
 
             // vertical gridlines
-            let nextX: number = Math.round(this.vbX / this.gridDimensions[0]) * this.gridDimensions[0];
-            for (let i = 0; i < this.vbWidth / this.gridDimensions[0]; i++) {
+            let nextX: number = (Math.round(this.svgMinX / this.gridDimensions[0]) * this.gridDimensions[0]) + this.gridOffset[0];
+            for (let i = 0; i < this.svgWidth / this.gridDimensions[0]; i++) {
                 const line = lineTemplate.cloneNode(true);
                 this.renderer.setAttribute(line, 'x1', `${nextX}`);
-                this.renderer.setAttribute(line, 'y1', `${this.vbY}`);
+                this.renderer.setAttribute(line, 'y1', `${this.svgMinY}`);
                 this.renderer.setAttribute(line, 'x2', `${nextX}`);
-                this.renderer.setAttribute(line, 'y2', `${this.vbHeight + this.vbY}`);
+                this.renderer.setAttribute(line, 'y2', `${this.svgHeight + this.svgMinY}`);
                 this.renderer.appendChild(this.gridElementRef.nativeElement, line);
                 this.gridLines.push(line);
                 nextX += this.gridDimensions[0];
@@ -159,15 +193,15 @@ export class GraphxCanvasComponent implements AfterViewInit {
     }
 
     // calculates user mouse position relative to screen/offset/grid-snap
-    calculateUserPositioning(clientX: number, clientY: number): number[] {
+    calculateUserPosition(clientX: number, clientY: number): [number, number] {
         // mouse position relative to screen
-        let mouseX = clientX - this.offsetX + this.vbX;
-        let mouseY = clientY - this.offsetY + this.vbY;
+        let mouseX = clientX - this.offsetX + this.svgMinX;
+        let mouseY = clientY - this.offsetY + this.svgMinY;
 
         // snap to gridlines if enabled
         if (this.gridSnap) {
-            mouseX = Math.round(mouseX / this.gridDimensions[0]) * this.gridDimensions[0];
-            mouseY = Math.round(mouseY / this.gridDimensions[1]) * this.gridDimensions[1];
+            mouseX = (Math.round(mouseX / this.gridDimensions[0]) * this.gridDimensions[0]) + this.gridOffset[0];
+            mouseY = (Math.round(mouseY / this.gridDimensions[1]) * this.gridDimensions[1]) + this.gridOffset[1];
         }
         return [mouseX, mouseY]
     }
@@ -178,9 +212,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
         // ctrl key must be pressed
         if (e.ctrlKey) {
             this.zoomIdx = e.deltaY === 100 ? (this.zoomIdx + 1 < this.zoomLevels.length ? this.zoomIdx + 1 : this.zoomIdx) : this.zoomIdx - 1 > 0 ? this.zoomIdx - 1 : 0; // keeps index within bounds of zoom level array
-            this.zoomHeight = this.vbHeight * this.zoomLevels[this.zoomIdx];
-            this.zoomWidth = this.vbWidth * this.zoomLevels[this.zoomIdx];
-            const defViewBox = `${this.vbX} ${this.vbY} ${this.zoomWidth} ${this.zoomHeight}`;
+            this.zoomHeight = this.svgHeight * this.zoomLevels[this.zoomIdx];
+            this.zoomWidth = this.svgWidth * this.zoomLevels[this.zoomIdx];
+            const defViewBox = `${this.svgMinX} ${this.svgMinY} ${this.zoomWidth} ${this.zoomHeight}`;
             this.toolService.updateZoomLevel(this.zoomLevels[(this.zoomLevels.length - 1) - this.zoomIdx]); // pass new zoom level to tool
             this.updateSvgViewBox(defViewBox);
         }
@@ -190,13 +224,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @HostListener('window:resize', ['$event']) resize(e): void {
         // set svg viewBox dimensions
         const containerSize = this.scgContainerElementRef.nativeElement.getBoundingClientRect();
-        this.vbWidth = containerSize.width;
-        this.vbHeight = containerSize.height;
+        this.svgWidth = containerSize.width;
+        this.svgHeight = containerSize.height;
 
         // multiplying new dims by zoom level ensures zoom integrity
-        this.zoomHeight = this.vbHeight * this.zoomLevels[this.zoomIdx];
-        this.zoomWidth = this.vbWidth * this.zoomLevels[this.zoomIdx];
-        const defViewBox = `${this.vbX} ${this.vbY} ${this.zoomWidth} ${this.zoomHeight}`;
+        this.zoomHeight = this.svgHeight * this.zoomLevels[this.zoomIdx];
+        this.zoomWidth = this.svgWidth * this.zoomLevels[this.zoomIdx];
+        const defViewBox = `${this.svgMinX} ${this.svgMinY} ${this.zoomWidth} ${this.zoomHeight}`;
         this.updateSvgViewBox(defViewBox);
 
         // get offset position of svg
@@ -219,14 +253,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
                         if (e.ctrlKey) {
                             // ctrl key allows multiple selected objects
                             this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag([e.clientX, e.clientY]);
+                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
                         } else {
-                            // verify if object is already selected
-                            if (!this.selectorService.lookup(hitObjectId)) {
-                                this.selectorService.deselect();
-                            }
+                            // deselect if another object is selected
+                            if (!this.selectorService.lookup(hitObjectId)) this.selectorService.deselect();
+
                             this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag([e.clientX, e.clientY]);
+                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
                         }
                     } else {
                         // if no graphx object -> deselect all
@@ -271,8 +304,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
                         }
                     }
                     console.log(this.gridSnap);
-                    this.currentObject.start = this.calculateUserPositioning(e.clientX, e.clientY);
-                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
+                    this.currentObject.start = this.calculateUserPosition(e.clientX, e.clientY);
+                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
@@ -306,18 +339,18 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     // mouse move event handler
     @HostListener('mousemove', ['$event']) onMouseMove(e): void {
-        this.updateMouseCoords([e.clientX - this.offsetX + this.vbX, e.clientY - this.offsetY + this.vbY]);
+        this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
         switch (this.toolService.currentTool) {
             case this.toolService.toolsOptions.select: {
                 if (this.selectorService.canDragSelection) {
-                    this.selectorService.dragTo([e.clientX, e.clientY]);
+                    this.selectorService.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
                 }
                 break;
             }
             case this.toolService.toolsOptions.draw: {
                 if (this.currentObject) {
-                    this.currentObject.end = this.calculateUserPositioning(e.clientX, e.clientY);
+                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
                 }
                 break;
             }
@@ -326,7 +359,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         if (this.panning) {
             const dx = e.clientX - this.panOffsetX - this.offsetX;
             const dy = e.clientY - this.panOffsetY - this.offsetY;
-            const defViewBox = `${this.vbX - dx} ${this.vbY - dy} ${this.zoomWidth} ${this.zoomHeight}`;
+            const defViewBox = `${this.svgMinX - dx} ${this.svgMinY - dy} ${this.zoomWidth} ${this.zoomHeight}`;
             this.updateSvgViewBox(defViewBox);
         }
     }
@@ -352,8 +385,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
         if (this.panning) {
             this.panning = false;
-            this.vbX -= e.clientX - this.panOffsetX - this.offsetX;
-            this.vbY -= e.clientY - this.panOffsetY - this.offsetY;
+            this.svgMinX -= e.clientX - this.panOffsetX - this.offsetX;
+            this.svgMinY -= e.clientY - this.panOffsetY - this.offsetY;
             this.panOffsetX = null;
             this.panOffsetY = null;
             if (this.gridDisplay) this.showGrid();

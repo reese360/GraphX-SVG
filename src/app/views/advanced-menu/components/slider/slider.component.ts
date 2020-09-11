@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } from '@angular/core';
 
 @Component({
     selector: 'app-slider',
@@ -7,7 +7,7 @@ import { Component, OnInit, ViewChild, Renderer2, ElementRef, Input, AfterViewIn
 })
 export class SliderComponent implements AfterViewInit {
     // TODO: reset these to not have slider open at launch
-    currentView: string = "grid"; // used to determine which menu item to display on slider /
+    currentView: string = "viewBox"; // used to determine which menu item to display on slider /
     sliderOpen: boolean = false; // flag if slider is open
     @ViewChild('slider') sliderElRef: ElementRef;
 
