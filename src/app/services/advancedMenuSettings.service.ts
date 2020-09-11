@@ -46,10 +46,12 @@ export class AdvancedMenuSettingsService {
             value: 0
         },
         isDimsLocked: true,
-        isOffsetLocked: false
+        dimsRatio: 1,
+        isOffsetLocked: false,
+        offsetRatio: null
     };
 
-    geometrySettings: ViewBoxComponentSettings = {
+    viewBoxSettings: ViewBoxComponentSettings = {
         vbWidthData: {
             label: 'Width',
             minimum: 1,
@@ -64,19 +66,20 @@ export class AdvancedMenuSettingsService {
             step: 1,
             value: 800
         },
-        vbOffsetX: {
-            label: 'Offset X',
-            minimum: this.defaultMin,
-            maximum: this.defaultMax,
-            step: 1,
-            value: 0
+        vbDisplayData: {
+            label: 'ViewBox',
+            options: ['Off', 'On'],
+            value: 1,
         },
-        vbOffsetY: {
-            label: 'Offset Y',
-            minimum: this.defaultMin,
-            maximum: this.defaultMax,
-            step: 1,
-            value: 0
+        vbOutlineData: {
+            label: 'ViewBox Outline',
+            options: ['Off', 'On'],
+            value: 1
+        },
+        vbOpacityData: {
+            label: 'ViewBox Transparency',
+            options: ['0%', '50%', '100%'],
+            value: 2
         },
         isViewBoxLocked: false,
         viewBoxRatio: null,

@@ -12,7 +12,9 @@ export interface GridlinesComponentSettings {
         gridOffsetXData: INumberPickerInput,
         gridOffsetYData: INumberPickerInput,
         isDimsLocked: boolean,
+        dimsRatio: number,
         isOffsetLocked: boolean
+    offsetRatio: number
 }
 
 @Component({
@@ -57,7 +59,7 @@ export class GridlinesMenuItemComponent implements OnInit {
 
     updateGridWidth(dimWidth: number): void {
         if (this.componentSettings.isDimsLocked) {
-            this.gridHeight.data.value = dimWidth;
+            this.gridHeight.data.value = Math.trunc(dimWidth / this.componentSettings.dimsRatio);
         }
 
         if (this.gridOffsetX.data.value > dimWidth)
@@ -68,8 +70,9 @@ export class GridlinesMenuItemComponent implements OnInit {
     }
 
     updateGridHeight(dimHeight: number): void {
+        // maintain aspect ratio
         if (this.componentSettings.isDimsLocked) {
-            this.gridWidth.data.value = dimHeight;
+            this.gridWidth.data.value = Math.trunc(dimHeight / this.componentSettings.dimsRatio);
         }
 
         if (this.gridOffsetY.data.value > dimHeight)
@@ -90,9 +93,9 @@ export class GridlinesMenuItemComponent implements OnInit {
         } else
             this.gridOffsetX.data.value = offX;
 
-        // copy offX to gridOffSetY if locked
+        // maintain aspect ratio
         if (this.componentSettings.isOffsetLocked)
-            this.gridOffsetY.data.value = this.gridOffsetX.data.value;
+            this.gridOffsetY.data.value = Math.trunc(offX / this.componentSettings.offsetRatio);
 
         this.toolService.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
         this.componentSettings.gridOffsetXData.value = offX;
@@ -109,9 +112,9 @@ export class GridlinesMenuItemComponent implements OnInit {
         } else
             this.gridOffsetY.data.value = offY;
 
-        // copy offY to gridOffSetX if locked
+        // maintain aspect ratio
         if (this.componentSettings.isOffsetLocked)
-            this.gridOffsetX.data.value = this.gridOffsetY.data.value;
+            this.gridOffsetX.data.value = Math.trunc(offY / this.componentSettings.offsetRatio);
 
         this.toolService.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
         this.componentSettings.gridOffsetYData.value = offY;
@@ -120,16 +123,15 @@ export class GridlinesMenuItemComponent implements OnInit {
     toggleLock(lock: number): void {
         if (lock === 0) { // grid dimensions
             this.componentSettings.isDimsLocked = !this.componentSettings.isDimsLocked;
-            if (this.gridWidth.data.value > this.gridHeight.data.value) {
-                this.updateGridHeight(this.gridWidth.data.value);
-            } else
-                this.updateGridWidth(this.gridHeight.data.value);
+            if (this.componentSettings.isDimsLocked)
+                this.componentSettings.dimsRatio = this.componentSettings.gridWidthData.value / this.componentSettings.gridHeightData.value;
+
         } else { // grid offset
             this.componentSettings.isOffsetLocked = !this.componentSettings.isOffsetLocked;
-            if (this.gridOffsetX.data.value > this.gridOffsetY.data.value)
-                this.updateOffsetY(this.gridOffsetX.data.value);
-            else
-                this.updateOffsetX(this.gridOffsetY.data.value);
+            if (this.componentSettings.isOffsetLocked) {
+                this.componentSettings.offsetRatio = this.componentSettings.gridOffsetXData.value / this.componentSettings.gridOffsetYData.value;
+                this.componentSettings.offsetRatio = isNaN(this.componentSettings.offsetRatio) ? 1 : this.componentSettings.offsetRatio; // divide by zero == 1
+            }
         }
     }
 }

@@ -41,20 +41,29 @@ export class ToolInputService {
     public currentShape: string;
     public ShapeEvent: Subject < string > = new Subject < string > ();
 
-    public snapGrid: boolean;
+    private showGrid: boolean;
     public showGridEvent: Subject < boolean > = new Subject < boolean > ();
 
-    public gridDimensions: number[];
+    private gridDimensions: number[];
     public gridDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
 
-    public gridSnap: boolean;
+    private gridSnap: boolean;
     public gridSnapEvent: Subject < boolean > = new Subject < boolean > ();
 
-    public gridOffset: number[];
+    private gridOffset: number[];
     public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
 
-    public viewBoxDimensions: number[];
+    private viewBoxDimensions: number[];
     public viewBoxDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+
+    private displayViewBox: boolean;
+    public displayViewBoxEvent: Subject < boolean > = new Subject < boolean > ();
+
+    private viewBoxOutline: boolean;
+    public viewBoxOutlineEvent: Subject < boolean > = new Subject < boolean > ();
+
+    private viewBoxOpacity: number;
+    public viewBoxOpacityEvent: Subject < number > = new Subject < number > ();
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -102,15 +111,15 @@ export class ToolInputService {
 
     async toggleGridDisplay(dispOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.snapGrid = dispOption; // toggle grid display
-            this.showGridEvent.next(this.snapGrid)
+            this.showGrid = dispOption; // toggle grid display
+            this.showGridEvent.next(this.showGrid)
         })
     }
 
     async toggleGridSnap(snapOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.snapGrid = snapOption;
-            this.gridSnapEvent.next(this.snapGrid)
+            this.gridSnap = snapOption;
+            this.gridSnapEvent.next(snapOption)
         })
     }
 
@@ -132,6 +141,27 @@ export class ToolInputService {
         return new Promise(() => {
             this.viewBoxDimensionsEvent.next(dims);
             this.viewBoxDimensions = dims;
+        })
+    }
+
+    async toggleViewBox(dispOption: boolean): Promise < void > {
+        return new Promise(() => {
+            this.displayViewBox = dispOption;
+            this.displayViewBoxEvent.next(dispOption);
+        });
+    }
+
+    async toggleViewBoxOutline(dispOption: boolean): Promise < void > {
+        return new Promise(() => {
+            this.viewBoxOutline = dispOption;
+            this.viewBoxOutlineEvent.next(dispOption);
+        });
+    }
+
+    async updateViewBoxOpacity(option: number): Promise < void > {
+        return new Promise(() => {
+            this.viewBoxOpacity = option;
+            this.viewBoxOpacityEvent.next(option);
         })
     }
 }

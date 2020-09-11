@@ -22,6 +22,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @ViewChild('gridElements') gridElementRef: ElementRef;
     @ViewChild('canvasElements') canvasElementRef: ElementRef;
 
+    // faux svg viewbox == canvas
     // canvas 'display' dimensions
     canvasWidth: number = 1000;
     canvasHeight: number = 800;
@@ -31,6 +32,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
     vbY: number = -10;
     vbWidth: number; // viewBox width
     vbHeight: number; // viewBox height
+    vbOpacity: string = "1"
+    vbStrokeWidth: string = "1";
+    vbDisplay: boolean = true;
 
     offsetX: number; // offset position x of svg element
     offsetY: number; // offset position y of svg element
@@ -91,12 +95,24 @@ export class GraphxCanvasComponent implements AfterViewInit {
         });
         //#endregion
 
-        //#region geometry observables
-        // subscription to geometry dimensions
+        //#region viewbox observables
+        // subscription to viewbox dimensions
+        this.toolService.displayViewBoxEvent.subscribe((option) => {
+            this.vbDisplay = option;
+        });
+
         this.toolService.viewBoxDimensionsEvent.subscribe((dim) => {
             this.canvasWidth = dim[0];
             this.canvasHeight = dim[1];
-        })
+        });
+
+        this.toolService.viewBoxOpacityEvent.subscribe((option) => {
+            this.vbOpacity = option.toString();
+        });
+
+        this.toolService.viewBoxOutlineEvent.subscribe((option) => {
+            this.vbStrokeWidth = option.toString();
+        });
     }
 
     ngAfterViewInit(): void {
