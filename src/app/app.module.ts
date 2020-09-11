@@ -14,7 +14,7 @@ import { GraphxCanvasComponent } from './views/graphx-canvas/graphx-canvas.compo
 import { GridlinesMenuItemComponent } from './views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 import { OptionSelectorComponent } from './views/advanced-menu/components/form-items/option-selector/option-selector.component';
 import { NumberInputComponent } from './views/advanced-menu/components/form-items/number-input/number-input.component';
-import { ViewBoxComponent } from './views/advanced-menu/components/menu-items/geometry/viewbox.component';
+import { ViewBoxComponent } from './views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { MenuItemTitleDirective } from './directives/menu-item-title.directive';
 
 

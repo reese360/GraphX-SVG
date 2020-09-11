@@ -1,8 +1,8 @@
-import { ViewBoxComponentSettings } from '../views/advanced-menu/components/menu-items/geometry/viewbox.component';
+import { ViewBoxComponentSettings } from '../views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { GridlinesComponentSettings } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 
 export class AdvancedMenuSettingsService {
-
+    // consistent variable declarations
     defaultMin: number = -9999;
     defaultMax: number = 9999;
 

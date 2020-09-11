@@ -9,10 +9,10 @@
     width: 100%;
 }
 
-.show-vb {
+.show-canvas {
     visibility: visible;
 }
 
-.hide-vb {
+.hide-canvas {
     visibility: hidden;
 }

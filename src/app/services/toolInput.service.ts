@@ -53,17 +53,17 @@ export class ToolInputService {
     private gridOffset: number[];
     public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
 
-    private viewBoxDimensions: number[];
-    public viewBoxDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+    private canvasDimensions: number[];
+    public canvasDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
 
-    private displayViewBox: boolean;
-    public displayViewBoxEvent: Subject < boolean > = new Subject < boolean > ();
+    private canvasDisplay: boolean;
+    public canvasDisplayEvent: Subject < boolean > = new Subject < boolean > ();
 
-    private viewBoxOutline: boolean;
-    public viewBoxOutlineEvent: Subject < boolean > = new Subject < boolean > ();
+    private canvasOutline: boolean;
+    public canvasOutlineEvent: Subject < boolean > = new Subject < boolean > ();
 
-    private viewBoxOpacity: number;
-    public viewBoxOpacityEvent: Subject < number > = new Subject < number > ();
+    private canvasOpacity: number;
+    public canvasOpacityEvent: Subject < number > = new Subject < number > ();
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -137,31 +137,31 @@ export class ToolInputService {
         })
     }
 
-    async updateViewBoxDimensions(dims: number[]): Promise < void > {
+    async updateCanvasDimensions(dims: number[]): Promise < void > {
         return new Promise(() => {
-            this.viewBoxDimensionsEvent.next(dims);
-            this.viewBoxDimensions = dims;
+            this.canvasDimensionsEvent.next(dims);
+            this.canvasDimensions = dims;
         })
     }
 
-    async toggleViewBox(dispOption: boolean): Promise < void > {
+    async toggleCanvas(dispOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.displayViewBox = dispOption;
-            this.displayViewBoxEvent.next(dispOption);
+            this.canvasDisplay = dispOption;
+            this.canvasDisplayEvent.next(dispOption);
         });
     }
 
-    async toggleViewBoxOutline(dispOption: boolean): Promise < void > {
+    async toggleCanvasOutline(dispOption: boolean): Promise < void > {
         return new Promise(() => {
-            this.viewBoxOutline = dispOption;
-            this.viewBoxOutlineEvent.next(dispOption);
+            this.canvasOutline = dispOption;
+            this.canvasOutlineEvent.next(dispOption);
         });
     }
 
-    async updateViewBoxOpacity(option: number): Promise < void > {
+    async updateCanvasOpacity(option: number): Promise < void > {
         return new Promise(() => {
-            this.viewBoxOpacity = option;
-            this.viewBoxOpacityEvent.next(option);
+            this.canvasOpacity = option;
+            this.canvasOpacityEvent.next(option);
         })
     }
 }

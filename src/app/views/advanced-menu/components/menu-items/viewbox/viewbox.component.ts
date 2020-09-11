@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AdvancedMenuSettingsService } from 'src/app/services/advancedMenuSettings.service';
-import { ToolInputService } from 'src/app/services/toolInput.service';
+import { AdvancedMenuSettingsService } from '../../../../../services/advancedMenuSettings.service';
+import { ToolInputService } from '../../../../../services/toolInput.service';
 import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 
@@ -36,7 +36,7 @@ export class ViewBoxComponent implements OnInit {
         if (this.componentSettings.isViewBoxLocked)
             this.vbHeight.data.value = Math.trunc(width / this.componentSettings.viewBoxRatio);
 
-        this.toolService.updateViewBoxDimensions([width, this.vbHeight.data.value]);
+        this.toolService.updateCanvasDimensions([width, this.vbHeight.data.value]);
         this.componentSettings.vbWidthData.value = width;
     }
 
@@ -46,7 +46,7 @@ export class ViewBoxComponent implements OnInit {
             this.vbWidth.data.value = Math.trunc(height * this.componentSettings.viewBoxRatio);
 
 
-        this.toolService.updateViewBoxDimensions([this.vbWidth.data.value, height]);
+        this.toolService.updateCanvasDimensions([this.vbWidth.data.value, height]);
         this.componentSettings.vbHeightData.value = height;
     }
 
@@ -60,19 +60,19 @@ export class ViewBoxComponent implements OnInit {
     // turns on/off viewbox canvas
     toggleViewBox(option): void {
         this.componentSettings.vbDisplayData.value = option;
-        this.toolService.toggleViewBox(option);
+        this.toolService.toggleCanvas(option);
     }
 
     // turns on/off viewbox outline
     toggleViewBoxOutline(option): void {
         this.componentSettings.vbOutlineData.value = option;
-        this.toolService.toggleViewBoxOutline(option);
+        this.toolService.toggleCanvasOutline(option);
     }
 
     // turns on/off viewbox outline
     toggleViewBoxOpacity(option): void {
         const optionValue = option === 0 ? 0 : option === 1 ? .5 : 1; // convert to numeric value
         this.componentSettings.vbOpacityData.value = option;
-        this.toolService.updateViewBoxOpacity(optionValue);
+        this.toolService.updateCanvasOpacity(optionValue);
     }
 }

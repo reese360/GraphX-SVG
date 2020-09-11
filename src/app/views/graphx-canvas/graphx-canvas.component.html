@@ -5,17 +5,18 @@
     [attr.width]="svgContainer.offsetWidth"
     [attr.height]="svgContainer.offsetHeight"
     (contextmenu)="onMouseDown($event)">
-        <rect id="svgCanvas"
-        [ngClass]="vbDisplay ? 'show-vb' : 'hide-vb'"
+        <rect
+        id="svgCanvas"
+        [ngClass]="canvasDisplay ? 'show-canvas' : 'hide-canvas'"
         #svgCanvas
         x="0"
         y="0"
         [attr.width]="canvasWidth"
         [attr.height]="canvasHeight"
         stroke="gray"
-        [attr.fill-opacity]="vbOpacity"
+        [attr.fill-opacity]="canvasOpacity"
         fill="white"
-        [attr.stroke-width]="vbStrokeWidth"
+        [attr.stroke-width]="canvasStrokeWidth"
         shape-rendering="crispEdges"/>
         <g #canvasElements></g>
         <g #gridElements></g>
