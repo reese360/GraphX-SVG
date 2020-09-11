@@ -1,6 +1,6 @@
 <div id="svg-container" #svgContainer>
     <svg id="svg" #svg preserveAspectRatio="xMidYMid meet" [attr.width]="svgContainer.offsetWidth" [attr.height]="svgContainer.offsetHeight" (contextmenu)="onMouseDown($event)">
-        <rect id="svgCanvas" #svgCanvas x="0" y="0" [attr.width]="canvasWidth" [attr.height]="canvasHeight" stroke="gray" fill="white" stroke-width="2" shape-rendering="crispEdges"/>
+        <rect id="svgCanvas" #svgCanvas x="0" y="0" [attr.width]="canvasWidth" [attr.height]="canvasHeight" stroke="gray" fill="white" stroke-width="1" shape-rendering="crispEdges"/>
         <g #canvasElements></g>
         <g #gridElements></g>
     </svg>

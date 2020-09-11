@@ -4,7 +4,7 @@ import { INumberPickerInput, NumberInputComponent } from '../../form-items/numbe
 import { ToolInputService } from 'src/app/services/toolInput.service';
 import { AdvancedMenuSettingsService } from 'src/app/services/advancedMenuSettings.service';
 
-export interface GridlinesMenuItemSettings {
+export interface GridlinesComponentSettings {
     gridDisplayData: IOptionSelectorInput,
         snapGridData: IOptionSelectorInput,
         gridWidthData: INumberPickerInput,
@@ -28,7 +28,7 @@ export class GridlinesMenuItemComponent implements OnInit {
     @ViewChild('gridOffsetX') gridOffsetX: NumberInputComponent;
     @ViewChild('gridOffsetY') gridOffsetY: NumberInputComponent;
 
-    componentSettings: GridlinesMenuItemSettings;
+    componentSettings: GridlinesComponentSettings;
 
     constructor(private toolService: ToolInputService, private settingsService: AdvancedMenuSettingsService) {}
 

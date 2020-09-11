@@ -1,8 +1,12 @@
-import { GridlinesMenuItemSettings } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
+import { ViewBoxComponentSettings } from '../views/advanced-menu/components/menu-items/geometry/viewbox.component';
+import { GridlinesComponentSettings } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 
 export class AdvancedMenuSettingsService {
 
-    gridSettings: GridlinesMenuItemSettings = {
+    defaultMin: number = -9999;
+    defaultMax: number = 9999;
+
+    gridSettings: GridlinesComponentSettings = {
         gridDisplayData: {
             label: 'Show Grid',
             options: ['Off', 'On'],
@@ -29,19 +33,52 @@ export class AdvancedMenuSettingsService {
         },
         gridOffsetXData: {
             label: 'Grid X Offset',
-            minimum: -9999,
-            maximum: 9999,
+            minimum: this.defaultMin,
+            maximum: this.defaultMax,
             step: 1,
             value: 0
         },
         gridOffsetYData: {
             label: 'Grid Y Offset',
-            minimum: -9999,
-            maximum: 9999,
+            minimum: this.defaultMin,
+            maximum: this.defaultMax,
             step: 1,
             value: 0
         },
         isDimsLocked: true,
         isOffsetLocked: false
     };
+
+    geometrySettings: ViewBoxComponentSettings = {
+        vbWidthData: {
+            label: 'Width',
+            minimum: 1,
+            maximum: this.defaultMax,
+            step: 1,
+            value: 1000
+        },
+        vbHeightData: {
+            label: 'Height',
+            minimum: 1,
+            maximum: this.defaultMax,
+            step: 1,
+            value: 800
+        },
+        vbOffsetX: {
+            label: 'Offset X',
+            minimum: this.defaultMin,
+            maximum: this.defaultMax,
+            step: 1,
+            value: 0
+        },
+        vbOffsetY: {
+            label: 'Offset Y',
+            minimum: this.defaultMin,
+            maximum: this.defaultMax,
+            step: 1,
+            value: 0
+        },
+        isViewBoxLocked: false,
+        viewBoxRatio: null,
+    }
 }

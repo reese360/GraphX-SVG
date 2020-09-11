@@ -53,6 +53,9 @@ export class ToolInputService {
     public gridOffset: number[];
     public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
 
+    public viewBoxDimensions: number[];
+    public viewBoxDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
             this.mouseCoordsEvent.next(pos);
@@ -122,6 +125,13 @@ export class ToolInputService {
         return new Promise(() => {
             this.gridOffsetEvent.next(offset);
             this.gridOffset = offset;
+        })
+    }
+
+    async updateViewBoxDimensions(dims: number[]): Promise < void > {
+        return new Promise(() => {
+            this.viewBoxDimensionsEvent.next(dims);
+            this.viewBoxDimensions = dims;
         })
     }
 }

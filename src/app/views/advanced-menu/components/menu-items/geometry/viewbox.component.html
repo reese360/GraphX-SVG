@@ -1,0 +1,13 @@
+<div class="mi-container">
+    <div class="mi-title">
+        <i class="fas fa-chalkboard-teacher"></i> ViewBox
+    </div>
+    <div class="mi-content">
+        <!-- <div id="mi-label" appMenuItemTitle>View Box</div> -->
+        <app-number-input id="vb-width" [data]="componentSettings.vbWidthData" (updateEvent)="updateViewBoxWidth($event)" #vbWidth></app-number-input>
+        <div id="vbW-vbH-lock" class="lock-icon" (click)="toggleLock()"><i [ngClass]="componentSettings.isViewBoxLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
+        <app-number-input id="vb-height" [data]="componentSettings.vbHeightData" (updateEvent)="updateViewBoxHeight($event)" #vbHeight></app-number-input>
+        <!-- <app-number-input id="vb-off-x" [data]="componentSettings.vbOffsetX" (updateEvent)="updateViewBoxOffsetX($event)"></app-number-input>
+        <app-number-input id="vb-off-y" [data]="componentSettings.vbOffsetY" (updateEvent)="updateViewBoxOffsetY($event)"></app-number-input> -->
+    </div>
+</div>

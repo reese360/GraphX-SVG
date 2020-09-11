@@ -4,8 +4,9 @@
 }
 
 .os-label {
-    font-size: 14px;
-    padding-bottom: 5px;
+    color: var(--border-color);
+    font-size: 12px;
+    padding-bottom: 2px;
 }
 
 .os-options {

@@ -63,6 +63,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
         private selectorService: SelectorService,
         private objectService: ObjectService) {
 
+
+        //#region gridline observables
         // subscription to display grid
         this.toolService.showGridEvent.subscribe((option) => {
             this.gridDisplay = option;
@@ -87,6 +89,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.gridOffset = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
+        //#endregion
+
+        //#region geometry observables
+        // subscription to geometry dimensions
+        this.toolService.viewBoxDimensionsEvent.subscribe((dim) => {
+            this.canvasWidth = dim[0];
+            this.canvasHeight = dim[1];
+        })
     }
 
     ngAfterViewInit(): void {
