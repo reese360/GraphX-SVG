@@ -1,15 +1,15 @@
 <div class="mi-container">
-    <div class="mi-title">
+    <div appMenuItemTitle>
         <i class="fas fa-border-all"></i> Grid Display
     </div>
-    <div class="mi-content">
+    <div appMenuItemContent class="mi-content-grid-layout">
         <app-option-selector id="showGrid" [data]="componentSettings.gridDisplayData" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
         <app-option-selector id="snapGrid" [data]="componentSettings.snapGridData" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
         <app-number-input id="gridWidth" [data]="componentSettings.gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
-        <div id="width-height-lock" class="lock-icon" (click)="toggleLock(0)"><i [ngClass]="componentSettings.isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
+        <div appLockIcon id="width-height-lock" (click)="toggleLock(0)"><i [ngClass]="componentSettings.isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
         <app-number-input id="gridHeight" [data]="componentSettings.gridHeightData" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>
         <app-number-input id="gridOffsetX" [data]="componentSettings.gridOffsetXData" (updateEvent)="updateOffsetX($event)" #gridOffsetX></app-number-input>
-        <div id="offX-offY-lock" class="lock-icon" (click)="toggleLock(1)"><i [ngClass]="componentSettings.isOffsetLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
+        <div appLockIcon id="offX-offY-lock" (click)="toggleLock(1)"><i [ngClass]="componentSettings.isOffsetLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
         <app-number-input id="gridOffsetY" [data]="componentSettings.gridOffsetYData" (updateEvent)="updateOffsetY($event)" #gridOffsetY></app-number-input>
     </div>
 </div>

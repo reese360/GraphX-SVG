@@ -16,6 +16,8 @@ import { OptionSelectorComponent } from './views/advanced-menu/components/form-i
 import { NumberInputComponent } from './views/advanced-menu/components/form-items/number-input/number-input.component';
 import { ViewBoxComponent } from './views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { MenuItemTitleDirective } from './directives/menu-item-title.directive';
+import { MenuItemContentDirective } from './directives/menu-item-content.directive';
+import { LockIconDirective } from './directives/lock-icon.directive';
 
 
 @NgModule({
@@ -32,6 +34,8 @@ import { MenuItemTitleDirective } from './directives/menu-item-title.directive';
         NumberInputComponent,
         ViewBoxComponent,
         MenuItemTitleDirective,
+        MenuItemContentDirective,
+        LockIconDirective,
     ],
     imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule],
     providers: [],
