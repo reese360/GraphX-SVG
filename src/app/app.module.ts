@@ -18,6 +18,7 @@ import { ViewBoxComponent } from './views/advanced-menu/components/menu-items/vi
 import { MenuItemTitleDirective } from './directives/menu-item-title.directive';
 import { MenuItemContentDirective } from './directives/menu-item-content.directive';
 import { LockIconDirective } from './directives/lock-icon.directive';
+import { AboutComponent } from './views/advanced-menu/components/menu-items/about/about.component';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { LockIconDirective } from './directives/lock-icon.directive';
         MenuItemTitleDirective,
         MenuItemContentDirective,
         LockIconDirective,
+        AboutComponent,
     ],
     imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule],
     providers: [],

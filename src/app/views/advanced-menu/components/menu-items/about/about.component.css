@@ -1,0 +1,10 @@
+.about {
+    margin-top: 100px;
+    min-width: 200px;
+    text-align: center;
+}
+
+a{
+    text-decoration: none;
+    color: var(--primary-border-);
+}

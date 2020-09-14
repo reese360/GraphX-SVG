@@ -20,6 +20,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('gridElements') gridElementRef: ElementRef;
     @ViewChild('canvasElements') canvasElementRef: ElementRef;
+    @ViewChild('selectionElements') selectionElementRef: ElementRef;
 
     // faux svg viewbox == canvas
     // canvas 'display' dimensions

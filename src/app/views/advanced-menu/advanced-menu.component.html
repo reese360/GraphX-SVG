@@ -1,5 +1,11 @@
 <app-slider #slider></app-slider>
 <div id="advanced-menu">
+	<div class="icon" title="Stroke" (click)="toggleItemDisplay('stroke')">
+        <i class="fas fa-paint-brush"></i>
+	</div>
+	<div class="icon" title="Fill" (click)="toggleItemDisplay('fill')">
+        <i class="fas fa-fill-drip"></i>
+	</div>
 	<div class="icon" title="Grid Display" (click)="toggleItemDisplay('grid')">
         <i class="fas fa-border-all"></i>
 	</div>
