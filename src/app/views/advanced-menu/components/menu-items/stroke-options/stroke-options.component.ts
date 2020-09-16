@@ -1,12 +1,14 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { AdvancedMenuSettingsService } from 'src/app/services/advancedMenuSettings.service';
+import { CurrentStateService } from 'src/app/services/currentState.service';
+import { InputService } from 'src/app/services/toolInput.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 
-export interface StrokeOptionsComponentSettings {
+export interface StrokeOptionsComponentState {
     strokeType: IOptionSelectorInput;
-    strokeRender: IOptionSelectorInput;
+    shapeRender: IOptionSelectorInput;
     currentColor: string;
     currentAlpha: string;
+    currentHue: string;
 }
 
 @Component({
@@ -16,31 +18,32 @@ export interface StrokeOptionsComponentSettings {
     encapsulation: ViewEncapsulation.None
 })
 export class StrokeOptionsComponent implements OnInit {
-    componentSettings: StrokeOptionsComponentSettings;
+    componentState: StrokeOptionsComponentState;
 
-    constructor(private settingsService: AdvancedMenuSettingsService) {}
+    constructor(private stateSvc: CurrentStateService, private inputService: InputService) {}
 
     ngOnInit(): void {
-        this.componentSettings = this.settingsService.strokeSettings;
+        this.componentState = this.stateSvc.strokeOptionState;
     }
 
     updateStrokeType(type): void {
-        this.componentSettings.strokeType.value = type;
+        this.componentState.strokeType.value = type;
     }
 
     updateHue(color): void {
-        this.componentSettings.currentColor = color;
+        this.componentState.currentColor = color;
+        this.componentState.currentHue = color;
     }
 
     updateSaturation(color): void {
-        this.componentSettings.currentColor = color;
+        this.componentState.currentColor = color;
     }
 
     updateAlpha(alpha): void {
-        this.componentSettings.currentAlpha = alpha;
+        this.componentState.currentAlpha = alpha;
     }
 
     updateShapeRender(option): void {
-        this.componentSettings.strokeRender.value = option;
+        this.componentState.shapeRender.value = option;
     }
 }

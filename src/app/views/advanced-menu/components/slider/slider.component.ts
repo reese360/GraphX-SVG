@@ -7,7 +7,7 @@ import { Component, ViewChild, Renderer2, ElementRef, Input, AfterViewInit } fro
 })
 export class SliderComponent implements AfterViewInit {
     // TODO: reset these to not have slider open at launch
-    currentView: string = "stroke"; // used to determine which menu item to display on slider /
+    currentView: string = "fill"; // used to determine which menu item to display on slider /
     sliderOpen: boolean = false; // flag if slider is open
     @ViewChild('slider') sliderElRef: ElementRef;
 

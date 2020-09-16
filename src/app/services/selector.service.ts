@@ -1,14 +1,14 @@
 import { IShape } from '../Interfaces/IShape.interface';
 import { IShapeHashMap } from '../interfaces/IShapeHashMap.interface';
 import { Injectable } from '@angular/core';
-import { ToolInputService } from './toolInput.service';
+import { InputService } from './toolInput.service';
 
 @Injectable()
 export class SelectorService {
 	private selectedShapes: IShapeHashMap = {}; // user selected shapes
 	public dragging: boolean = false;
 
-	constructor(private toolService: ToolInputService) {
+	constructor(private toolService: InputService) {
 		// subscription to stroke width change
 		this.toolService.strokeSizeEvent.subscribe((size) => {
 			Object.keys(this.selectedShapes).forEach((shape) => {

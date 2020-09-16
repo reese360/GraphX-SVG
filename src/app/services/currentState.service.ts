@@ -1,13 +1,15 @@
-import { ViewBoxComponentSettings } from '../views/advanced-menu/components/menu-items/viewbox/viewbox.component';
-import { GridlinesComponentSettings } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
-import { StrokeOptionsComponentSettings } from '../views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
+import { ViewBoxComponentState } from '../views/advanced-menu/components/menu-items/viewbox/viewbox.component';
+import { GridlinesComponentState } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
+import { StrokeOptionsComponentState } from '../views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
+import { FillOptionsComponentState } from '../views/advanced-menu/components/menu-items/fill-options/fill-options.component';
 
-export class AdvancedMenuSettingsService {
+export class CurrentStateService {
     // consistent variable declarations
     defaultMin: number = -9999;
     defaultMax: number = 9999;
+    defaultColor: string = '#000000'
 
-    gridSettings: GridlinesComponentSettings = {
+    gridState: GridlinesComponentState = {
         gridDisplayData: {
             label: 'Show Grid',
             options: ['Off', 'On'],
@@ -52,7 +54,7 @@ export class AdvancedMenuSettingsService {
         offsetRatio: null
     };
 
-    viewBoxSettings: ViewBoxComponentSettings = {
+    viewBoxState: ViewBoxComponentState = {
         vbWidthData: {
             label: 'Width',
             minimum: 1,
@@ -86,18 +88,30 @@ export class AdvancedMenuSettingsService {
         viewBoxRatio: null,
     }
 
-    strokeSettings: StrokeOptionsComponentSettings = {
+    strokeOptionState: StrokeOptionsComponentState = {
         strokeType: {
             label: 'Stroke Type',
             options: ['Solid', 'None'],
             value: 0
         },
-        strokeRender: {
+        shapeRender: {
             label: 'Shape Rendering',
             options: ['Auto', 'Speed', 'Contrast', 'Precision'],
             value: 0
         },
-        currentColor: '#000000',
-        currentAlpha: '1'
+        currentAlpha: '1',
+        currentColor: this.defaultColor,
+        currentHue: '#000000'
+    }
+
+    fillOptionState: FillOptionsComponentState = {
+        fillType: {
+            label: 'Fill Type',
+            options: ['Solid', 'Gradient', 'None'],
+            value: 0
+        },
+        currentAlpha: '1',
+        currentColor: this.defaultColor,
+        currentHue: this.defaultColor
     }
 }

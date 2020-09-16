@@ -1,14 +1,10 @@
 <div #slider class="slider">
     <div class="slider-content" [ngSwitch]="currentView">
         <ng-container *ngSwitchCase="'stroke'">
-            <div class="slider-title">
                 <app-stroke-options></app-stroke-options>
-            </div>
         </ng-container>
         <ng-container *ngSwitchCase="'fill'">
-            <div class="slider-title">
-                <i class="fas fa-paint-brush"></i> Fill Options
-            </div>
+                <app-fill-options></app-fill-options>
         </ng-container>
         <ng-container *ngSwitchCase="'grid'">
             <app-gridlines></app-gridlines>

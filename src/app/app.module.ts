@@ -27,6 +27,7 @@ import { FormItemLabelDirective } from './directives/form-item-label.directive';
 import { HuePickerComponent } from './views/advanced-menu/components/form-items/color/hue-picker/hue-picker.component';
 import { AlphaPickerComponent } from './views/advanced-menu/components/form-items/color/alpha-picker/alpha-picker.component';
 import { HexDisplayComponent } from './views/advanced-menu/components/form-items/color/hex-display/hex-display.component';
+import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { HexDisplayComponent } from './views/advanced-menu/components/form-items
         HuePickerComponent,
         AlphaPickerComponent,
         HexDisplayComponent,
+        FillOptionsComponent,
     ],
     imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
     providers: [],

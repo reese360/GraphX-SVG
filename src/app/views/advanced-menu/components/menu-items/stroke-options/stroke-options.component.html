@@ -3,11 +3,11 @@
         <i class="fas fa-paint-brush"></i> Stroke Options
     </div>
     <div class="mi-content">
-        <app-option-selector id="stroke-type" [data]="componentSettings.strokeType" (updateEvent)="updateStrokeType($event)"></app-option-selector>
-        <app-option-selector id="stroke-rendering" [data]="componentSettings.strokeRender" (updateEvent)="updateShapeRender($event)"></app-option-selector>
-        <app-hue-picker id="hue-picker" [label]="'Hue'" (colorEvent)="updateHue($event)"></app-hue-picker>
-        <app-saturation-picker id="sat-picker" [label]="'Saturation'" [color]="componentSettings.currentColor" (colorEvent)="updateSaturation($event)"></app-saturation-picker>
-        <app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="componentSettings.currentColor" (colorEvent)="updateAlpha($event)"></app-alpha-picker>
-        <app-hex-display id="hex-display" [label]="'Hex'" [color]="componentSettings.currentColor" (colorEvent)="updateHue($event)"></app-hex-display>
+        <app-option-selector id="stroke-type" [data]="componentState.strokeType" (updateEvent)="updateStrokeType($event)"></app-option-selector>
+        <app-option-selector id="stroke-rendering" [data]="componentState.shapeRender" (updateEvent)="updateShapeRender($event)"></app-option-selector>
+        <app-hue-picker id="hue-picker" [label]="'Hue'" [color]="componentState.currentColor" (colorEvent)="updateHue($event)"></app-hue-picker>
+        <app-saturation-picker id="sat-picker" [label]="'Saturation'" [color]="componentState.currentColor" (colorEvent)="updateSaturation($event)"></app-saturation-picker>
+        <app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="componentState.currentColor" (colorEvent)="updateAlpha($event)"></app-alpha-picker>
+        <app-hex-display id="hex-display" [label]="'Hex'" [color]="componentState.currentColor" (colorEvent)="updateHue($event)"></app-hex-display>
     </div>
 </div>
