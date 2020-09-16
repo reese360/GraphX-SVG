@@ -1,5 +1,5 @@
 import { Component, Renderer2, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { InputService } from 'src/app/services/toolInput.service';
+import { InputService } from 'src/app/services/inputTool.service';
 
 @Component({
   selector: 'app-simple-menu',

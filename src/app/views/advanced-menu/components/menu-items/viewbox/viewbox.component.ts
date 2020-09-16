@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CurrentStateService } from '../../../../../services/currentState.service';
-import { InputService } from '../../../../../services/toolInput.service';
+import { InputService } from '../../../../../services/inputTool.service';
 import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 

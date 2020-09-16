@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
-import { InputService } from 'src/app/services/toolInput.service';
-import { SelectorService } from 'src/app/services/selector.service';
+import { InputService } from 'src/app/services/inputTool.service';
+import { SelectorService } from 'src/app/services/selectorTool.service';
 import { ObjectService } from 'src/app/services/object.service';
 import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
 import { RectModel } from 'src/app/models/shapes/rect.model';

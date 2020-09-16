@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentStateService } from 'src/app/services/currentState.service';
-import { InputService } from 'src/app/services/toolInput.service';
+import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 
 export interface StrokeOptionsComponentState {

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { InputService } from './services/toolInput.service';
-import { SelectorService } from './services/selector.service';
+import { InputService } from './services/inputTool.service';
+import { SelectorService } from './services/selectorTool.service';
 import { ObjectService } from './services/object.service';
 import { CurrentStateService } from './services/currentState.service';
 

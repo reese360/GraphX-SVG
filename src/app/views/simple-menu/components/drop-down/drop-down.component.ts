@@ -1,5 +1,5 @@
 import { Component, Renderer2, ElementRef, ViewChild, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { InputService } from '../../../../services/toolInput.service';
+import { InputService } from '../../../../services/inputTool.service';
 
 @Component({
 	selector: 'app-drop-down',

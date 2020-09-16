@@ -1,7 +1,7 @@
 import { IShape } from '../Interfaces/IShape.interface';
 import { IShapeHashMap } from '../interfaces/IShapeHashMap.interface';
 import { Injectable } from '@angular/core';
-import { InputService } from './toolInput.service';
+import { InputService } from './inputTool.service';
 
 @Injectable()
 export class SelectorService {

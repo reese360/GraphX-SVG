@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IOptionSelectorInput, OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
 import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
-import { InputService } from 'src/app/services/toolInput.service';
+import { InputService } from 'src/app/services/inputTool.service';
 import { CurrentStateService } from 'src/app/services/currentState.service';
 
 export interface GridlinesComponentState {
