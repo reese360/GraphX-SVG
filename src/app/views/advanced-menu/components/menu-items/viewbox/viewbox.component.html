@@ -2,7 +2,7 @@
     <div appMenuItemTitle>
         <i class="fas fa-chalkboard-teacher"></i> ViewBox
     </div>
-    <div appMenuItemContent class="mi-content-grid-layout">
+    <div class="mi-content">
         <app-option-selector id="show-vb" [data]="componentSettings.vbDisplayData" (updateEvent)="toggleViewBox($event)" #showViewBox></app-option-selector>
         <app-number-input id="vb-width" [data]="componentSettings.vbWidthData" (updateEvent)="updateViewBoxWidth($event)" #vbWidth></app-number-input>
         <div appLockIcon id="vbW-vbH-lock"  (click)="toggleLock()"><i [ngClass]="componentSettings.isViewBoxLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>

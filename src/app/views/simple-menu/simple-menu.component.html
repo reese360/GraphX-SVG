@@ -46,13 +46,11 @@
 	<div [ngClass]="toolService.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
 		<i class="fas fa-signature"></i>
     </div>
-	<div [ngClass]="toolService.currentShape == '6' ? 'icon selected-tool' : 'icon'" title="Text"  (click)="updateShape('text')">
+	<!-- <div [ngClass]="toolService.currentShape == '6' ? 'icon selected-tool' : 'icon'" title="Text"  (click)="updateShape('text')">
 		<i class="fas fa-font"></i>
-    </div>	
-    <div class="icon">
-		<div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
-    </div>
-    <div class="colorBox" title="Stroke Color">
+    </div>	 -->
+    
+    <!-- <div class="colorBox" title="Stroke Color">
         <div class="color-col-1">
             <div class="color-icon" (click)="updateColors(null,'scp')">
                 <i class="fas fa-paint-brush"></i>
@@ -81,13 +79,13 @@
             <div #fcpDisplay class="color color-pick-stack" id="fill-color-display" [style.background-color]="fillColor"></div>
             <color-sketch #fcp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'fcp')"></color-sketch>
         </div>
-    </div>
-    <div class="icon">
+    </div> -->
+    <!-- <div class="icon">
         <app-drop-down [dropDownOptions]="strokeWidthOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-width', $event)"></app-drop-down>
     </div>
     <div class="icon">
         <app-drop-down [dropDownOptions]="dashArrayOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-dasharray', $event)"></app-drop-down>
-    </div>
+    </div> -->
     <div class="mouse-coordinate-display">
        <span>x:{{mouseX}} y:{{mouseY}}</span>&nbsp;<i class="fas fa-mouse"></i>
     </div>

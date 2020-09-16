@@ -1,5 +1,6 @@
 import { ViewBoxComponentSettings } from '../views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { GridlinesComponentSettings } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
+import { StrokeOptionsComponentSettings } from '../views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
 
 export class AdvancedMenuSettingsService {
     // consistent variable declarations
@@ -83,5 +84,20 @@ export class AdvancedMenuSettingsService {
         },
         isViewBoxLocked: false,
         viewBoxRatio: null,
+    }
+
+    strokeSettings: StrokeOptionsComponentSettings = {
+        strokeType: {
+            label: 'Stroke Type',
+            options: ['Solid', 'None'],
+            value: 0
+        },
+        strokeRender: {
+            label: 'Shape Rendering',
+            options: ['Auto', 'Speed', 'Contrast', 'Precision'],
+            value: 0
+        },
+        currentColor: '#000000',
+        currentAlpha: '1'
     }
 }

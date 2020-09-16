@@ -2,7 +2,7 @@
     <div class="slider-content" [ngSwitch]="currentView">
         <ng-container *ngSwitchCase="'stroke'">
             <div class="slider-title">
-                <i class="fas fa-paint-brush"></i> Stroke Options
+                <app-stroke-options></app-stroke-options>
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'fill'">
@@ -57,10 +57,7 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'about'">
-            <div class="slider-title">
-                <i class="fas fa-robot"></i> About
                 <app-about></app-about>
-            </div>
         </ng-container>
     </div>
 </div>

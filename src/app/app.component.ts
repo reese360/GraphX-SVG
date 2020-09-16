@@ -11,5 +11,5 @@ import { AdvancedMenuSettingsService } from './services/advancedMenuSettings.ser
 	providers: [ToolInputService, SelectorService, ObjectService, AdvancedMenuSettingsService],
 })
 export class AppComponent {
-	title = 'ngGraphX';
+	title = 'GraphX - SVG';
 }

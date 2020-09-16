@@ -2,7 +2,7 @@
     <div appMenuItemTitle>
         <i class="fas fa-border-all"></i> Grid Display
     </div>
-    <div appMenuItemContent class="mi-content-grid-layout">
+    <div class="mi-content">
         <app-option-selector id="showGrid" [data]="componentSettings.gridDisplayData" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
         <app-option-selector id="snapGrid" [data]="componentSettings.snapGridData" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
         <app-number-input id="gridWidth" [data]="componentSettings.gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
