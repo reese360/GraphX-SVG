@@ -1,0 +1,15 @@
+<div class="hd-container">
+    <div appFormItemLabel>
+        {{ label }}
+    </div>
+    <div class="hd-display-area">
+        <input
+        type="text" 
+        maxlength="9" 
+        spellcheck="false" 
+        autocomplete="off" 
+        [value]="color" 
+        (blur)="updateInputValue($event.target.value)" 
+        (keyup.enter)="updateInputValue($event.target.value)">
+    </div>
+</div>

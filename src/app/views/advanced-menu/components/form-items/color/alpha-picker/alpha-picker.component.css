@@ -1,0 +1,20 @@
+.alpha-picker {
+    border: 1px solid gray;
+    cursor: pointer;
+}
+
+.alpha-slider {
+    outline: 1px solid gray;
+    box-shadow: none !important;
+    border-radius: 0px !important;
+    width: 6px !important;
+    height: 30px !important;
+    transform: translate(-3px, -1px) !important;
+    cursor: pointer;
+    background-color: var(--primary-gray);
+}
+
+.alpha-pointer {
+    left: var(--current-alpha) !important;
+
+}

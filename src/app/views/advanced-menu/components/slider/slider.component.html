@@ -1,5 +1,11 @@
 <div #slider class="slider">
     <div class="slider-content" [ngSwitch]="currentView">
+        <ng-container *ngSwitchCase="'stroke'">
+                <app-stroke-options></app-stroke-options>
+        </ng-container>
+        <ng-container *ngSwitchCase="'fill'">
+                <app-fill-options></app-fill-options>
+        </ng-container>
         <ng-container *ngSwitchCase="'grid'">
             <app-gridlines></app-gridlines>
         </ng-container>
@@ -47,9 +53,7 @@
             </div>
         </ng-container>
         <ng-container *ngSwitchCase="'about'">
-            <div class="slider-title">
-                <i class="fas fa-robot"></i> About
-            </div>
+                <app-about></app-about>
         </ng-container>
     </div>
 </div>

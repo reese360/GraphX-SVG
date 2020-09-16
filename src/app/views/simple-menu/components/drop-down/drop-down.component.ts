@@ -1,5 +1,5 @@
 import { Component, Renderer2, ElementRef, ViewChild, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { ToolInputService } from '../../../../services/toolInput.service';
+import { InputService } from '../../../../services/inputTool.service';
 
 @Component({
 	selector: 'app-drop-down',
@@ -14,7 +14,7 @@ export class DropDownComponent implements OnInit {
 	dropDownDisplayItem: string[];
 	dropDownOpen: boolean = false;
 
-	constructor(private toolService: ToolInputService, private renderer: Renderer2) {}
+	constructor(private toolService: InputService, private renderer: Renderer2) {}
 
 	ngOnInit(): void {
 		this.dropDownDisplayItem = this.dropDownOptions[0];

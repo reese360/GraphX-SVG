@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
-import { ToolInputService } from 'src/app/services/toolInput.service';
-import { SelectorService } from 'src/app/services/selector.service';
+import { InputService } from 'src/app/services/inputTool.service';
+import { SelectorService } from 'src/app/services/selectorTool.service';
 import { ObjectService } from 'src/app/services/object.service';
 import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
 import { RectModel } from 'src/app/models/shapes/rect.model';
@@ -20,6 +20,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('gridElements') gridElementRef: ElementRef;
     @ViewChild('canvasElements') canvasElementRef: ElementRef;
+    @ViewChild('selectionElements') selectionElementRef: ElementRef;
 
     // faux svg viewbox == canvas
     // canvas 'display' dimensions
@@ -63,14 +64,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     constructor(
         private renderer: Renderer2,
-        private toolService: ToolInputService,
+        private inputSvc: InputService,
         private selectorService: SelectorService,
         private objectService: ObjectService) {
 
 
         //#region gridline observables
         // subscription to display grid
-        this.toolService.showGridEvent.subscribe((option) => {
+        this.inputSvc.showGridEvent.subscribe((option) => {
             this.gridDisplay = option;
             if (this.gridDisplay)
                 this.showGrid();
@@ -78,18 +79,18 @@ export class GraphxCanvasComponent implements AfterViewInit {
                 this.hideGrid();
         });
 
-        this.toolService.gridSnapEvent.subscribe((option) => {
+        this.inputSvc.gridSnapEvent.subscribe((option) => {
             this.gridSnap = option;
         });
 
         // subscription to grid dimensions
-        this.toolService.gridDimensionsEvent.subscribe((dim) => {
+        this.inputSvc.gridDimensionsEvent.subscribe((dim) => {
             this.gridDimensions = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
 
         // subscription to grid offset
-        this.toolService.gridOffsetEvent.subscribe((dim) => {
+        this.inputSvc.gridOffsetEvent.subscribe((dim) => {
             this.gridOffset = dim;
             if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
         });
@@ -97,20 +98,20 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
         //#region viewbox observables
         // subscription to viewbox dimensions
-        this.toolService.canvasDisplayEvent.subscribe((option) => {
+        this.inputSvc.canvasDisplayEvent.subscribe((option) => {
             this.canvasDisplay = option;
         });
 
-        this.toolService.canvasDimensionsEvent.subscribe((dim) => {
+        this.inputSvc.canvasDimensionsEvent.subscribe((dim) => {
             this.canvasWidth = dim[0];
             this.canvasHeight = dim[1];
         });
 
-        this.toolService.canvasOpacityEvent.subscribe((option) => {
+        this.inputSvc.canvasOpacityEvent.subscribe((option) => {
             this.canvasOpacity = option.toString();
         });
 
-        this.toolService.canvasOutlineEvent.subscribe((option) => {
+        this.inputSvc.canvasOutlineEvent.subscribe((option) => {
             this.canvasStrokeWidth = option.toString();
         });
         //#endregion
@@ -215,7 +216,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             this.zoomHeight = this.svgHeight * this.zoomLevels[this.zoomIdx];
             this.zoomWidth = this.svgWidth * this.zoomLevels[this.zoomIdx];
             const defViewBox = `${this.svgMinX} ${this.svgMinY} ${this.zoomWidth} ${this.zoomHeight}`;
-            this.toolService.updateZoomLevel(this.zoomLevels[(this.zoomLevels.length - 1) - this.zoomIdx]); // pass new zoom level to tool
+            this.inputSvc.updateZoomLevel(this.zoomLevels[(this.zoomLevels.length - 1) - this.zoomIdx]); // pass new zoom level to tool
             this.updateSvgViewBox(defViewBox);
         }
     }
@@ -245,8 +246,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @HostListener('mousedown', ['$event']) onMouseDown(e): void {
         // left mouse button click
         if (e.button === 0) {
-            switch (this.toolService.currentTool) {
-                case this.toolService.toolsOptions.select: {
+            switch (this.inputSvc.currentTool) {
+                case this.inputSvc.toolsOptions.select: {
                     const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
                     const hitObjectRef = this.objectService.fetch(hitObjectId);
                     if (hitObjectRef) {
@@ -267,35 +268,35 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     }
                     break;
                 }
-                case this.toolService.toolsOptions.draw: {
+                case this.inputSvc.toolsOptions.draw: {
                     this.selectorService.resetService();
                     const styleSettings = {
-                        stroke: this.toolService.strokeColor,
-                        'stroke-width': this.toolService.strokeSize,
-                        'stroke-dasharray': this.toolService.strokeDashArray,
-                        fill: this.toolService.fillColor,
+                        stroke: this.inputSvc.strokeColor,
+                        'stroke-width': this.inputSvc.strokeSize,
+                        'stroke-dasharray': this.inputSvc.strokeDashArray,
+                        fill: this.inputSvc.fillColor,
                     };
-                    switch (this.toolService.currentShape) {
-                        case this.toolService.shapeOptions.line: {
-                            this.currentObject = new LineModel(this.renderer, { stroke: this.toolService.strokeColor, 'stroke-width': this.toolService.strokeSize });
+                    switch (this.inputSvc.currentShape) {
+                        case this.inputSvc.shapeOptions.line: {
+                            this.currentObject = new LineModel(this.renderer, { stroke: this.inputSvc.strokeColor, 'stroke-width': this.inputSvc.strokeSize });
                             break;
                         }
-                        case this.toolService.shapeOptions.rectangle: {
+                        case this.inputSvc.shapeOptions.rectangle: {
                             this.currentObject = new RectModel(this.renderer, styleSettings);
                             break;
                         }
-                        case this.toolService.shapeOptions.ellipse: {
+                        case this.inputSvc.shapeOptions.ellipse: {
                             this.currentObject = new EllipseModel(this.renderer, styleSettings);
                             break;
                         }
-                        case this.toolService.shapeOptions.polyline: {
+                        case this.inputSvc.shapeOptions.polyline: {
                             if (!this.currentObject) {
                                 // if currently drawing do not create new object
                                 this.currentObject = new PolylineModel(this.renderer, styleSettings);
                             }
                             break;
                         }
-                        case this.toolService.shapeOptions.polygon: {
+                        case this.inputSvc.shapeOptions.polygon: {
                             if (!this.currentObject) {
                                 // if currently drawing do not create new object
                                 this.currentObject = new PolygonModel(this.renderer, styleSettings);
@@ -309,7 +310,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
-                case this.toolService.toolsOptions.pan: {
+                case this.inputSvc.toolsOptions.pan: {
                     this.panning = true;
                     break;
                 }
@@ -341,14 +342,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @HostListener('mousemove', ['$event']) onMouseMove(e): void {
         this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
-        switch (this.toolService.currentTool) {
-            case this.toolService.toolsOptions.select: {
+        switch (this.inputSvc.currentTool) {
+            case this.inputSvc.toolsOptions.select: {
                 if (this.selectorService.canDragSelection) {
                     this.selectorService.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
                 }
                 break;
             }
-            case this.toolService.toolsOptions.draw: {
+            case this.inputSvc.toolsOptions.draw: {
                 if (this.currentObject) {
                     this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
                 }
@@ -366,13 +367,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     // mouse up event handler
     @HostListener('mouseup', ['$event']) onMouseUp(e): void {
-        switch (this.toolService.currentTool) {
-            case this.toolService.toolsOptions.select: {
+        switch (this.inputSvc.currentTool) {
+            case this.inputSvc.toolsOptions.select: {
                 this.selectorService.endDrag();
                 break;
             }
-            case this.toolService.toolsOptions.draw: {
-                if (this.toolService.currentShape === this.toolService.shapeOptions.polyline || this.toolService.currentShape === this.toolService.shapeOptions.polygon) {
+            case this.inputSvc.toolsOptions.draw: {
+                if (this.inputSvc.currentShape === this.inputSvc.shapeOptions.polyline || this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
                     return;
                 }
                 if (this.currentObject) {
@@ -400,6 +401,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
     // updates toolService mouse coordinates
     // BUG: does not work correctly at zoom levels != 100%
     updateMouseCoords(pos: [number, number]): void {
-        this.toolService.updateMouseCoords(pos);
+        this.inputSvc.updateMouseCoords(pos);
     }
 }

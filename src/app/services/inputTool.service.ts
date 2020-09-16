@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs';
 
-export class ToolInputService {
+export class InputService {
     public shapeOptions: any = {
         line: 0,
         rectangle: 1,

@@ -1,5 +1,5 @@
 import { Component, Renderer2, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
-import { ToolInputService } from 'src/app/services/toolInput.service';
+import { InputService } from 'src/app/services/inputTool.service';
 
 @Component({
   selector: 'app-simple-menu',
@@ -7,10 +7,10 @@ import { ToolInputService } from 'src/app/services/toolInput.service';
   styleUrls: ['./simple-menu.component.css']
 })
 export class SimpleMenuComponent implements AfterViewInit {
-	@ViewChild('scp', { read: ElementRef }) strokeColorPicker: ElementRef;
-	@ViewChild('fcp', { read: ElementRef }) fillColorPicker: ElementRef;
-	@ViewChild('scpDisplay', { read: ElementRef }) strokeColorDisplay: ElementRef;
-	@ViewChild('fcpDisplay', { read: ElementRef }) fillColorDisplay: ElementRef;
+	// @ViewChild('scp', { read: ElementRef }) strokeColorPicker: ElementRef;
+	// @ViewChild('fcp', { read: ElementRef }) fillColorPicker: ElementRef;
+	// @ViewChild('scpDisplay', { read: ElementRef }) strokeColorDisplay: ElementRef;
+	// @ViewChild('fcpDisplay', { read: ElementRef }) fillColorDisplay: ElementRef;
 
 	strokePickerOpen: boolean = false;
 	fillPickerOpen: boolean = false;
@@ -37,97 +37,97 @@ export class SimpleMenuComponent implements AfterViewInit {
 		['0', '15', '100', '15', 'stroke-width: 2; stroke-dasharray: 4;', '4'],
 	];
 
-	constructor(public toolService: ToolInputService, public renderer: Renderer2) {
+	constructor(public inputSvc: InputService, public renderer: Renderer2) {
 		// set initial tooling options
-		this.toolService.currentTool = this.toolService.toolsOptions.select;
-		this.toolService.currentShape = this.toolService.shapeOptions.polyline;
-		this.toolService.strokeColor = '#000'; // black
-		this.toolService.fillColor = 'none'; // no fill
+		this.inputSvc.currentTool = this.inputSvc.toolsOptions.select;
+		this.inputSvc.currentShape = this.inputSvc.shapeOptions.polyline;
+		this.inputSvc.strokeColor = '#000'; // black
+		this.inputSvc.fillColor = 'none'; // no fill
 
 		// subscription for mouse coord display
-		this.toolService.mouseCoordsEvent.subscribe((pos) => {
+		this.inputSvc.mouseCoordsEvent.subscribe((pos) => {
 			this.mouseX = pos[0];
 			this.mouseY = pos[1];
 		});
 
 		// subscription for zoom level
-		this.toolService.zoomLevelEvent.subscribe((level) => {
+		this.inputSvc.zoomLevelEvent.subscribe((level) => {
 			this.zoomLevelDisplay = `${100 * level}%`;
 		});
 	}
 	ngAfterViewInit(): void {
 		// window event listeners to open/close color pickers
-		this.renderer.listen('window', 'click', (e: Event) => {
-			if (e.target === this.strokeColorDisplay.nativeElement) {
-				this.renderer.setStyle(this.strokeColorPicker.nativeElement, 'visibility', 'visible');
-				this.strokePickerOpen = true;
-			} else if (this.strokePickerOpen && e.target !== this.strokeColorPicker.nativeElement) {
-				this.renderer.setStyle(this.strokeColorPicker.nativeElement, 'visibility', 'hidden');
-			}
+		// this.renderer.listen('window', 'click', (e: Event) => {
+		// 	if (e.target === this.strokeColorDisplay.nativeElement) {
+		// 		this.renderer.setStyle(this.strokeColorPicker.nativeElement, 'visibility', 'visible');
+		// 		this.strokePickerOpen = true;
+		// 	} else if (this.strokePickerOpen && e.target !== this.strokeColorPicker.nativeElement) {
+		// 		this.renderer.setStyle(this.strokeColorPicker.nativeElement, 'visibility', 'hidden');
+		// 	}
 
-			if (e.target === this.fillColorDisplay.nativeElement) {
-				this.renderer.setStyle(this.fillColorPicker.nativeElement, 'visibility', 'visible');
-				this.fillPickerOpen = true;
-			} else if (this.fillPickerOpen && e.target !== this.fillColorPicker.nativeElement) {
-				this.renderer.setStyle(this.fillColorPicker.nativeElement, 'visibility', 'hidden');
-			}
-		});
+		// 	if (e.target === this.fillColorDisplay.nativeElement) {
+		// 		this.renderer.setStyle(this.fillColorPicker.nativeElement, 'visibility', 'visible');
+		// 		this.fillPickerOpen = true;
+		// 	} else if (this.fillPickerOpen && e.target !== this.fillColorPicker.nativeElement) {
+		// 		this.renderer.setStyle(this.fillColorPicker.nativeElement, 'visibility', 'hidden');
+		// 	}
+		// });
 	}
 
 	toolAction(button: string) {}
 
 	// change the currently selected tool
 	changeTool(tool: string): void {
-		this.toolService.changeTool(this.toolService.toolsOptions[tool]);
+		this.inputSvc.changeTool(this.inputSvc.toolsOptions[tool]);
 	}
 
 	updateStrokeStyle(style: string, selection: string): void {
 		switch (style) {
 			case 'stroke-width': {
-				this.toolService.updateStrokeWidth(Number(selection));
+				this.inputSvc.updateStrokeWidth(Number(selection));
 				break;
 			}
 			case 'stroke-dasharray': {
-				this.toolService.updateStrokeDash(selection);
+				this.inputSvc.updateStrokeDash(selection);
 				break;
 			}
 		}
 	}
 
 	updateShape(shape: string): void {
-		this.toolService.currentShape = this.toolService.shapeOptions[shape];
-		this.toolService.currentTool = this.toolService.toolsOptions.draw; // activate draw tool on shape change
+		this.inputSvc.currentShape = this.inputSvc.shapeOptions[shape];
+		this.inputSvc.currentTool = this.inputSvc.toolsOptions.draw; // activate draw tool on shape change
 	}
 
-	updateColors(event, element: string): void {
-		if (event) {
-			const colorStr = `rgb(${event.color.rgb.r},${event.color.rgb.g},${event.color.rgb.b},${event.color.rgb.a})`;
-			switch (element) {
-				case 'scp': {
-					this.strokeColor = colorStr;
-					this.toolService.changeStrokeColor(colorStr);
-					break;
-				}
-				case 'fcp': {
-					this.fillColor = colorStr;
-					this.toolService.changeFillColor(colorStr);
-					break;
-				}
-			}
-		} else {
-			switch (element) {
-				case 'scp': {
-					this.strokeColor = 'transparent';
-					this.toolService.changeStrokeColor('none');
-					break;
-				}
-				case 'fcp': {
-					this.fillColor = 'transparent';
-					this.toolService.changeFillColor('none');
+	// updateColors(event, element: string): void {
+	// 	if (event) {
+	// 		const colorStr = `rgb(${event.color.rgb.r},${event.color.rgb.g},${event.color.rgb.b},${event.color.rgb.a})`;
+	// 		switch (element) {
+	// 			case 'scp': {
+	// 				this.strokeColor = colorStr;
+	// 				this.toolService.changeStrokeColor(colorStr);
+	// 				break;
+	// 			}
+	// 			case 'fcp': {
+	// 				this.fillColor = colorStr;
+	// 				this.toolService.changeFillColor(colorStr);
+	// 				break;
+	// 			}
+	// 		}
+	// 	} else {
+	// 		switch (element) {
+	// 			case 'scp': {
+	// 				this.strokeColor = 'transparent';
+	// 				this.toolService.changeStrokeColor('none');
+	// 				break;
+	// 			}
+	// 			case 'fcp': {
+	// 				this.fillColor = 'transparent';
+	// 				this.toolService.changeFillColor('none');
 
-					break;
-				}
-			}
-		}
-	}
+	// 				break;
+	// 			}
+	// 		}
+	// 	}
+	// }
 }

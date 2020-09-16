@@ -27,7 +27,7 @@ input[type=number]::after {
 }
 
 .ni-container.show-buttons {
-    grid-template-columns: auto 25px 25px;
+    grid-template-columns: 75px 25px 25px;
 }
 
 .ni-container.hide-buttons {
