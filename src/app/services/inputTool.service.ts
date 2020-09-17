@@ -99,14 +99,19 @@ export class InputService {
         this.strokeDashArrayEvent.next(dashArray);
     }
 
-    changeStrokeColor(color: string): void {
-        this.strokeColorEvent.next(color);
-        this.strokeColor = color;
+    async updateStrokeColor(color: string): Promise < void > {
+        return new Promise((result) => {
+            this.strokeColor = color;
+            this.strokeColorEvent.next(color);
+        });
     }
 
-    changeFillColor(color: string): void {
-        this.fillColorEvent.next(color);
-        this.fillColor = color;
+    async updateFillColor(color: string): Promise < void > {
+        console.log(color);
+        return new Promise((result) => {
+            this.fillColor = color;
+            this.fillColorEvent.next(color);
+        });
     }
 
     async toggleGridDisplay(dispOption: boolean): Promise < void > {

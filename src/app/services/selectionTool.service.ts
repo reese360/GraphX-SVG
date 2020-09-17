@@ -20,18 +20,18 @@ export class SelectionService {
     // promise to activate all input event listeners
     async initSubscriptions(): Promise < void > {
         return new Promise((result) => {
-            // subscription to stroke width change
-            this.inputSvc.strokeSizeEvent.subscribe((size) => {
-                Object.keys(this.selectedShapes).forEach((shape) => {
-                    this.selectedShapes[shape].style['stroke-width'] = size;
-                    this.selectedShapes[shape].updateProperties();
-                });
-            });
-
             // subscription to stroke color change
             this.inputSvc.strokeColorEvent.subscribe((color) => {
                 Object.keys(this.selectedShapes).forEach((shape) => {
                     this.selectedShapes[shape].style['stroke'] = color;
+                    this.selectedShapes[shape].updateProperties();
+                });
+            });
+
+            // subscription to stroke width change
+            this.inputSvc.strokeSizeEvent.subscribe((size) => {
+                Object.keys(this.selectedShapes).forEach((shape) => {
+                    this.selectedShapes[shape].style['stroke-width'] = size;
                     this.selectedShapes[shape].updateProperties();
                 });
             });
