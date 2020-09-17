@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { InputService } from './services/inputTool.service';
-import { SelectorService } from './services/selectorTool.service';
+import { SelectionService } from './services/selectionTool.service';
 import { ObjectService } from './services/object.service';
 import { CurrentStateService } from './services/currentState.service';
 
@@ -8,7 +8,7 @@ import { CurrentStateService } from './services/currentState.service';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css'],
-	providers: [InputService, SelectorService, ObjectService, CurrentStateService],
+	providers: [InputService, SelectionService, ObjectService, CurrentStateService],
 })
 export class AppComponent {
 	title = 'GraphX - SVG';

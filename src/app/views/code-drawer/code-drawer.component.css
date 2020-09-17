@@ -3,7 +3,7 @@
 .code-drawer {
     height: 330px;
     width: 100%;
-    border-top: 1px solid gray;
+    border-top: 1px solid var(--graphx-dark-gray);
     position: absolute;
     top: calc(100vh - 32px);
     transition: top ease .5s;
@@ -18,9 +18,9 @@
     line-height: 30px;
     font-size: 12px;
     text-align: center;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid var(--graphx-dark-gray);
     vertical-align: middle;
-    background-color: #e9e9e9;
+    background-color: var(--graphx-light-gray);
 }
 
 .displayOpen {
