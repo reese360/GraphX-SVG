@@ -10,7 +10,7 @@
 }
 
 .saturation-black {
-    border: 1px solid gray;
+    border: 1px solid var(--graphx-dark-gray);
 }
 
 .saturation-circle {
@@ -18,7 +18,7 @@
     width: 3px !important;
     height: 3px !important;
     box-shadow: none !important;
-    outline: 1px solid var(--primary-gray);
+    outline: 1px solid var(--graphx-light-gray);
 }
 
 .sketch-swatches-container {
