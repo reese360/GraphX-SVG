@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { InputService } from 'src/app/services/inputTool.service';
-import { SelectorService } from 'src/app/services/selectorTool.service';
+import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
 import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
 import { RectModel } from 'src/app/models/shapes/rect.model';
@@ -18,9 +18,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
     //#region variable declarations
     @ViewChild('svg') svgElementRef: ElementRef; // reference to svg element in dom
     @ViewChild('svgContainer') scgContainerElementRef: ElementRef; // reference to svg element in dom
-    @ViewChild('gridElements') gridElementRef: ElementRef;
-    @ViewChild('canvasElements') canvasElementRef: ElementRef;
-    @ViewChild('selectionElements') selectionElementRef: ElementRef;
+    @ViewChild('gridElements') gridElementRef: ElementRef; // elements to display grid
+    @ViewChild('canvasElements') canvasElementRef: ElementRef; // elements to be exported as svg
+    @ViewChild('selectionElements') selectionElementRef: ElementRef; // used to house elements for selection tool
 
     // faux svg viewbox == canvas
     // canvas 'display' dimensions
@@ -30,7 +30,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     canvasStrokeWidth: string = "1";
     canvasDisplay: boolean = true;
 
-    //! 'SVG' refers to the global SVG not the faux 'Canvas'
+    /* 'SVG' refers to the global SVG not the faux 'Canvas' */
     // svg viewBox dimensions
     svgMinX: number = -10;
     svgMinY: number = -10;
@@ -62,63 +62,19 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
     //#endregion
 
+
     constructor(
         private renderer: Renderer2,
         private inputSvc: InputService,
-        private selectorService: SelectorService,
+        private selectionSvc: SelectionService,
         private objectService: ObjectService) {
 
-
-        //#region gridline observables
-        // subscription to display grid
-        this.inputSvc.showGridEvent.subscribe((option) => {
-            this.gridDisplay = option;
-            if (this.gridDisplay)
-                this.showGrid();
-            else
-                this.hideGrid();
-        });
-
-        this.inputSvc.gridSnapEvent.subscribe((option) => {
-            this.gridSnap = option;
-        });
-
-        // subscription to grid dimensions
-        this.inputSvc.gridDimensionsEvent.subscribe((dim) => {
-            this.gridDimensions = dim;
-            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
-        });
-
-        // subscription to grid offset
-        this.inputSvc.gridOffsetEvent.subscribe((dim) => {
-            this.gridOffset = dim;
-            if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
-        });
-        //#endregion
-
-        //#region viewbox observables
-        // subscription to viewbox dimensions
-        this.inputSvc.canvasDisplayEvent.subscribe((option) => {
-            this.canvasDisplay = option;
-        });
-
-        this.inputSvc.canvasDimensionsEvent.subscribe((dim) => {
-            this.canvasWidth = dim[0];
-            this.canvasHeight = dim[1];
-        });
-
-        this.inputSvc.canvasOpacityEvent.subscribe((option) => {
-            this.canvasOpacity = option.toString();
-        });
-
-        this.inputSvc.canvasOutlineEvent.subscribe((option) => {
-            this.canvasStrokeWidth = option.toString();
-        });
-        //#endregion
+        this.initSubscriptions();
     }
 
     ngAfterViewInit(): void {
         window.dispatchEvent(new Event('resize')); // get initial sizing of svg window
+        this.selectionSvc.selectionRect.domRef = this.selectionElementRef; // pass element reference to dom layer
 
         /* preliminary drawing of an svg object */
         /* can be used in future development to load a saved svg */
@@ -141,11 +97,65 @@ export class GraphxCanvasComponent implements AfterViewInit {
         this.objectService.add(testSvg3);
     }
 
+    // promise to activate all event listeners
+    async initSubscriptions(): Promise < void > {
+        return new Promise((result) => {
+            //#region gridline subscriptions
+            // subscription to display grid
+            this.inputSvc.showGridEvent.subscribe((option) => {
+                this.gridDisplay = option;
+                if (this.gridDisplay)
+                    this.showGrid();
+                else
+                    this.hideGrid();
+            });
+
+            // subscription to grid snapping direction
+            this.inputSvc.gridSnapEvent.subscribe((option) => {
+                this.gridSnap = option;
+            });
+
+            // subscription to grid dimensions
+            this.inputSvc.gridDimensionsEvent.subscribe((dim) => {
+                this.gridDimensions = dim;
+                if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+            });
+
+            // subscription to grid offset
+            this.inputSvc.gridOffsetEvent.subscribe((dim) => {
+                this.gridOffset = dim;
+                if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+            });
+            //#endregion
+
+            //#region viewbox subscriptions
+            // subscription to viewbox dimensions
+            this.inputSvc.canvasDisplayEvent.subscribe((option) => {
+                this.canvasDisplay = option;
+            });
+
+            this.inputSvc.canvasDimensionsEvent.subscribe((dim) => {
+                this.canvasWidth = dim[0];
+                this.canvasHeight = dim[1];
+            });
+
+            this.inputSvc.canvasOpacityEvent.subscribe((option) => {
+                this.canvasOpacity = option.toString();
+            });
+
+            this.inputSvc.canvasOutlineEvent.subscribe((option) => {
+                this.canvasStrokeWidth = option.toString();
+            });
+            //#endregion
+        })
+    }
+
+    // promise to calculate and display grid elements
     async showGrid(): Promise < void > {
         return new Promise((res) => {
             // create template for line with styling
             const lineTemplate = this.renderer.createElement('line', 'svg');
-            this.renderer.setAttribute(lineTemplate, 'stroke', 'var(--highlight)');
+            this.renderer.setAttribute(lineTemplate, 'stroke', 'var(--graphx-highlight1)');
             this.renderer.setAttribute(lineTemplate, 'stroke-width', '1');
             this.renderer.setAttribute(lineTemplate, 'opacity', '0.5');
             this.renderer.setAttribute(lineTemplate, 'shape-rendering', 'crispEdges');
@@ -179,13 +189,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
         });
     }
 
+    // promise to hide grid elements
     async hideGrid(): Promise < void > {
-        return new Promise((res) => {
+        return new Promise((result) => {
             if (this.gridLines.length) {
                 this.gridLines.forEach(line => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
                 this.gridLines = [];
             }
-            res();
+            result();
         })
     }
 
@@ -251,34 +262,33 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
                     const hitObjectRef = this.objectService.fetch(hitObjectId);
                     if (hitObjectRef) {
-                        if (e.ctrlKey) {
-                            // ctrl key allows multiple selected objects
-                            this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
-                        } else {
-                            // deselect if another object is selected
-                            if (!this.selectorService.lookup(hitObjectId)) this.selectorService.deselect();
+                        // ctrl key allows additional objects to be selected simultaneously
+                        if (!e.ctrlKey)
+                            if (!this.selectionSvc.isSelected(hitObjectId))
+                                this.selectionSvc.deselect();
 
-                            this.selectorService.select(hitObjectRef);
-                            this.selectorService.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
-                        }
+                        // select object and begin drag process
+                        this.selectionSvc.select([hitObjectRef]).then(() => {
+                            this.selectionSvc.startDrag(this.calculateUserPosition(e.clientX, e.clientY));
+                        });
                     } else {
-                        // if no graphx object -> deselect all
-                        this.selectorService.deselect();
+                        // if no graphx object -> deselect all -> start selection box
+                        this.selectionSvc.deselect();
+                        this.selectionSvc.startSelectionBox(this.calculateUserPosition(e.clientX, e.clientY));
                     }
                     break;
                 }
                 case this.inputSvc.toolsOptions.draw: {
-                    this.selectorService.resetService();
+                    // get style setting from input tool
                     const styleSettings = {
-                        stroke: this.inputSvc.strokeColor,
+                        'stroke': this.inputSvc.strokeColor,
                         'stroke-width': this.inputSvc.strokeSize,
                         'stroke-dasharray': this.inputSvc.strokeDashArray,
-                        fill: this.inputSvc.fillColor,
+                        'fill': this.inputSvc.fillColor,
                     };
                     switch (this.inputSvc.currentShape) {
                         case this.inputSvc.shapeOptions.line: {
-                            this.currentObject = new LineModel(this.renderer, { stroke: this.inputSvc.strokeColor, 'stroke-width': this.inputSvc.strokeSize });
+                            this.currentObject = new LineModel(this.renderer, styleSettings);
                             break;
                         }
                         case this.inputSvc.shapeOptions.rectangle: {
@@ -290,23 +300,23 @@ export class GraphxCanvasComponent implements AfterViewInit {
                             break;
                         }
                         case this.inputSvc.shapeOptions.polyline: {
+                            // if currently drawing do not create new object
                             if (!this.currentObject) {
-                                // if currently drawing do not create new object
                                 this.currentObject = new PolylineModel(this.renderer, styleSettings);
                             }
                             break;
                         }
                         case this.inputSvc.shapeOptions.polygon: {
+                            // if currently drawing do not create new object
                             if (!this.currentObject) {
-                                // if currently drawing do not create new object
                                 this.currentObject = new PolygonModel(this.renderer, styleSettings);
                             }
                             break;
                         }
                     }
-                    console.log(this.gridSnap);
-                    this.currentObject.start = this.calculateUserPosition(e.clientX, e.clientY);
-                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
+                    const userPosition = this.calculateUserPosition(e.clientX, e.clientY);
+                    this.currentObject.start = userPosition;
+                    this.currentObject.end = userPosition;
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
@@ -344,8 +354,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
         switch (this.inputSvc.currentTool) {
             case this.inputSvc.toolsOptions.select: {
-                if (this.selectorService.canDragSelection) {
-                    this.selectorService.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
+                if (this.selectionSvc.canDragSelected) {
+                    this.selectionSvc.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
+                    break;
+                }
+                if (this.selectionSvc.selecting) {
+                    this.selectionSvc.drawSelectionBoxTo(this.calculateUserPosition(e.clientX, e.clientY));
+                    break;
                 }
                 break;
             }
@@ -369,14 +384,20 @@ export class GraphxCanvasComponent implements AfterViewInit {
     @HostListener('mouseup', ['$event']) onMouseUp(e): void {
         switch (this.inputSvc.currentTool) {
             case this.inputSvc.toolsOptions.select: {
-                this.selectorService.endDrag();
+                if (this.selectionSvc.dragging) // end drag process
+                    this.selectionSvc.endDrag();
+
+                if (this.selectionSvc.selecting) // end selection process
+                    this.selectionSvc.endSelectionBox();
+
                 break;
             }
             case this.inputSvc.toolsOptions.draw: {
-                if (this.inputSvc.currentShape === this.inputSvc.shapeOptions.polyline || this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
+                // do nothing if polyline or polygon
+                if (this.inputSvc.currentShape === this.inputSvc.shapeOptions.polyline ||
+                    this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
                     return;
-                }
-                if (this.currentObject) {
+                } else if (this.currentObject) { // end draw for other shapes
                     this.objectService.add(this.currentObject);
                     this.currentObject = null;
                 }

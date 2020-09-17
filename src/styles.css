@@ -6,11 +6,12 @@
 }
 
 :root {
-    --graphx-font-ubuntu: Ubuntu;
     --graphx-highlight1: #00aad4;
     --graphx-highlight2: #32f008;
     --graphx-light-gray: #e9e9e9;
-    --graphx-dark-gray: gray;
+    --graphx-dark-gray: #808080;
+
+    --graphx-font-ubuntu: Ubuntu;
 }
 
 
