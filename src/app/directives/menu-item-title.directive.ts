@@ -6,7 +6,7 @@ import { Directive, ElementRef } from '@angular/core';
 export class MenuItemTitleDirective {
 
     constructor(el: ElementRef) {
-        el.nativeElement.style.color = "var(--primary-border)";
+        el.nativeElement.style.color = "var(--graphx-dark-gray)";
         el.nativeElement.style.fontSize = "30px";
     }
 

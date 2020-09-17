@@ -10,9 +10,8 @@ input[type=text] {
     height: 32px;
     padding: 0;
     border: none;
-    /* outline: none; */
     font-size: 20px;
-    color: var(--primary-border);
+    color: var(--graphx-dark-gray);
     text-align: center;
 }
 
@@ -24,6 +23,6 @@ input[type=text]:focus {
     position: relative;
     height: 30px;
     overflow: hidden;
-    background-color: var(--default-background-color);
-    border: 1px solid var(--primary-border);
+    /* background-color: var(--default-background-color); */
+    border: 1px solid var(--graphx-dark-gray);
 }

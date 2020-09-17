@@ -16,10 +16,10 @@
     width: 25px;
     font-size: 12px;
     pointer-events: none;
-    background-color: var(--highlight);
+    background-color: var(--graphx-highlight1);
     color: white;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
+    border-left: 1px solid var(--graphx-dark-gray);
+    border-right: 1px solid var(--graphx-dark-gray);
 }
 
   .dropdown {
@@ -35,7 +35,7 @@
     min-width: 125px;
     overflow: auto;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.322);
-    border: 1px solid gray;
+    border: 1px solid var(--graphx-dark-gray);
     border-top: none;
     z-index: 3;
   }
@@ -47,7 +47,7 @@
   }
   
   .dropdown-content div:hover {
-      background-color: var(--highlight);
+      background-color: var(--graphx-highlight1);
 }
   
   .show {display: block;}
@@ -58,7 +58,7 @@
 
 .displayOpen {
     stroke: white;
-    background-color: var(--highlight);
+    background-color: var(--graphx-highlight1);
 }
 
 .displayClosed {
