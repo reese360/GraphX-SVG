@@ -10,7 +10,7 @@ input[type=text] {
     height: 32px;
     padding: 0;
     border: none;
-    font-size: 20px;
+    font-size: 14px;
     color: var(--graphx-dark-gray);
     text-align: center;
 }
