@@ -17,23 +17,32 @@ export class InputService {
         pan: 2,
     };
 
+    public shapeStyleOptions: object = {
+        'stroke': '#000',
+        'fill': '#000',
+        'stroke-width': '2',
+        'stroke-dasharray': '0',
+    };
+
+    public canvasOptions: object = {
+        'dimensions': [1000, 800],
+        'display': true,
+        'outline': true,
+        'opacity': '1',
+    };
+
+    public gridOptions: object = {
+        'snap': false,
+        'display': false,
+        'dimensions': [100, 100],
+        'offset': [0, 0]
+    }
+
     public mouseCoords: number[];
     public mouseCoordsEvent: Subject < number[] > = new Subject < number[] > ();
 
     public zoomLevel: number;
     public zoomLevelEvent: Subject < number > = new Subject < number > ();
-
-    public strokeColor: string;
-    public strokeColorEvent: Subject < string > = new Subject < string > ();
-
-    public fillColor: string;
-    public fillColorEvent: Subject < string > = new Subject < string > ();
-
-    public strokeSize: number;
-    public strokeSizeEvent: Subject < number > = new Subject < number > ();
-
-    public strokeDashArray: string;
-    public strokeDashArrayEvent: Subject < string > = new Subject < string > ();
 
     public currentTool: string;
     public ToolEvent: Subject < string > = new Subject < string > ();
@@ -41,29 +50,33 @@ export class InputService {
     public currentShape: string;
     public ShapeEvent: Subject < string > = new Subject < string > ();
 
-    private showGrid: boolean;
-    public showGridEvent: Subject < boolean > = new Subject < boolean > ();
+    public shapeStyleOptionsEvent: Subject < object > = new Subject < object > ();
+    public canvasOptionsEvent: Subject < object > = new Subject < object > ();
+    public gridOptionsEvent: Subject < object > = new Subject < object > ();
 
-    private gridDimensions: number[];
-    public gridDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
+    // update and broadcast shape style options update
+    async updateShapeStyleOptions(style: string, value: string): Promise < void > {
+        return new Promise(() => {
+            this.shapeStyleOptions[style] = value;
+            this.shapeStyleOptionsEvent.next(this.shapeStyleOptions)
+        });
+    }
 
-    private gridSnap: boolean;
-    public gridSnapEvent: Subject < boolean > = new Subject < boolean > ();
+    // update and broadcast canvas options update
+    async updateCanvasOptions(option: string, value: string | number | boolean | number[]): Promise < void > {
+        return new Promise(() => {
+            this.canvasOptions[option] = value;
+            this.canvasOptionsEvent.next(this.canvasOptions);
+        });
+    }
 
-    private gridOffset: number[];
-    public gridOffsetEvent: Subject < number[] > = new Subject < number[] > ();
-
-    private canvasDimensions: number[];
-    public canvasDimensionsEvent: Subject < number[] > = new Subject < number[] > ();
-
-    private canvasDisplay: boolean;
-    public canvasDisplayEvent: Subject < boolean > = new Subject < boolean > ();
-
-    private canvasOutline: boolean;
-    public canvasOutlineEvent: Subject < boolean > = new Subject < boolean > ();
-
-    private canvasOpacity: number;
-    public canvasOpacityEvent: Subject < number > = new Subject < number > ();
+    // update and broadcast grid options update
+    async updateGridOptions(option: string, value: string | number | boolean | number[]): Promise < void > {
+        return new Promise(() => {
+            this.gridOptions[option] = value;
+            this.gridOptionsEvent.next(this.gridOptions);
+        })
+    }
 
     async updateMouseCoords(pos: number[]): Promise < void > {
         new Promise(() => {
@@ -87,86 +100,5 @@ export class InputService {
     changeShape(shape: string): void {
         this.ShapeEvent.next(shape);
         this.currentShape = shape;
-    }
-
-    updateStrokeWidth(size: number): void {
-        this.strokeSize = size;
-        this.strokeSizeEvent.next(size);
-    }
-
-    updateStrokeDash(dashArray: string): void {
-        this.strokeDashArray = dashArray;
-        this.strokeDashArrayEvent.next(dashArray);
-    }
-
-    async updateStrokeColor(color: string): Promise < void > {
-        return new Promise((result) => {
-            this.strokeColor = color;
-            this.strokeColorEvent.next(color);
-        });
-    }
-
-    async updateFillColor(color: string): Promise < void > {
-        console.log(color);
-        return new Promise((result) => {
-            this.fillColor = color;
-            this.fillColorEvent.next(color);
-        });
-    }
-
-    async toggleGridDisplay(dispOption: boolean): Promise < void > {
-        return new Promise(() => {
-            this.showGrid = dispOption; // toggle grid display
-            this.showGridEvent.next(this.showGrid)
-        })
-    }
-
-    async toggleGridSnap(snapOption: boolean): Promise < void > {
-        return new Promise(() => {
-            this.gridSnap = snapOption;
-            this.gridSnapEvent.next(snapOption)
-        })
-    }
-
-    async updateGridDimensions(dims: number[]): Promise < void > {
-        return new Promise(() => {
-            this.gridDimensionsEvent.next(dims);
-            this.gridDimensions = dims;
-        })
-    }
-
-    async updateGridOffset(offset: number[]): Promise < void > {
-        return new Promise(() => {
-            this.gridOffsetEvent.next(offset);
-            this.gridOffset = offset;
-        })
-    }
-
-    async updateCanvasDimensions(dims: number[]): Promise < void > {
-        return new Promise(() => {
-            this.canvasDimensionsEvent.next(dims);
-            this.canvasDimensions = dims;
-        })
-    }
-
-    async toggleCanvas(dispOption: boolean): Promise < void > {
-        return new Promise(() => {
-            this.canvasDisplay = dispOption;
-            this.canvasDisplayEvent.next(dispOption);
-        });
-    }
-
-    async toggleCanvasOutline(dispOption: boolean): Promise < void > {
-        return new Promise(() => {
-            this.canvasOutline = dispOption;
-            this.canvasOutlineEvent.next(dispOption);
-        });
-    }
-
-    async updateCanvasOpacity(option: number): Promise < void > {
-        return new Promise(() => {
-            this.canvasOpacity = option;
-            this.canvasOpacityEvent.next(option);
-        })
     }
 }

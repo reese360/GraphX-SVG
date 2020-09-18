@@ -3,11 +3,11 @@ import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
+// import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
 import { RectModel } from 'src/app/models/shapes/rect.model';
-import { PolygonModel } from 'src/app/models/shapes/polygon.model';
-import { LineModel } from 'src/app/models/shapes/line.model';
-import { PolylineModel } from 'src/app/models/shapes/polyline.model';
+// import { PolygonModel } from 'src/app/models/shapes/polygon.model';
+// import { LineModel } from 'src/app/models/shapes/line.model';
+// import { PolylineModel } from 'src/app/models/shapes/polyline.model';
 
 @Component({
     selector: 'app-graphx-canvas',
@@ -78,75 +78,51 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
         /* preliminary drawing of an svg object */
         /* can be used in future development to load a saved svg */
-        const testSvg1 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
-        testSvg1.start = [200, 200];
-        testSvg1.end = [300, 300];
-        this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
-        this.objectService.add(testSvg1);
+        // const testSvg1 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
+        // testSvg1.start = [200, 200];
+        // testSvg1.end = [300, 300];
+        // this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
+        // this.objectService.add(testSvg1);
 
-        const testSvg2 = new RectModel(this.renderer, { stroke: 'black', fill: 'lightgreen', 'stroke-width': 2 });
-        testSvg2.start = [400, 100];
-        testSvg2.end = [600, 300];
+        const testSvg2 = new RectModel(this.renderer, {
+            'stroke': 'gray',
+            'fill': '#ff00eb',
+            'stroke-width': '2',
+            'stroke-dasharray': '0',
+        });
+        testSvg2.startDraw([400, 100]);
+        testSvg2.drawTo([600, 300]);
         this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg2.element);
         this.objectService.add(testSvg2);
 
-        const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
-        testSvg3.points = [800, 100, 900, 300];
-        testSvg3.end = [700, 300];
-        this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg3.element);
-        this.objectService.add(testSvg3);
+        // const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
+        // testSvg3.points = [800, 100, 900, 300];
+        // testSvg3.end = [700, 300];
+        // this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg3.element);
+        // this.objectService.add(testSvg3);
     }
 
     // promise to activate all event listeners
     async initSubscriptions(): Promise < void > {
-        return new Promise((result) => {
-            //#region gridline subscriptions
-            // subscription to display grid
-            this.inputSvc.showGridEvent.subscribe((option) => {
-                this.gridDisplay = option;
-                if (this.gridDisplay)
-                    this.showGrid();
-                else
-                    this.hideGrid();
+        return new Promise(() => {
+            // gridline options subscription
+            this.inputSvc.gridOptionsEvent.subscribe((options) => {
+                this.gridDisplay = options['display'];
+                this.gridSnap = options['snap'];
+                this.gridDimensions = options['dimensions'];
+                this.gridOffset = options['offset'];
+
+                if (this.gridDisplay) this.hideGrid().then(() => this.showGrid());
             });
 
-            // subscription to grid snapping direction
-            this.inputSvc.gridSnapEvent.subscribe((option) => {
-                this.gridSnap = option;
+            // viewbox options subscription
+            this.inputSvc.canvasOptionsEvent.subscribe((options) => {
+                this.canvasDisplay = options['display'];
+                this.canvasWidth = options['dimensions'][0];
+                this.canvasHeight = options['dimensions'][1];
+                this.canvasStrokeWidth = options['outline'].toString();
+                this.canvasOpacity = options['opacity'];
             });
-
-            // subscription to grid dimensions
-            this.inputSvc.gridDimensionsEvent.subscribe((dim) => {
-                this.gridDimensions = dim;
-                if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
-            });
-
-            // subscription to grid offset
-            this.inputSvc.gridOffsetEvent.subscribe((dim) => {
-                this.gridOffset = dim;
-                if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
-            });
-            //#endregion
-
-            //#region viewbox subscriptions
-            // subscription to viewbox dimensions
-            this.inputSvc.canvasDisplayEvent.subscribe((option) => {
-                this.canvasDisplay = option;
-            });
-
-            this.inputSvc.canvasDimensionsEvent.subscribe((dim) => {
-                this.canvasWidth = dim[0];
-                this.canvasHeight = dim[1];
-            });
-
-            this.inputSvc.canvasOpacityEvent.subscribe((option) => {
-                this.canvasOpacity = option.toString();
-            });
-
-            this.inputSvc.canvasOutlineEvent.subscribe((option) => {
-                this.canvasStrokeWidth = option.toString();
-            });
-            //#endregion
         })
     }
 
@@ -280,43 +256,36 @@ export class GraphxCanvasComponent implements AfterViewInit {
                 }
                 case this.inputSvc.toolsOptions.draw: {
                     // get style setting from input tool
-                    const styleSettings = {
-                        'stroke': this.inputSvc.strokeColor,
-                        'stroke-width': this.inputSvc.strokeSize,
-                        'stroke-dasharray': this.inputSvc.strokeDashArray,
-                        'fill': this.inputSvc.fillColor,
-                    };
                     switch (this.inputSvc.currentShape) {
-                        case this.inputSvc.shapeOptions.line: {
-                            this.currentObject = new LineModel(this.renderer, styleSettings);
-                            break;
-                        }
+                        // case this.inputSvc.shapeOptions.line: {
+                        //     this.currentObject = new LineModel(this.renderer, this.inputSvc.shapeStyleOptions);
+                        //     break;
+                        // }
                         case this.inputSvc.shapeOptions.rectangle: {
-                            this.currentObject = new RectModel(this.renderer, styleSettings);
+                            this.currentObject = new RectModel(this.renderer, this.inputSvc.shapeStyleOptions);
                             break;
                         }
-                        case this.inputSvc.shapeOptions.ellipse: {
-                            this.currentObject = new EllipseModel(this.renderer, styleSettings);
-                            break;
-                        }
-                        case this.inputSvc.shapeOptions.polyline: {
-                            // if currently drawing do not create new object
-                            if (!this.currentObject) {
-                                this.currentObject = new PolylineModel(this.renderer, styleSettings);
-                            }
-                            break;
-                        }
-                        case this.inputSvc.shapeOptions.polygon: {
-                            // if currently drawing do not create new object
-                            if (!this.currentObject) {
-                                this.currentObject = new PolygonModel(this.renderer, styleSettings);
-                            }
-                            break;
-                        }
+                        // case this.inputSvc.shapeOptions.ellipse: {
+                        //     this.currentObject = new EllipseModel(this.renderer, this.inputSvc.shapeStyleOptions);
+                        //     break;
+                        // }
+                        // case this.inputSvc.shapeOptions.polyline: {
+                        //     // if currently drawing do not create new object
+                        //     if (!this.currentObject) {
+                        //         this.currentObject = new PolylineModel(this.renderer, this.inputSvc.shapeStyleOptions);
+                        //     }
+                        //     break;
+                        // }
+                        // case this.inputSvc.shapeOptions.polygon: {
+                        //     // if currently drawing do not create new object
+                        //     if (!this.currentObject) {
+                        //         this.currentObject = new PolygonModel(this.renderer, this.inputSvc.shapeStyleOptions);
+                        //     }
+                        //     break;
+                        // }
                     }
                     const userPosition = this.calculateUserPosition(e.clientX, e.clientY);
-                    this.currentObject.start = userPosition;
-                    this.currentObject.end = userPosition;
+                    this.currentObject.startDraw(userPosition);
                     this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
                     break;
                 }
@@ -366,7 +335,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             }
             case this.inputSvc.toolsOptions.draw: {
                 if (this.currentObject) {
-                    this.currentObject.end = this.calculateUserPosition(e.clientX, e.clientY);
+                    this.currentObject.drawTo(this.calculateUserPosition(e.clientX, e.clientY));
                 }
                 break;
             }

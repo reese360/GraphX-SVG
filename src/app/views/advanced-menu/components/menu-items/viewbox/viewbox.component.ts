@@ -36,7 +36,7 @@ export class ViewBoxComponent implements OnInit {
         if (this.componentState.isViewBoxLocked)
             this.vbHeight.data.value = Math.trunc(width / this.componentState.viewBoxRatio);
 
-        this.inputSvc.updateCanvasDimensions([width, this.vbHeight.data.value]);
+        this.inputSvc.updateCanvasOptions('dimensions', [width, this.componentState.vbHeightData.value]);
         this.componentState.vbWidthData.value = width;
     }
 
@@ -46,7 +46,7 @@ export class ViewBoxComponent implements OnInit {
             this.vbWidth.data.value = Math.trunc(height * this.componentState.viewBoxRatio);
 
 
-        this.inputSvc.updateCanvasDimensions([this.vbWidth.data.value, height]);
+        this.inputSvc.updateCanvasOptions('dimensions', [this.componentState.vbWidthData.value, height]);
         this.componentState.vbHeightData.value = height;
     }
 
@@ -60,19 +60,21 @@ export class ViewBoxComponent implements OnInit {
     // turns on/off viewbox canvas
     toggleViewBox(option): void {
         this.componentState.vbDisplayData.value = option;
-        this.inputSvc.toggleCanvas(option);
+        this.inputSvc.updateCanvasOptions('display', option);
     }
 
     // turns on/off viewbox outline
     toggleViewBoxOutline(option): void {
         this.componentState.vbOutlineData.value = option;
-        this.inputSvc.toggleCanvasOutline(option);
+        // this.inputSvc.toggleCanvasOutline(option);
+        this.inputSvc.updateCanvasOptions('outline', option);
+
     }
 
     // turns on/off viewbox outline
     toggleViewBoxOpacity(option): void {
         const optionValue = option === 0 ? 0 : option === 1 ? .5 : 1; // convert to numeric value
         this.componentState.vbOpacityData.value = option;
-        this.inputSvc.updateCanvasOpacity(optionValue);
+        this.inputSvc.updateCanvasOptions('opacity', optionValue);
     }
 }

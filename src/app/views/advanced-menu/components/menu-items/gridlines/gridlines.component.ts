@@ -44,7 +44,8 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (option === 0 && this.snapGrid.selectedIdx !== 0) {
             this.snapGrid.toggleOptions(0);
         }
-        this.inputSvc.toggleGridDisplay(option);
+        // this.inputSvc.toggleGridDisplay(option);
+        this.inputSvc.updateGridOptions('display', option);
         this.componentState.gridDisplayData.value = option;
     }
 
@@ -53,7 +54,8 @@ export class GridlinesMenuItemComponent implements OnInit {
         // grid display must be enabled to snap to grid -> toggle grid display
         if (option === 1 && this.showGrid.selectedIdx !== 1)
             this.showGrid.toggleOptions(1);
-        this.inputSvc.toggleGridSnap(option);
+        // this.inputSvc.toggleGridSnap(option);
+        this.inputSvc.updateGridOptions('snap', option);
         this.componentState.snapGridData.value = option;
     }
 
@@ -65,7 +67,8 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (this.gridOffsetX.data.value > dimWidth)
             this.gridOffsetX.updateInputValue(dimWidth);
 
-        this.inputSvc.updateGridDimensions([dimWidth, this.gridHeight.data.value]);
+        // this.inputSvc.updateGridDimensions([dimWidth, this.gridHeight.data.value]);
+        this.inputSvc.updateGridOptions('dimensions', [dimWidth, this.componentState.gridHeightData.value]);
         this.componentState.gridWidthData.value = dimWidth;
     }
 
@@ -78,8 +81,9 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (this.gridOffsetY.data.value > dimHeight)
             this.gridOffsetY.updateInputValue(dimHeight);
 
-        this.inputSvc.updateGridDimensions([this.gridWidth.data.value, dimHeight]);
-        this.componentState.gridWidthData.value = dimHeight;
+        // this.inputSvc.updateGridDimensions([this.gridWidth.data.value, dimHeight]);
+        this.inputSvc.updateGridOptions('dimensions', [this.componentState.gridWidthData.value, dimHeight]);
+        this.componentState.gridHeightData.value = dimHeight;
     }
 
     updateOffsetX(offX: number): void {
@@ -97,7 +101,8 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (this.componentState.isOffsetLocked)
             this.gridOffsetY.data.value = Math.trunc(offX / this.componentState.offsetRatio);
 
-        this.inputSvc.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
+        // this.inputSvc.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
+        this.inputSvc.updateGridOptions('offset', [this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
         this.componentState.gridOffsetXData.value = offX;
     }
 
@@ -116,7 +121,8 @@ export class GridlinesMenuItemComponent implements OnInit {
         if (this.componentState.isOffsetLocked)
             this.gridOffsetX.data.value = Math.trunc(offY / this.componentState.offsetRatio);
 
-        this.inputSvc.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
+        // this.inputSvc.updateGridOffset([this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
+        this.inputSvc.updateGridOptions('offset', [this.gridOffsetX.data.value, this.gridOffsetY.data.value]);
         this.componentState.gridOffsetYData.value = offY;
     }
 

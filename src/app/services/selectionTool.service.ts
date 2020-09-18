@@ -20,35 +20,10 @@ export class SelectionService {
     // promise to activate all input event listeners
     async initSubscriptions(): Promise < void > {
         return new Promise((result) => {
-            // subscription to stroke color change
-            this.inputSvc.strokeColorEvent.subscribe((color) => {
+            // subscribe to any shape style changes 
+            this.inputSvc.shapeStyleOptionsEvent.subscribe((style) => {
                 Object.keys(this.selectedShapes).forEach((shape) => {
-                    this.selectedShapes[shape].style['stroke'] = color;
-                    this.selectedShapes[shape].updateProperties();
-                });
-            });
-
-            // subscription to stroke width change
-            this.inputSvc.strokeSizeEvent.subscribe((size) => {
-                Object.keys(this.selectedShapes).forEach((shape) => {
-                    this.selectedShapes[shape].style['stroke-width'] = size;
-                    this.selectedShapes[shape].updateProperties();
-                });
-            });
-
-            // subscription to fill color change
-            this.inputSvc.fillColorEvent.subscribe((color) => {
-                Object.keys(this.selectedShapes).forEach((shape) => {
-                    this.selectedShapes[shape].style['fill'] = color;
-                    this.selectedShapes[shape].updateProperties();
-                });
-            });
-
-            // subscription to stroke dash array change
-            this.inputSvc.strokeDashArrayEvent.subscribe((dash) => {
-                Object.keys(this.selectedShapes).forEach((shape) => {
-                    this.selectedShapes[shape].style['stroke-dasharray'] = dash;
-                    this.selectedShapes[shape].updateProperties();
+                    this.selectedShapes[shape].setStyle(style);
                 });
             });
 
@@ -94,7 +69,7 @@ export class SelectionService {
     async dragTo(pos: [number, number]): Promise < void > {
         return new Promise((result) => {
             Object.keys(this.selectedShapes).forEach((shape) => {
-                this.selectedShapes[shape].drag(pos);
+                this.selectedShapes[shape].dragTo(pos);
             });
         });
     }

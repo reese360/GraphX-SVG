@@ -28,22 +28,23 @@ export class FillOptionsComponent implements OnInit {
     updateHue(color): void {
         this.componentState.currentHue = color;
         this.componentState.currentColor = color;
-        this.inputSvc.updateFillColor(this.colorStr);
+        this.inputSvc.updateShapeStyleOptions('fill', this.colorStr);
     }
 
     updateSaturation(color): void {
         this.componentState.currentColor = color;
-        this.inputSvc.updateFillColor(this.colorStr);
+        this.inputSvc.updateShapeStyleOptions('fill', this.colorStr);
+
     }
 
     updateAlpha(alpha): void {
         this.componentState.currentAlpha = alpha;
         this.alphaHex = (Math.round(Math.round(alpha * 100) / 100 * 255) + 0x10000).toString(16).substr(-2); // get 2 digit hex value of alpha
-        this.inputSvc.updateFillColor(this.colorStr);
+        this.inputSvc.updateShapeStyleOptions('fill', this.colorStr);
     }
 
-     // get string of color and alpha levels in hex format
-     get colorStr(): string {
+    // get string of color and alpha levels in hex format
+    get colorStr(): string {
         return `${this.componentState.currentColor}${this.alphaHex}`
     }
 
