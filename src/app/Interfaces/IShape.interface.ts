@@ -1,22 +1,21 @@
 import { Renderer2 } from '@angular/core';
 
 export interface IShape {
-	shape: string;
-	id: string;
-	style: { key: string; value: string };
-	renderer: Renderer2;
-	start: number[];
-	end: number[];
-	element: any;
-	origin: number[];
+    shape: string;
+    id: string;
+    element: HTMLElement;
+    elementStyle: object;
+    renderer: Renderer2;
+    origin: number[];
     dragging: boolean;
-    elementString: string;
 
-	render(): void;
-    startDrag(pos: [number, number]): void;
-	drag(pos: [number, number]): void;
-    endDrag(): void;
-    select(): void;
-    deselect(): void;
-    updateProperties(): void;
+    render(): void;
+    select(): Promise < void > ;
+    deselect(): Promise < void > ;
+    startDraw(val: number[]): Promise < void > ;
+    drawTo(val: number[]): Promise < void > ;
+    startDrag(pos: [number, number]): Promise < void > ;
+    dragTo(pos: [number, number]): Promise < void > ;
+    endDrag(): Promise < void > ;
+    setStyle(style: object): Promise < void > ;
 }
