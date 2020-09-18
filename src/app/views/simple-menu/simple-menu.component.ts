@@ -41,8 +41,8 @@ export class SimpleMenuComponent implements AfterViewInit {
         // set initial tooling options
         this.inputSvc.currentTool = this.inputSvc.toolsOptions.select;
         this.inputSvc.currentShape = this.inputSvc.shapeOptions.polyline;
-        this.inputSvc.strokeColor = '#000'; // black
-        this.inputSvc.fillColor = 'none'; // no fill
+        // this.inputSvc.strokeColor = '#000'; // black
+        // this.inputSvc.fillColor = 'none'; // no fill
 
         // subscription for mouse coord display
         this.inputSvc.mouseCoordsEvent.subscribe((pos) => {

@@ -18,7 +18,7 @@ export class DropDownComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.dropDownDisplayItem = this.dropDownOptions[0];
-		this.toolService.strokeSize = Number(this.dropDownDisplayItem[5]);
+		// this.toolService.strokeSize = Number(this.dropDownDisplayItem[5]);
 
 		// event listener to close the drop down menu if user clicks anywhere else
 		this.renderer.listen('window', 'click', (e: Event) => {
