@@ -2,7 +2,11 @@ import { ViewBoxComponentState } from '../views/advanced-menu/components/menu-it
 import { GridlinesComponentState } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 import { StrokeOptionsComponentState } from '../views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
 import { FillOptionsComponentState } from '../views/advanced-menu/components/menu-items/fill-options/fill-options.component';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class CurrentStateService {
     // consistent variable declarations
     defaultMin: number = -9999;
@@ -99,18 +103,18 @@ export class CurrentStateService {
             options: ['Auto', 'Speed', 'Contrast', 'Precision'],
             value: 0
         },
-        currentAlpha: '1',
+        currentAlpha: 100,
         currentColor: this.defaultColor,
         currentHue: '#000000'
     }
 
     fillOptionState: FillOptionsComponentState = {
-        fillType: {
+           fillType: {
             label: 'Fill Type',
-            options: ['Solid', 'Gradient', 'None'],
+            options: ['Solid', 'None'],
             value: 0
         },
-        currentAlpha: '1',
+        currentAlpha: 100,
         currentColor: this.defaultColor,
         currentHue: this.defaultColor
     }

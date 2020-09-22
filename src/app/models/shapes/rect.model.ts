@@ -1,10 +1,11 @@
 import { IShape } from '../../Interfaces/IShape.interface';
+import { IStyleOptions } from '../../interfaces/IStyleOptions'
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
 
 export class RectModel extends ShapeModel implements IShape {
     element: HTMLElement;
-    elementStyle: object;
+    elementStyle: IStyleOptions;
     renderer: Renderer2;
     x: number;
     y: number;
@@ -14,9 +15,9 @@ export class RectModel extends ShapeModel implements IShape {
     offsetX: number;
     offsetY: number;
     dragging: boolean = false;
-    selected: boolean = false;
+    isSelected: boolean = false;
 
-    constructor(renderer: Renderer2, style: object) {
+    constructor(renderer: Renderer2, style: IStyleOptions) {
         super(renderer, 'rect');
         this.setStyle(style);
     }
@@ -46,7 +47,7 @@ export class RectModel extends ShapeModel implements IShape {
     // select object
     async select(): Promise < void > {
         return new Promise(() => {
-            this.selected = true;
+            this.isSelected = true;
             this.renderer.addClass(this.element, 'selectedObject');
         });
     }
@@ -54,7 +55,7 @@ export class RectModel extends ShapeModel implements IShape {
     // deselect object
     async deselect(): Promise < void > {
         return new Promise(() => {
-            this.selected = false;
+            this.isSelected = false;
             this.renderer.removeClass(this.element, 'selectedObject');
         });
     }
@@ -90,10 +91,11 @@ export class RectModel extends ShapeModel implements IShape {
     }
 
     // update style attributes
-    async setStyle(styling: object): Promise < void > {
+    async setStyle(styling: IStyleOptions): Promise < void > {
         this.elementStyle = styling;
         Object.keys(this.elementStyle).forEach(style => {
-            this.renderer.setAttribute(this.element, style, this.elementStyle[style]);
+            const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
+            this.renderer.setAttribute(this.element, kabobStyle, this.elementStyle[style]);
         });
     }
 

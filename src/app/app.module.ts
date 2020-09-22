@@ -28,6 +28,7 @@ import { HuePickerComponent } from './views/advanced-menu/components/form-items/
 import { AlphaPickerComponent } from './views/advanced-menu/components/form-items/color/alpha-picker/alpha-picker.component';
 import { HexDisplayComponent } from './views/advanced-menu/components/form-items/color/hex-display/hex-display.component';
 import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
+import { MenuItemDisabledDirective } from './directives/menu-item-disabled.directive';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { FillOptionsComponent } from './views/advanced-menu/components/menu-item
         AlphaPickerComponent,
         HexDisplayComponent,
         FillOptionsComponent,
+        MenuItemDisabledDirective,
     ],
     imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
     providers: [],

@@ -3,10 +3,10 @@
         <i class="fas fa-fill-drip"></i> Fill Options
     </div>
     <div class="mi-content">
-        <app-option-selector id="fill-type" [data]="componentState.fillType"></app-option-selector>
+        <app-option-selector id="fill-type" [data]="componentState.fillType" (updateEvent)="updateFillType($event)"></app-option-selector>
         <app-hue-picker id="hue-picker" [label]="'Hue'" [color]="componentState.currentHue" (colorEvent)="updateHue($event)"></app-hue-picker>
         <app-saturation-picker id="sat-picker" [label]="'Saturation'" [color]="componentState.currentColor" (colorEvent)="updateSaturation($event)"></app-saturation-picker>
-        <app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="componentState.currentColor" (colorEvent)="updateAlpha($event)"></app-alpha-picker>
+        <app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="componentState.currentColor" [alpha]="alphaPctStr" (colorEvent)="updateAlpha($event)"></app-alpha-picker>
         <app-hex-display id="hex-display" [label]="'Hex'" [color]="componentState.currentColor" (colorEvent)="updateHue($event)"></app-hex-display>
     </div>
 </div>

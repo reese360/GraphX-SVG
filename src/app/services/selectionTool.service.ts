@@ -1,6 +1,6 @@
 import { IShape } from '../Interfaces/IShape.interface';
 import { IShapeHashMap } from '../interfaces/IShapeHashMap.interface';
-import { ElementRef, Injectable, Renderer2 } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { InputService } from './inputTool.service';
 import { SelectionModel } from '../models/select/selection.model';
 import { ObjectService } from './object.service';
@@ -20,8 +20,8 @@ export class SelectionService {
     // promise to activate all input event listeners
     async initSubscriptions(): Promise < void > {
         return new Promise((result) => {
-            // subscribe to any shape style changes 
-            this.inputSvc.shapeStyleOptionsEvent.subscribe((style) => {
+            // subscribe to any shape style changes
+            this.inputSvc.objectStyleOptionsEvent.subscribe((style) => {
                 Object.keys(this.selectedShapes).forEach((shape) => {
                     this.selectedShapes[shape].setStyle(style);
                 });
@@ -41,6 +41,11 @@ export class SelectionService {
                 this.selectedShapes[shape.id] = shape;
                 shape.select();
             })
+            if (this.selectedObjectsCount === 1) {
+                // pass reference to objects style object for manipulation
+                this.inputSvc.updateCurrentObject(this.selectedShapes[Object.keys(this.selectedShapes)[0]]);
+                // console.log('onSelect', this.inputSvc.currentObject.elementStyle['fill']);
+            }
             result();
         });
     }
@@ -52,6 +57,7 @@ export class SelectionService {
                 this.selectedShapes[shape].deselect();
                 delete this.selectedShapes[shape]; // remove ref to shape
             });
+            if (this.inputSvc.currentObject) this.inputSvc.updateCurrentObject(null); // nullify input tool current object
         });
     }
 
@@ -84,7 +90,7 @@ export class SelectionService {
         });
     }
 
-    // returns if id of shape is selected
+    // returns if shape is selected
     isSelected(id: number): boolean {
         return id in this.selectedShapes ? true : false;
     }
@@ -137,5 +143,10 @@ export class SelectionService {
     // determines if dragging can occur
     get canDragSelected(): boolean {
         return Object.keys(this.selectedShapes).length > 0 && this.dragging ? true : false;
+    }
+
+    // returns a count of how many objects are currently selected
+    get selectedObjectsCount(): number {
+        return Object.keys(this.selectedShapes).length;
     }
 }

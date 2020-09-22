@@ -1,13 +1,15 @@
 import { Renderer2 } from '@angular/core';
+import { IStyleOptions } from './IStyleOptions';
 
 export interface IShape {
     shape: string;
     id: string;
     element: HTMLElement;
-    elementStyle: object;
+    elementStyle: IStyleOptions;
     renderer: Renderer2;
     origin: number[];
     dragging: boolean;
+    isSelected: boolean;
 
     render(): void;
     select(): Promise < void > ;

@@ -1,6 +1,10 @@
 import { IShapeHashMap } from '../interfaces/IShapeHashMap.interface';
 import { IShape } from '../Interfaces/IShape.interface';
+import { Injectable } from '@angular/core';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class ObjectService {
 	private objectMap: IShapeHashMap = {}; // hash map to hold refs to shape objects
 

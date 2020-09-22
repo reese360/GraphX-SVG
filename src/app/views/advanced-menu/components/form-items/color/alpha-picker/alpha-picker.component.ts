@@ -8,9 +8,10 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } fro
     encapsulation: ViewEncapsulation.ShadowDom
 })
 export class AlphaPickerComponent implements OnInit {
+    // alphaStr: string = '100%';
+    @Input() alpha: string;
     @Input() label: string;
     @Input() color: string;
-    alphaStr: string = '100%';
     @Output() colorEvent: EventEmitter < string > = new EventEmitter();
 
     constructor() {}
@@ -18,7 +19,6 @@ export class AlphaPickerComponent implements OnInit {
     ngOnInit(): void {}
 
     updateAlpha(colorEvent): void {
-        this.alphaStr = `${colorEvent.color.rgb.a * 100}%`; // calculate the left offset to keep slider persistent on color change
         this.colorEvent.emit(colorEvent.color.rgb.a);
     }
 }

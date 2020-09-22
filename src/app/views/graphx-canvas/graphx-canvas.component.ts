@@ -3,8 +3,13 @@ import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-// import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
+import { IStyleOptions } from 'src/app/interfaces/IStyleOptions';
+import { SvgRenderOptions } from './../../enums/SvgRenderOptions.enum';
+import { SvgFillType } from './../../enums/SvgFillType.enum';
+import { SvgStrokeType } from './../../enums/SvgStrokeType.enum';
+
 import { RectModel } from 'src/app/models/shapes/rect.model';
+// import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
 // import { PolygonModel } from 'src/app/models/shapes/polygon.model';
 // import { LineModel } from 'src/app/models/shapes/line.model';
 // import { PolylineModel } from 'src/app/models/shapes/polyline.model';
@@ -78,18 +83,27 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
         /* preliminary drawing of an svg object */
         /* can be used in future development to load a saved svg */
-        // const testSvg1 = new EllipseModel(this.renderer, { stroke: 'black', fill: 'lightblue', 'stroke-width': 2 });
-        // testSvg1.start = [200, 200];
-        // testSvg1.end = [300, 300];
+        // const testSvg1 = new RectModel(this.renderer, {
+        //     'stroke': 'gray',
+        //     'fill': '#00fff9ff',
+        //     'stroke-width': '2',
+        //     'stroke-dasharray': '0',
+        // });
+        // testSvg1.startDraw([400, 350]);
+        // testSvg1.drawTo([600, 550]);
         // this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
         // this.objectService.add(testSvg1);
 
-        const testSvg2 = new RectModel(this.renderer, {
-            'stroke': 'gray',
-            'fill': '#ff00eb',
-            'stroke-width': '2',
-            'stroke-dasharray': '0',
-        });
+        const svg2Style: IStyleOptions = {
+            stroke: 'gray',
+            fill: '#ff00ebff',
+            strokeWidth: 1,
+            strokeDasharray: '0',
+            strokeType: SvgStrokeType.solid,
+            fillType: SvgFillType.solid,
+            shapeRendering: SvgRenderOptions.auto
+        }
+        const testSvg2 = new RectModel(this.renderer, svg2Style);
         testSvg2.startDraw([400, 100]);
         testSvg2.drawTo([600, 300]);
         this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg2.element);
@@ -262,7 +276,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
                         //     break;
                         // }
                         case this.inputSvc.shapeOptions.rectangle: {
-                            this.currentObject = new RectModel(this.renderer, this.inputSvc.shapeStyleOptions);
+                            this.currentObject = new RectModel(this.renderer, this.inputSvc.objectStyleOptions);
                             break;
                         }
                         // case this.inputSvc.shapeOptions.ellipse: {

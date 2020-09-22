@@ -16,8 +16,7 @@ export class HexDisplayComponent implements OnInit {
     updateInputValue(value): void {
         if (value === this.color) return; // return if no change
         // check if value is 3 or 6 digit VALID hex color
-        if (/^#[0-9A-F]{6}$/i.test(value) || // 6 character hex value
-        (/^#([0-9A-F]{3}){1,2}$/i.test(value))) { // 3 character hex value
+        if (/^#[0-9A-F]{6}$/i.test(value)) { // 6 character hex value
             this.color = value;
             this.colorEvent.emit(value);
         } else {

@@ -1,5 +1,14 @@
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { IShape } from '../Interfaces/IShape.interface';
+import { IStyleOptions } from '../interfaces/IStyleOptions';
+import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
+import { SvgFillType } from '../enums/SvgFillType.enum';
+import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
 
+@Injectable({
+    providedIn: 'root'
+})
 export class InputService {
     public shapeOptions: any = {
         line: 0,
@@ -16,13 +25,16 @@ export class InputService {
         draw: 1,
         pan: 2,
     };
-
-    public shapeStyleOptions: object = {
-        'stroke': '#000',
-        'fill': '#000',
-        'stroke-width': '2',
-        'stroke-dasharray': '0',
-    };
+    
+    public objectStyleOptions: IStyleOptions = {
+        stroke: '#000000ff',
+        strokeWidth: 2,
+        strokeDasharray: '2',
+        shapeRendering: SvgRenderOptions.auto,
+        strokeType: SvgStrokeType.solid,
+        fill: '#000000ff',
+        fillType: SvgFillType.solid,
+    }
 
     public canvasOptions: object = {
         'dimensions': [1000, 800],
@@ -38,6 +50,9 @@ export class InputService {
         'offset': [0, 0]
     }
 
+    public currentObject: IShape = null;
+    public currentObjectEvent: Subject < IShape > = new Subject < IShape > ();
+
     public mouseCoords: number[];
     public mouseCoordsEvent: Subject < number[] > = new Subject < number[] > ();
 
@@ -50,31 +65,47 @@ export class InputService {
     public currentShape: string;
     public ShapeEvent: Subject < string > = new Subject < string > ();
 
-    public shapeStyleOptionsEvent: Subject < object > = new Subject < object > ();
+    public objectStyleOptionsEvent: Subject < object > = new Subject < object > ();
     public canvasOptionsEvent: Subject < object > = new Subject < object > ();
     public gridOptionsEvent: Subject < object > = new Subject < object > ();
 
-    // update and broadcast shape style options update
-    async updateShapeStyleOptions(style: string, value: string): Promise < void > {
+    async updateCurrentObject(obj: IShape): Promise < void > {
         return new Promise(() => {
-            this.shapeStyleOptions[style] = value;
-            this.shapeStyleOptionsEvent.next(this.shapeStyleOptions)
+            this.currentObject = obj;
+            console.log(this.objectStyleOptions);
+            if (this.currentObject) this.objectStyleOptions = obj.elementStyle;
+            console.log(this.objectStyleOptions);
+            if (this.currentObject) this.currentObjectEvent.next(this.currentObject);
+        });
+    }
+
+    // update and broadcast shape style options update
+    async updateObjectStyleOptions(style: string, value: string): Promise < void > {
+        return new Promise(() => {
+            if (style in this.objectStyleOptions) {
+                this.objectStyleOptions[style] = value;
+                this.objectStyleOptionsEvent.next(this.objectStyleOptions)
+            }
         });
     }
 
     // update and broadcast canvas options update
     async updateCanvasOptions(option: string, value: string | number | boolean | number[]): Promise < void > {
         return new Promise(() => {
-            this.canvasOptions[option] = value;
-            this.canvasOptionsEvent.next(this.canvasOptions);
+            if (option in this.canvasOptions) {
+                this.canvasOptions[option] = value;
+                this.canvasOptionsEvent.next(this.canvasOptions);
+            }
         });
     }
 
     // update and broadcast grid options update
     async updateGridOptions(option: string, value: string | number | boolean | number[]): Promise < void > {
         return new Promise(() => {
-            this.gridOptions[option] = value;
-            this.gridOptionsEvent.next(this.gridOptions);
+            if (option in this.gridOptions) {
+                this.gridOptions[option] = value;
+                this.gridOptionsEvent.next(this.gridOptions);
+            }
         })
     }
 

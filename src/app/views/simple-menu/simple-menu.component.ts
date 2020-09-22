@@ -81,18 +81,18 @@ export class SimpleMenuComponent implements AfterViewInit {
         this.inputSvc.changeTool(this.inputSvc.toolsOptions[tool]);
     }
 
-    updateStrokeStyle(style: string, selection: string): void {
-        switch (style) {
-            case 'stroke-width': {
-                this.inputSvc.updateStrokeWidth(Number(selection));
-                break;
-            }
-            case 'stroke-dasharray': {
-                this.inputSvc.updateStrokeDash(selection);
-                break;
-            }
-        }
-    }
+    // updateStrokeStyle(style: string, selection: string): void {
+        // switch (style) {
+        //     case 'stroke-width': {
+        //         this.inputSvc.updateStrokeWidth(Number(selection));
+        //         break;
+        //     }
+        //     case 'stroke-dasharray': {
+        //         this.inputSvc.updateStrokeDash(selection);
+        //         break;
+        //     }
+        // }
+    // }
 
     updateShape(shape: string): void {
         this.inputSvc.currentShape = this.inputSvc.shapeOptions[shape];
