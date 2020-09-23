@@ -1,5 +1,4 @@
 export enum SvgFillType {
-    solid = 'solid',
-        gradient = 'gradient',
-        none = 'none',
+    solid = 0,
+    none = 1,
 }

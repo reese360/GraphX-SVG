@@ -44,7 +44,6 @@ export class SelectionService {
             if (this.selectedObjectsCount === 1) {
                 // pass reference to objects style object for manipulation
                 this.inputSvc.updateCurrentObject(this.selectedShapes[Object.keys(this.selectedShapes)[0]]);
-                // console.log('onSelect', this.inputSvc.currentObject.elementStyle['fill']);
             }
             result();
         });

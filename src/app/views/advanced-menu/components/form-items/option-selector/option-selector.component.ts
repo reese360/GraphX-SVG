@@ -15,14 +15,10 @@ export interface IOptionSelectorInput {
 export class OptionSelectorComponent implements OnInit {
     @Input() data: IOptionSelectorInput;
     @Output() updateEvent = new EventEmitter();
-    public selectedIdx: number = 0; // currently selected options index
 
-    ngOnInit(): void {
-        this.selectedIdx = this.data.value;
-    }
+    ngOnInit(): void {}
 
     toggleOptions(idx: number): void {
-        this.selectedIdx = idx;
         this.updateEvent.emit(idx);
     }
 }

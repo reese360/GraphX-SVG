@@ -2,6 +2,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
+import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
+import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum'
 
 export interface StrokeOptionsComponentState {
     strokeType: IOptionSelectorInput;
@@ -22,7 +24,18 @@ export class StrokeOptionsComponent implements OnInit {
     alphaHex: string = 'ff'; // start at 100%
 
     constructor(private stateSvc: CurrentStateService, private inputSvc: InputService) {
+        // set component state to current state
+        this.componentState = this.stateSvc.strokeOptionState;
+
+        // initialize input service states
+        this.inputSvc.objectStyleOptions.strokeType = this.componentState.strokeType.value;
+        this.inputSvc.objectStyleOptions.stroke = this.componentState.currentColor;
+
+        // subscription to single selected object
         inputSvc.currentObjectEvent.subscribe((obj) => {
+            this.componentState.strokeType.value = obj.elementStyle.strokeType;
+            this.componentState.shapeRender.value = obj.elementStyle.shapeRendering;
+            this.componentState.currentHue = obj.elementStyle['stroke'].substring(0, 7); // clip color hex
             this.componentState.currentColor = obj.elementStyle['stroke'].substring(0, 7); // clip color hex
             this.componentState.currentAlpha = this.alphaHexToDecimal(obj.elementStyle['stroke'].substring(7, 9)); // clip alpha hex
         });
@@ -34,6 +47,7 @@ export class StrokeOptionsComponent implements OnInit {
 
     updateStrokeType(type): void {
         this.componentState.strokeType.value = type;
+        this.inputSvc.updateObjectStyleOptions('strokeType', type === 0 ? SvgStrokeType.solid : SvgStrokeType.none);
     }
 
     updateHue(color): void {
@@ -51,16 +65,16 @@ export class StrokeOptionsComponent implements OnInit {
         this.componentState.shapeRender.value = option;
         switch (option) {
             case 0:
-                this.inputSvc.updateObjectStyleOptions('shape-rendering', 'auto');
+                this.inputSvc.updateObjectStyleOptions('shape-rendering', SvgRenderOptions.auto);
                 break;
             case 1:
-                this.inputSvc.updateObjectStyleOptions('shape-rendering', 'optimizeSpeed');
+                this.inputSvc.updateObjectStyleOptions('shape-rendering', SvgRenderOptions.optimizeSpeed);
                 break;
             case 2:
-                this.inputSvc.updateObjectStyleOptions('shape-rendering', 'crispEdges');
+                this.inputSvc.updateObjectStyleOptions('shape-rendering', SvgRenderOptions.crispEdges);
                 break;
             case 3:
-                this.inputSvc.updateObjectStyleOptions('shape-rendering', 'geometricPrecision');
+                this.inputSvc.updateObjectStyleOptions('shape-rendering', SvgRenderOptions.geometricPrecision);
                 break;
         }
     }

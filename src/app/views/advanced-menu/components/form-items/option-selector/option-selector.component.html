@@ -2,7 +2,7 @@
     <div class="os-label">{{ data.label }}</div>
     <div class="os-options">
         <div *ngFor="let option of data.options; index as i">
-            <div (click)="toggleOptions(i)" [ngClass]="selectedIdx == i ? 'os-option selected' : 'os-option'">{{option}}</div>
+            <div (click)="toggleOptions(i)" [ngClass]="data.value == i ? 'os-option selected' : 'os-option'">{{option}}</div>
         </div>
     </div>
 </div>

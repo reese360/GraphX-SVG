@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SvgFillType } from 'src/app/enums/SvgFillType.enum';
 import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
@@ -20,15 +21,18 @@ export class FillOptionsComponent implements OnInit {
     alphaHex: string = 'ff'; // start at 100%
 
     constructor(private stateSvc: CurrentStateService, private inputSvc: InputService) {
-        // initialize component property states
+        // set component state to current state
         this.componentState = this.stateSvc.fillOptionState;
-        this.inputSvc.objectStyleOptions['fill-type'] = this.componentState.fillType.value;
-        this.inputSvc.objectStyleOptions['fill'] = this.colorStr;
+
+        // initialize input service states
+        this.inputSvc.objectStyleOptions.fillType = this.componentState.fillType.value;
+        this.inputSvc.objectStyleOptions.fill = this.colorStr;
 
         // subscription to single selected object
         inputSvc.currentObjectEvent.subscribe((obj) => {
-            this.componentState.currentHue = obj.elementStyle['fill'].substring(0, 7); // clip color hex
-            this.componentState.currentColor = obj.elementStyle['fill'].substring(0, 7);
+            this.componentState.fillType.value = obj.elementStyle.fillType;
+            this.componentState.currentHue = obj.elementStyle.fill.substring(0, 7); // clip color hex
+            this.componentState.currentColor = obj.elementStyle.fill.substring(0, 7);
             this.componentState.currentAlpha = this.alphaHexToDecimal(obj.elementStyle['fill'].substring(7, 9)); // clip alpha hex
         });
     }
@@ -63,7 +67,7 @@ export class FillOptionsComponent implements OnInit {
     // update fill type
     updateFillType(option: number): void {
         this.componentState.fillType.value = option;
-        this.inputSvc.updateObjectStyleOptions('fill', this.componentState.fillType.options[option]);
+        this.inputSvc.updateObjectStyleOptions('fillType', option === 0 ? SvgFillType.solid : SvgFillType.none);
     }
 
     // get string of color and alpha levels in hex format
@@ -75,5 +79,4 @@ export class FillOptionsComponent implements OnInit {
     get alphaPctStr(): string {
         return `${this.componentState.currentAlpha}%`;
     }
-
 }

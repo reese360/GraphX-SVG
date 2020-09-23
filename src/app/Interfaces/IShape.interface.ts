@@ -10,6 +10,7 @@ export interface IShape {
     origin: number[];
     dragging: boolean;
     isSelected: boolean;
+    properties: object;
 
     render(): void;
     select(): Promise < void > ;

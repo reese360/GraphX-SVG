@@ -2,8 +2,11 @@ import { IShape } from '../../Interfaces/IShape.interface';
 import { IStyleOptions } from '../../interfaces/IStyleOptions'
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
+import { SvgFillType } from '../../enums/SvgFillType.enum'
+import { SvgStrokeType } from 'src/app/enums/SvgStrokeType.enum';
 
 export class RectModel extends ShapeModel implements IShape {
+    //#region variable declarations
     element: HTMLElement;
     elementStyle: IStyleOptions;
     renderer: Renderer2;
@@ -14,8 +17,23 @@ export class RectModel extends ShapeModel implements IShape {
     origin: number[];
     offsetX: number;
     offsetY: number;
+    dragX: number;
+    dragY: number;
     dragging: boolean = false;
     isSelected: boolean = false;
+
+    get properties(): object {
+        return {
+            style: this.elementStyle,
+            position: {
+                x: this.x,
+                y: this.y,
+                height: this.height,
+                width: this.width
+            }
+        }
+    }
+    //#endregion
 
     constructor(renderer: Renderer2, style: IStyleOptions) {
         super(renderer, 'rect');
@@ -64,20 +82,17 @@ export class RectModel extends ShapeModel implements IShape {
     async startDrag(pos): Promise < void > {
         return new Promise(() => {
             this.dragging = true;
-            this.offsetX = pos[0] - this.origin[0];
-            this.offsetY = pos[1] - this.origin[1];
+            this.offsetX = pos[0];
+            this.offsetY = pos[1];
         });
     }
 
     // drag object to position
     async dragTo(pos): Promise < void > {
         return new Promise(() => {
-            const dx = pos[0] - this.offsetX;
-            const dy = pos[1] - this.offsetY;
-            this.origin = [dx, dy];
-            this.x = dx;
-            this.y = dy;
-            this.render();
+            this.dragX = pos[0] - this.offsetX;
+            this.dragY = pos[1] - this.offsetY;
+            this.renderer.setAttribute(this.element, "style", `transform: translate(${this.dragX}px, ${this.dragY}px)`);
         });
     }
 
@@ -85,25 +100,55 @@ export class RectModel extends ShapeModel implements IShape {
     async endDrag(): Promise < void > {
         return new Promise(() => {
             this.dragging = false;
-            this.offsetX = null;
-            this.offsetY = null;
+            this.x += this.dragX ? this.dragX : 0;
+            this.y += this.dragY ? this.dragY : 0;
+            this.dragX = this.dragY = this.offsetX = this.offsetY = null;
+            this.renderer.removeAttribute(this.element, "style"); // remove style
+            this.render();
         });
     }
 
     // update style attributes
     async setStyle(styling: IStyleOptions): Promise < void > {
-        this.elementStyle = styling;
+        this.elementStyle = Object.assign({}, styling); // create shallow copy of styling
         Object.keys(this.elementStyle).forEach(style => {
-            const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
-            this.renderer.setAttribute(this.element, kabobStyle, this.elementStyle[style]);
+            switch (style as string) {
+                case 'fillType':
+                    switch (this.elementStyle.fillType) {
+                        case (SvgFillType.solid):
+                            this.renderer.setAttribute(this.element, 'fill', this.elementStyle['fill']);
+                            break;
+                        case (SvgFillType.none):
+                            this.renderer.setAttribute(this.element, 'fill', 'none');
+                            break;
+                    }
+                    break;
+                case 'strokeType':
+                    switch (this.elementStyle.strokeType) {
+                        case (SvgStrokeType.solid):
+                            this.renderer.setAttribute(this.element, 'stroke', this.elementStyle['stroke']);
+                            break;
+                        case (SvgStrokeType.none):
+                            this.renderer.setAttribute(this.element, 'stroke', 'none');
+                            debugger;
+                            break;
+                    }
+                    break;
+                default:
+                    const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
+                    this.renderer.setAttribute(this.element, kabobStyle, this.elementStyle[style]);
+                    break;
+            }
         });
     }
 
     // set positional attributes
-    render(): void {
-        this.renderer.setAttribute(this.element, 'x', `${this.x}`);
-        this.renderer.setAttribute(this.element, 'y', `${this.y}`);
-        this.renderer.setAttribute(this.element, 'width', `${this.width}`);
-        this.renderer.setAttribute(this.element, 'height', `${this.height}`);
+    async render(): Promise < void > {
+        return new Promise(() => {
+            this.renderer.setAttribute(this.element, 'x', `${this.x}`);
+            this.renderer.setAttribute(this.element, 'y', `${this.y}`);
+            this.renderer.setAttribute(this.element, 'width', `${this.width}`);
+            this.renderer.setAttribute(this.element, 'height', `${this.height}`);
+        });
     }
 }

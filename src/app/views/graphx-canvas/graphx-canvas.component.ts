@@ -72,7 +72,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         private renderer: Renderer2,
         private inputSvc: InputService,
         private selectionSvc: SelectionService,
-        private objectService: ObjectService) {
+        private objectSvc: ObjectService) {
 
         this.initSubscriptions();
     }
@@ -95,8 +95,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
         // this.objectService.add(testSvg1);
 
         const svg2Style: IStyleOptions = {
-            stroke: 'gray',
-            fill: '#ff00ebff',
+            stroke: '#cedf1aff',
+            fill: '#4c9d9dff',
             strokeWidth: 1,
             strokeDasharray: '0',
             strokeType: SvgStrokeType.solid,
@@ -107,7 +107,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         testSvg2.startDraw([400, 100]);
         testSvg2.drawTo([600, 300]);
         this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg2.element);
-        this.objectService.add(testSvg2);
+        this.objectSvc.add(testSvg2);
 
         // const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
         // testSvg3.points = [800, 100, 900, 300];
@@ -250,7 +250,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
             switch (this.inputSvc.currentTool) {
                 case this.inputSvc.toolsOptions.select: {
                     const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
-                    const hitObjectRef = this.objectService.fetch(hitObjectId);
+                    const hitObjectRef = this.objectSvc.fetch(hitObjectId);
                     if (hitObjectRef) {
                         // ctrl key allows additional objects to be selected simultaneously
                         if (!e.ctrlKey)
@@ -319,7 +319,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
         if (e.button === 2) {
             e.preventDefault(); // halt default context menu
             if (this.currentObject) {
-                this.objectService.add(this.currentObject);
+                this.objectSvc.add(this.currentObject);
                 this.currentObject = null;
             }
         }
@@ -381,7 +381,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
                     this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
                     return;
                 } else if (this.currentObject) { // end draw for other shapes
-                    this.objectService.add(this.currentObject);
+                    this.objectSvc.add(this.currentObject);
+                    this.selectionSvc.select([this.currentObject]);
                     this.currentObject = null;
                 }
                 break;
@@ -399,7 +400,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
     }
 
     @HostListener('window:keydown', ['$event']) keyEvent(e: KeyboardEvent): void {
-        // console.log(e.key);
+        console.log(this.objectSvc.objects);
     }
 
     // updates toolService mouse coordinates

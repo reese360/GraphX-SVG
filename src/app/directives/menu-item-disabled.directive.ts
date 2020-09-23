@@ -6,7 +6,7 @@ import { Directive, ElementRef } from '@angular/core';
 export class MenuItemDisabledDirective {
 
   constructor(el: ElementRef) {
-    el.nativeElement.style['visibility'] = 'hidden';
+    el.nativeElement.style['cursor'] = 'no-drop';
 }
 
 }

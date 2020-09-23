@@ -1,4 +1,4 @@
 export enum SvgStrokeType {
-    solid = 'solid',
-        none = 'none'
+	solid = 0,
+	none = 1,
 }

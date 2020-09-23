@@ -25,11 +25,11 @@ export class InputService {
         draw: 1,
         pan: 2,
     };
-    
+
     public objectStyleOptions: IStyleOptions = {
         stroke: '#000000ff',
-        strokeWidth: 2,
-        strokeDasharray: '2',
+        strokeWidth: 1,
+        strokeDasharray: '0',
         shapeRendering: SvgRenderOptions.auto,
         strokeType: SvgStrokeType.solid,
         fill: '#000000ff',
@@ -72,17 +72,17 @@ export class InputService {
     async updateCurrentObject(obj: IShape): Promise < void > {
         return new Promise(() => {
             this.currentObject = obj;
-            console.log(this.objectStyleOptions);
-            if (this.currentObject) this.objectStyleOptions = obj.elementStyle;
-            console.log(this.objectStyleOptions);
-            if (this.currentObject) this.currentObjectEvent.next(this.currentObject);
+            if (this.currentObject) {
+                this.objectStyleOptions = Object.assign({}, obj.elementStyle);
+                this.currentObjectEvent.next(this.currentObject)
+            }
         });
     }
 
     // update and broadcast shape style options update
-    async updateObjectStyleOptions(style: string, value: string): Promise < void > {
+    async updateObjectStyleOptions(style: string, value: string | number | boolean | number[] | SvgFillType | SvgStrokeType): Promise < void > {
         return new Promise(() => {
-            if (style in this.objectStyleOptions) {
+            if (style in this.objectStyleOptions) { // check for valid key
                 this.objectStyleOptions[style] = value;
                 this.objectStyleOptionsEvent.next(this.objectStyleOptions)
             }
