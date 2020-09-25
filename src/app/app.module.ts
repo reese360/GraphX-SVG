@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -28,35 +28,38 @@ import { HuePickerComponent } from './views/advanced-menu/components/form-items/
 import { AlphaPickerComponent } from './views/advanced-menu/components/form-items/color/alpha-picker/alpha-picker.component';
 import { HexDisplayComponent } from './views/advanced-menu/components/form-items/color/hex-display/hex-display.component';
 import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
-
+import { MenuItemDisabledDirective } from './directives/menu-item-disabled.directive';
+import { InputSliderComponent } from './views/advanced-menu/components/form-items/input-slider/input-slider.component';
 
 @NgModule({
-    declarations: [
-        AppComponent,
-        DropDownComponent,
-        SliderComponent,
-        CodeDrawerComponent,
-        AdvancedMenuComponent,
-        SimpleMenuComponent,
-        GraphxCanvasComponent,
-        GridlinesMenuItemComponent,
-        OptionSelectorComponent,
-        NumberInputComponent,
-        ViewBoxComponent,
-        MenuItemTitleDirective,
-        MenuItemContentDirective,
-        LockIconDirective,
-        AboutComponent,
-        StrokeOptionsComponent,
-        SaturationPickerComponent,
-        FormItemLabelDirective,
-        HuePickerComponent,
-        AlphaPickerComponent,
-        HexDisplayComponent,
-        FillOptionsComponent,
-    ],
-    imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
-    providers: [],
-    bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		DropDownComponent,
+		SliderComponent,
+		CodeDrawerComponent,
+		AdvancedMenuComponent,
+		SimpleMenuComponent,
+		GraphxCanvasComponent,
+		GridlinesMenuItemComponent,
+		OptionSelectorComponent,
+		NumberInputComponent,
+		ViewBoxComponent,
+		MenuItemTitleDirective,
+		MenuItemContentDirective,
+		LockIconDirective,
+		AboutComponent,
+		StrokeOptionsComponent,
+		SaturationPickerComponent,
+		FormItemLabelDirective,
+		HuePickerComponent,
+		AlphaPickerComponent,
+		HexDisplayComponent,
+		FillOptionsComponent,
+		MenuItemDisabledDirective,
+		InputSliderComponent,
+	],
+	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
+	providers: [],
+	bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,24 +1,23 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 
-
 @Component({
-    selector: 'app-alpha-picker',
-    templateUrl: './alpha-picker.component.html',
-    styleUrls: ['./alpha-picker.component.css'],
-    encapsulation: ViewEncapsulation.ShadowDom
+	selector: 'app-alpha-picker',
+	templateUrl: './alpha-picker.component.html',
+	styleUrls: ['./alpha-picker.component.css'],
+	encapsulation: ViewEncapsulation.ShadowDom,
 })
 export class AlphaPickerComponent implements OnInit {
-    @Input() label: string;
-    @Input() color: string;
-    alphaStr: string = '100%';
-    @Output() colorEvent: EventEmitter < string > = new EventEmitter();
+	// alphaStr: string = '100%';
+	@Input() alpha: string;
+	@Input() label: string;
+	@Input() color: string;
+	@Output() colorEvent: EventEmitter<string> = new EventEmitter();
 
-    constructor() {}
+	constructor() {}
 
-    ngOnInit(): void {}
+	ngOnInit(): void {}
 
-    updateAlpha(colorEvent): void {
-        this.alphaStr = `${colorEvent.color.rgb.a * 100}%`; // calculate the left offset to keep slider persistent on color change
-        this.colorEvent.emit(colorEvent.color.rgb.a);
-    }
+	updateAlpha(colorEvent): void {
+		this.colorEvent.emit(colorEvent.color.rgb.a);
+	}
 }

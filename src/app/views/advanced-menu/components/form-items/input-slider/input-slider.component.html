@@ -1,0 +1,13 @@
+<div class="is-container">
+    <div class="is-label" appFormItemLabel >{{data.label}}</div>
+    <div class="is-display-area">
+        <input #slider
+        type="range"
+        [min]="data.minimum"
+        [max]="data.maximum"
+        [step]="data.step"
+        [value]="value"
+        (input)="updateValue(slider.value)"
+        [ngStyle]= "sliderGradient">
+    </div>
+</div>

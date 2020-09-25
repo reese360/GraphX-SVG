@@ -2,48 +2,108 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
-
-export interface StrokeOptionsComponentState {
-    strokeType: IOptionSelectorInput;
-    shapeRender: IOptionSelectorInput;
-    currentColor: string;
-    currentAlpha: string;
-    currentHue: string;
-}
+import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
+import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
+import { IRangeSliderInput } from '../../form-items/input-slider/input-slider.component';
 
 @Component({
-    selector: 'app-stroke-options',
-    templateUrl: './stroke-options.component.html',
-    styleUrls: ['./stroke-options.component.css'],
-    encapsulation: ViewEncapsulation.None
+	selector: 'app-stroke-options',
+	templateUrl: './stroke-options.component.html',
+	styleUrls: ['./stroke-options.component.css'],
+	encapsulation: ViewEncapsulation.None,
 })
 export class StrokeOptionsComponent implements OnInit {
-    componentState: StrokeOptionsComponentState;
+	// component variables
+	strokeColor: string;
+	strokeAlpha: number;
+	strokeType: SvgStrokeType;
+	strokeWidth: number;
+	shapeRendering: SvgRenderOptions;
 
-    constructor(private stateSvc: CurrentStateService, private inputService: InputService) {}
+	// input fields component data
+	strokeTypeData: IOptionSelectorInput = {
+		label: 'Stroke Type',
+		options: ['Solid', 'None'],
+		value: 0,
+	};
 
-    ngOnInit(): void {
-        this.componentState = this.stateSvc.strokeOptionState;
-    }
+	shapeRenderData: IOptionSelectorInput = {
+		label: 'Shape Rendering',
+		options: ['Auto', 'Speed', 'Contrast', 'Precision'],
+		value: 0,
+	};
 
-    updateStrokeType(type): void {
-        this.componentState.strokeType.value = type;
-    }
+	strokeWidthData: IRangeSliderInput = {
+		label: 'Stroke Width',
+		maximum: 100,
+		minimum: 1,
+		step: 1,
+	};
 
-    updateHue(color): void {
-        this.componentState.currentColor = color;
-        this.componentState.currentHue = color;
-    }
+	constructor(private inputSvc: InputService) {
+		// set input values
+		this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
+		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
+		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
+		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
 
-    updateSaturation(color): void {
-        this.componentState.currentColor = color;
-    }
+		// subscription to single selected object
+		inputSvc.currentObjectEvent.subscribe((obj) => {
+			this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
+			this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
+			this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
+			this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+			this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
+		});
+	}
 
-    updateAlpha(alpha): void {
-        this.componentState.currentAlpha = alpha;
-    }
+	ngOnInit(): void {
+		// set input values
+		this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
+		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
+		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
+		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
+	}
 
-    updateShapeRender(option): void {
-        this.componentState.shapeRender.value = option;
-    }
+	handleStrokeTypeChange(type): void {
+		this.strokeType = type === 0 ? SvgStrokeType.solid : SvgStrokeType.none;
+		this.inputSvc.updateObjectStyleOptions('strokeType', type === 0 ? SvgStrokeType.solid : SvgStrokeType.none);
+	}
+
+	handleColorChange(color): void {
+		this.strokeColor = color;
+		this.inputSvc.updateObjectStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
+	}
+
+	handleStrokeWidthChange(width: number): void {
+		this.strokeWidth = width;
+		this.inputSvc.updateObjectStyleOptions('strokeWidth', width);
+	}
+
+	handleShapeRenderChange(option): void {
+		this.shapeRendering = option as SvgRenderOptions;
+		this.inputSvc.updateObjectStyleOptions('shapeRendering', option as SvgRenderOptions);
+	}
+
+	handleAlphaChange(alpha): void {
+		this.strokeAlpha = alpha * 100;
+		this.inputSvc.updateObjectStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
+	}
+
+	// convert alpha hex value to decimal percentage
+	alphaHexToDecimal(hex: string): number {
+		const alpha = parseInt(hex, 16); // convert alpha hex to [0:255]
+		return Number(((alpha / 255) * 100).toFixed(0)); // convert to percentage
+	}
+
+	// convert current alpha value to percentage string
+	get strokeAlphaPercent(): string {
+		return `${this.strokeAlpha}%`;
+	}
+
+	get strokeAlphaHex(): string {
+		return (Math.round((Math.round(this.strokeAlpha) / 100) * 255) + 0x10000).toString(16).substr(-2);
+	}
 }

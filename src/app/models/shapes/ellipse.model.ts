@@ -94,7 +94,7 @@ export class EllipseModel extends ShapeModel implements IShape {
 		return style;
 	}
 
-    get elementString(): string {
-        return `<${this.shape} />`
-    }
+	get elementString(): string {
+		return `<${this.shape} />`;
+	}
 }

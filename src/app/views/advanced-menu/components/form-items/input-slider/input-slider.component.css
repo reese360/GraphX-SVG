@@ -1,0 +1,30 @@
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 183px;
+    height: 30px;
+    background: var(--graphx-light-gray);
+    outline: 1px solid var(--graphx-dark-gray);
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 6px;
+    height: 30px;
+    background-color: #ffffff;
+    outline: 1px solid var(--graphx-dark-gray);
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 6px;
+    height: 30px;
+    outline: 1px solid var(--graphx-dark-gray);
+    background: white;
+    cursor: pointer;
+}
+
+.is-display-area {
+    width: 183px;
+}

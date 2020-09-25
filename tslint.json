@@ -2,12 +2,12 @@
 	"extends": "tslint:recommended",
 	"rules": {
         "no-string-literal": false,
-        "no-unused-expression": false,
+        "no-unused-expression": true,
         "object-literal-sort-keys": false,
 		"align": {
 			"options": ["parameters", "statements"]
 		},
-		"array-type": false,
+		"array-type": true,
 		"arrow-return-shorthand": true,
 		"deprecation": {
 			"severity": "warning"
@@ -26,7 +26,7 @@
 			}
         ],
         "forin": false,
-		"no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
+		"no-console": [true, "debug", "time", "timeEnd", "trace"],
 		"no-empty": false,
 		"no-inferrable-types": [true, "ignore-params", "ignore-properties"],
 		"no-non-null-assertion": true,
