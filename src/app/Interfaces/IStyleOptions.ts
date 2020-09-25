@@ -1,15 +1,15 @@
 import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
 import { SvgFillType } from '../enums/SvgFillType.enum';
-import { SvgRenderOptions} from '../enums/SvgRenderOptions.enum';
+import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
 
 export interface IStyleOptions {
-    stroke: string;
-    strokeWidth: number;
-    strokeDasharray: string;
-    strokeType: SvgStrokeType;
+	stroke: string;
+	strokeWidth: number;
+	strokeDasharray: string;
+	strokeType: SvgStrokeType;
 
-    fill: string;
-    fillType: SvgFillType;
-    
-    shapeRendering: SvgRenderOptions;
+	fill: string;
+	fillType: SvgFillType;
+
+	shapeRendering: SvgRenderOptions;
 }

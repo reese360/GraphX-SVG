@@ -10,7 +10,7 @@ export class DropDownComponent implements OnInit {
 	@ViewChild('strokeDropDownBtn', { read: ElementRef }) strokeDropDownBtn: ElementRef;
 	@ViewChild('strokeDropDownContent', { read: ElementRef }) strokeDropDownContent: ElementRef;
 	@Input() dropDownOptions: string[][];
-    @Output() dropDownSelectionEvent: EventEmitter<string> = new EventEmitter<string>();
+	@Output() dropDownSelectionEvent: EventEmitter<string> = new EventEmitter<string>();
 	dropDownDisplayItem: string[];
 	dropDownOpen: boolean = false;
 

@@ -1,4 +1,4 @@
 export enum SvgFillType {
-    solid = 0,
-    none = 1,
+	solid = 0,
+	none = 1,
 }
