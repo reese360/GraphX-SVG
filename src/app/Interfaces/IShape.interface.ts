@@ -5,7 +5,7 @@ export interface IShape {
     shape: string;
     id: string;
     element: HTMLElement;
-    elementStyle: IStyleOptions;
+    style: IStyleOptions;
     renderer: Renderer2;
     origin: number[];
     dragging: boolean;

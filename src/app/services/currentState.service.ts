@@ -1,7 +1,5 @@
 import { ViewBoxComponentState } from '../views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { GridlinesComponentState } from '../views/advanced-menu/components/menu-items/gridlines/gridlines.component';
-import { StrokeOptionsComponentState } from '../views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
-import { FillOptionsComponentState } from '../views/advanced-menu/components/menu-items/fill-options/fill-options.component';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -92,30 +90,37 @@ export class CurrentStateService {
         viewBoxRatio: null,
     }
 
-    strokeOptionState: StrokeOptionsComponentState = {
-        strokeType: {
-            label: 'Stroke Type',
-            options: ['Solid', 'None'],
-            value: 0
-        },
-        shapeRender: {
-            label: 'Shape Rendering',
-            options: ['Auto', 'Speed', 'Contrast', 'Precision'],
-            value: 0
-        },
-        currentAlpha: 100,
-        currentColor: this.defaultColor,
-        currentHue: '#000000'
-    }
+    // strokeOptionState: StrokeOptionsComponentState = {
+    //     strokeType: {
+    //         label: 'Stroke Type',
+    //         options: ['Solid', 'None'],
+    //         value: 0
+    //     },
+    //     shapeRender: {
+    //         label: 'Shape Rendering',
+    //         options: ['Auto', 'Speed', 'Contrast', 'Precision'],
+    //         value: 0
+    //     },
+    //     currentAlpha: 100,
+    //     currentColor: this.defaultColor,
+    //     currentHue: '#000000',
+    //     strokeWidth: {
+    //         label: 'Stroke Width',
+    //         maximum: 100,
+    //         minimum: 1,
+    //         step: 1,
+    //         value: 1
+    //     }
+    // }
 
-    fillOptionState: FillOptionsComponentState = {
-           fillType: {
-            label: 'Fill Type',
-            options: ['Solid', 'None'],
-            value: 0
-        },
-        currentAlpha: 100,
-        currentColor: this.defaultColor,
-        currentHue: this.defaultColor
-    }
+    // fillOptionState: FillOptionComponentSettings = {
+    //     fillType: {
+    //         label: 'Fill Type',
+    //         options: ['Solid', 'None'],
+    //         value: 0
+    //     },
+    //     currentAlpha: 100,
+    //     currentColor: this.defaultColor,
+    //     currentHue: this.defaultColor
+    // }
 }

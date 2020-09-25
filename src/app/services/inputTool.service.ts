@@ -32,7 +32,7 @@ export class InputService {
         strokeDasharray: '0',
         shapeRendering: SvgRenderOptions.auto,
         strokeType: SvgStrokeType.solid,
-        fill: '#000000ff',
+        fill: '#ccccccff',
         fillType: SvgFillType.solid,
     }
 
@@ -73,7 +73,7 @@ export class InputService {
         return new Promise(() => {
             this.currentObject = obj;
             if (this.currentObject) {
-                this.objectStyleOptions = Object.assign({}, obj.elementStyle);
+                this.objectStyleOptions = Object.assign({}, obj.style);
                 this.currentObjectEvent.next(this.currentObject)
             }
         });

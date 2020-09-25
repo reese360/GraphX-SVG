@@ -2,9 +2,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 // component input data DTO
 export interface IOptionSelectorInput {
-    label: string,
-        options: string[],
-        value: number
+    label: string;
+    options: string[];
+    value: number; // ! remove this
 }
 
 @Component({
@@ -14,11 +14,12 @@ export interface IOptionSelectorInput {
 })
 export class OptionSelectorComponent implements OnInit {
     @Input() data: IOptionSelectorInput;
+    @Input() currentValue: number = 0;
     @Output() updateEvent = new EventEmitter();
 
     ngOnInit(): void {}
 
-    toggleOptions(idx: number): void {
+    toggleOption(idx: number): void {
         this.updateEvent.emit(idx);
     }
 }

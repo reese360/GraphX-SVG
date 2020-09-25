@@ -3,12 +3,13 @@ import { IStyleOptions } from '../../interfaces/IStyleOptions'
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
 import { SvgFillType } from '../../enums/SvgFillType.enum'
-import { SvgStrokeType } from 'src/app/enums/SvgStrokeType.enum';
+import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
 
 export class RectModel extends ShapeModel implements IShape {
     //#region variable declarations
     element: HTMLElement;
-    elementStyle: IStyleOptions;
+    style: IStyleOptions;
     renderer: Renderer2;
     x: number;
     y: number;
@@ -24,7 +25,7 @@ export class RectModel extends ShapeModel implements IShape {
 
     get properties(): object {
         return {
-            style: this.elementStyle,
+            style: this.style,
             position: {
                 x: this.x,
                 y: this.y,
@@ -110,13 +111,13 @@ export class RectModel extends ShapeModel implements IShape {
 
     // update style attributes
     async setStyle(styling: IStyleOptions): Promise < void > {
-        this.elementStyle = Object.assign({}, styling); // create shallow copy of styling
-        Object.keys(this.elementStyle).forEach(style => {
+        this.style = Object.assign({}, styling); // create shallow copy of styling
+        Object.keys(this.style).forEach(style => {
             switch (style as string) {
                 case 'fillType':
-                    switch (this.elementStyle.fillType) {
+                    switch (this.style.fillType) {
                         case (SvgFillType.solid):
-                            this.renderer.setAttribute(this.element, 'fill', this.elementStyle['fill']);
+                            this.renderer.setAttribute(this.element, 'fill', this.style['fill']);
                             break;
                         case (SvgFillType.none):
                             this.renderer.setAttribute(this.element, 'fill', 'none');
@@ -124,19 +125,22 @@ export class RectModel extends ShapeModel implements IShape {
                     }
                     break;
                 case 'strokeType':
-                    switch (this.elementStyle.strokeType) {
+                    switch (this.style.strokeType) {
                         case (SvgStrokeType.solid):
-                            this.renderer.setAttribute(this.element, 'stroke', this.elementStyle['stroke']);
+                            this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
                             break;
                         case (SvgStrokeType.none):
                             this.renderer.setAttribute(this.element, 'stroke', 'none');
-                            debugger;
                             break;
                     }
                     break;
+                case 'shapeRendering':
+                    this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+                    break;
                 default:
+                    // convert style options to kabob casing for html styling
                     const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
-                    this.renderer.setAttribute(this.element, kabobStyle, this.elementStyle[style]);
+                    this.renderer.setAttribute(this.element, kabobStyle, this.style[style]);
                     break;
             }
         });

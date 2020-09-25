@@ -42,7 +42,7 @@ export class GridlinesMenuItemComponent implements OnInit {
     toggleGridLines(option): void {
         // disable grid snapping if grid display is off
         if (option === 0 && this.snapGrid.data.value !== 0) {
-            this.snapGrid.toggleOptions(0);
+            this.snapGrid.toggleOption(0);
         }
         // this.inputSvc.toggleGridDisplay(option);
         this.inputSvc.updateGridOptions('display', option);
@@ -53,7 +53,7 @@ export class GridlinesMenuItemComponent implements OnInit {
     toggleSnapGrid(option): void {
         // grid display must be enabled to snap to grid -> toggle grid display
         if (option === 1 && this.showGrid.data.value !== 1)
-            this.showGrid.toggleOptions(1);
+            this.showGrid.toggleOption(1);
         // this.inputSvc.toggleGridSnap(option);
         this.inputSvc.updateGridOptions('snap', option);
         this.componentState.snapGridData.value = option;
