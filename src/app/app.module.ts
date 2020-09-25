@@ -29,6 +29,7 @@ import { AlphaPickerComponent } from './views/advanced-menu/components/form-item
 import { HexDisplayComponent } from './views/advanced-menu/components/form-items/color/hex-display/hex-display.component';
 import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
 import { MenuItemDisabledDirective } from './directives/menu-item-disabled.directive';
+import { InputSliderComponent } from './views/advanced-menu/components/form-items/input-slider/input-slider.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import { MenuItemDisabledDirective } from './directives/menu-item-disabled.direc
         HexDisplayComponent,
         FillOptionsComponent,
         MenuItemDisabledDirective,
+        InputSliderComponent,
     ],
     imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
     providers: [],
