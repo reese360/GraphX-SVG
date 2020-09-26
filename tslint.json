@@ -1,13 +1,14 @@
 {
 	"extends": "tslint:recommended",
 	"rules": {
+        "indent": [true, "tabs"],
+        "array-type": false,
         "no-string-literal": false,
         "no-unused-expression": true,
         "object-literal-sort-keys": false,
 		"align": {
 			"options": ["parameters", "statements"]
 		},
-		"array-type": true,
 		"arrow-return-shorthand": true,
 		"deprecation": {
 			"severity": "warning"
