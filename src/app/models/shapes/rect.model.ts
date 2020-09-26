@@ -25,13 +25,13 @@ export class RectModel extends ShapeModel implements IShape {
 
 	get properties(): object {
 		return {
-			style: this.style,
 			position: {
-				x: this.x,
-				y: this.y,
 				height: this.height,
 				width: this.width,
+				x: this.x,
+				y: this.y,
 			},
+			style: this.style,
 		};
 	}
 	//#endregion
@@ -42,23 +42,23 @@ export class RectModel extends ShapeModel implements IShape {
 	}
 
 	// begin draw process
-	async startDraw(val: number[]): Promise<void> {
+	async startDraw(pos: number[]): Promise<void> {
 		return new Promise(() => {
-			this.origin = [val[0], val[1]];
-			this.x = val[0];
-			this.y = val[1];
-			this.width = val[0];
-			this.height = val[1];
+			this.origin = [pos[0], pos[1]];
+			this.x = pos[0];
+			this.y = pos[1];
+			this.width = pos[0];
+			this.height = pos[1];
 		});
 	}
 
 	// draw object to position
-	async drawTo(val: number[]): Promise<void> {
+	async drawTo(pos: number[]): Promise<void> {
 		return new Promise(() => {
-			this.x = Math.min(this.origin[0], val[0]);
-			this.y = Math.min(this.origin[1], val[1]);
-			this.width = Math.abs(val[0] - this.origin[0]);
-			this.height = Math.abs(val[1] - this.origin[1]);
+			this.x = Math.min(this.origin[0], pos[0]);
+			this.y = Math.min(this.origin[1], pos[1]);
+			this.width = Math.abs(pos[0] - this.origin[0]);
+			this.height = Math.abs(pos[1] - this.origin[1]);
 			this.render();
 		});
 	}

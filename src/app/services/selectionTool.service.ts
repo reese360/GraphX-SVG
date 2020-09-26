@@ -35,7 +35,7 @@ export class SelectionService {
 	}
 
 	// toggles select outline and adds reference
-	async select(shapes: IShape[]): Promise<void> {
+	async select(shapes: Array<IShape>): Promise<void> {
 		return new Promise((result) => {
 			shapes.forEach((shape) => {
 				this.selectedShapes[shape.id] = shape;
@@ -95,7 +95,7 @@ export class SelectionService {
 	}
 
 	// promise to start selection box drawing
-	async startSelectionBox(pos: number[]): Promise<void> {
+	async startSelectionBox(pos: Array<number>): Promise<void> {
 		return new Promise((result) => {
 			this.selecting = true;
 			this.selectionRect.startDraw(pos);
@@ -103,7 +103,7 @@ export class SelectionService {
 	}
 
 	// promise to draw selection box to new point
-	async drawSelectionBoxTo(pos: number[]): Promise<void> {
+	async drawSelectionBoxTo(pos: Array<number>): Promise<void> {
 		return new Promise((result) => {
 			this.selectionRect.drawTo(pos);
 		});

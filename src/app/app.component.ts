@@ -3,12 +3,13 @@ import { InputService } from './services/inputTool.service';
 import { SelectionService } from './services/selectionTool.service';
 import { ObjectService } from './services/object.service';
 import { CurrentStateService } from './services/currentState.service';
+import { DrawService } from './services/draw.service';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.css'],
-	providers: [InputService, SelectionService, ObjectService, CurrentStateService],
+	providers: [InputService, SelectionService, ObjectService, CurrentStateService, DrawService],
 })
 export class AppComponent {
 	title = 'GraphX - SVG';
