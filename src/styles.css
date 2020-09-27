@@ -7,7 +7,7 @@
 
 :root {
     --graphx-highlight1: #00aad4;
-    --graphx-highlight2: #32f008;
+    --graphx-highlight2: #2cd307;
     --graphx-light-gray: #e9e9e9;
     --graphx-dark-gray: #808080;
 
@@ -25,7 +25,7 @@
 .anchor-point, .anchor-outline {
 	stroke: var(--graphx-highlight2);
 	fill: var(--graphx-highlight2);
-	stroke-width: 2px;
+	stroke-width: 1px;
 	shape-rendering: optimizeSpeed;
 }
 

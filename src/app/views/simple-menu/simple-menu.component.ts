@@ -20,9 +20,7 @@ export class SimpleMenuComponent implements AfterViewInit {
 	constructor(public inputSvc: InputService, public renderer: Renderer2) {
 		// set initial tooling options
 		this.inputSvc.currentTool = this.inputSvc.toolsOptions.draw;
-		this.inputSvc.currentShape = this.inputSvc.shapeOptions.rectangle;
-		// this.inputSvc.strokeColor = '#000'; // black
-		// this.inputSvc.fillColor = 'none'; // no fill
+		this.inputSvc.currentShape = SvgShapeType.polyline;
 
 		// subscription for mouse coord display
 		this.inputSvc.mouseCoordsEvent.subscribe((pos) => {
@@ -52,6 +50,8 @@ export class SimpleMenuComponent implements AfterViewInit {
 		// 	}
 		// });
 	}
+
+	toolAction(tool: string): void {}
 
 	// change the currently selected tool
 	changeTool(tool: string): void {

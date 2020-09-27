@@ -1,20 +1,13 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
-import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-import { IStyleOptions } from 'src/app/interfaces/IStyleOptions';
 import { SvgRenderOptions } from './../../enums/SvgRenderOptions.enum';
 import { SvgFillType } from './../../enums/SvgFillType.enum';
 import { SvgStrokeType } from './../../enums/SvgStrokeType.enum';
-import { SvgShapeType } from './../../enums/SvgShapeType.enum';
 import { DrawService } from '../../services/draw.service';
-
+import { mouseButtons } from '../../enums/mouseButtons.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
-// import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
-// import { PolygonModel } from 'src/app/models/shapes/polygon.model';
-// import { LineModel } from 'src/app/models/shapes/line.model';
-// import { PolylineModel } from 'src/app/models/shapes/polyline.model';
 
 @Component({
 	selector: 'app-graphx-canvas',
@@ -47,8 +40,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	offsetX: number; // offset position x of svg element
 	offsetY: number; // offset position y of svg element
-
-	currentObject: IShape; // current shape being drawn
 
 	// panning variables
 	panning: boolean = false;
@@ -231,7 +222,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// mouse down event handler
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
 		// left mouse button click
-		if (e.button === 0) {
+		if (e.button === mouseButtons.left) {
 			switch (this.inputSvc.currentTool) {
 				case this.inputSvc.toolsOptions.select: {
 					const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
@@ -253,26 +244,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				}
 				case this.inputSvc.toolsOptions.draw: {
 					this.drawSvc.startDraw(this.calculateUserPosition(e.clientX, e.clientY));
-
-					// switch (this.inputSvc.currentShape) {
-					// 	// case this.inputSvc.shapeOptions.polyline: {
-					// 	//     // if currently drawing do not create new object
-					// 	//     if (!this.currentObject) {
-					// 	//         this.currentObject = new PolylineModel(this.renderer, this.inputSvc.shapeStyleOptions);
-					// 	//     }
-					// 	//     break;
-					// 	// }
-					// 	// case this.inputSvc.shapeOptions.polygon: {
-					// 	//     // if currently drawing do not create new object
-					// 	//     if (!this.currentObject) {
-					// 	//         this.currentObject = new PolygonModel(this.renderer, this.inputSvc.shapeStyleOptions);
-					// 	//     }
-					// 	//     break;
-					// 	// }
-					// }
-					// const userPosition = this.calculateUserPosition(e.clientX, e.clientY);
-					// this.currentObject.startDraw(userPosition);
-					// this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
 					break;
 				}
 				case this.inputSvc.toolsOptions.pan: {
@@ -283,17 +254,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		}
 
 		// mousewheel button click
-		if (e.button === 1) {
+		if (e.button === mouseButtons.middle) {
 			this.panning = true;
 		}
 
 		// right mouse button click
-		if (e.button === 2) {
+		if (e.button === mouseButtons.right) {
 			e.preventDefault(); // halt default context menu
-			if (this.currentObject) {
-				this.objectSvc.add(this.currentObject);
-				this.currentObject = null;
-			}
+			this.drawSvc.handleRightClick(); // ends drawing process if 
 		}
 
 		// start panning functionality
@@ -350,16 +318,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				break;
 			}
 			case this.inputSvc.toolsOptions.draw: {
-				this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
-				// do nothing if polyline or polygon
-				// if (this.inputSvc.currentShape === this.inputSvc.shapeOptions.polyline || this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
-				// 	return;
-				// } else if (this.currentObject) {
-				// 	// end draw for other shapes
-				// 	this.objectSvc.add(this.currentObject);
-				// 	this.selectionSvc.select([this.currentObject]);
-				// 	this.currentObject = null;
-				// }
+				if (e.button === mouseButtons.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
 		}
@@ -375,7 +334,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	@HostListener('window:keydown', ['$event']) keyEvent(e: KeyboardEvent): void {
-		console.log(e.key);
+		// console.log(e.key);
 	}
 
 	// updates toolService mouse coordinates

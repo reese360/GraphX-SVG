@@ -7,11 +7,22 @@ export class AnchorOutline {
 	y: number;
 	width: number;
 	height: number;
+	points: number[] = [];
 	origin: [number, number] = [null, null]; // store point of origin
 
 	constructor(private renderer: Renderer2, private shape: SvgShapeType, point: [number, number]) {
-		this.x = this.width = this.origin[0] = point[0];
-		this.y = this.height = this.origin[1] = point[1];
+		switch (this.shape) {
+			case SvgShapeType.rect:
+			case SvgShapeType.line:
+			case SvgShapeType.ellipse:
+				this.x = this.width = this.origin[0] = point[0];
+				this.y = this.height = this.origin[1] = point[1];
+				break;
+			case SvgShapeType.polyline:
+			case SvgShapeType.polygon:
+				this.points.push(point[0], point[1]);
+				break;
+		}
 		this.element = this.renderer.createElement(SvgShapeType[shape], 'svg');
 		this.renderer.setAttribute(this.element, 'class', 'anchor-outline');
 	}
@@ -46,6 +57,10 @@ export class AnchorOutline {
 					this.renderer.setAttribute(this.element, 'rx', this.width.toString());
 					this.renderer.setAttribute(this.element, 'ry', this.height.toString());
 					break;
+				case SvgShapeType.polyline:
+				case SvgShapeType.polygon:
+					this.renderer.setAttribute(this.element, 'points', `${this.points.join(' ')} ${point[0]} ${point[1]}`);
+					break;
 			}
 		});
 	}
@@ -53,13 +68,25 @@ export class AnchorOutline {
 	// get anchor outline specifications
 	async endDraw(pos: [number, number]): Promise<object> {
 		return new Promise((specs) => {
-			specs({
-				shape: this.shape,
-				x1: this.origin[0],
-				y1: this.origin[1],
-				x2: pos[0],
-				y2: pos[1],
-			});
+			switch (this.shape) {
+				case SvgShapeType.rect:
+				case SvgShapeType.line:
+				case SvgShapeType.ellipse:
+					specs({
+						shape: this.shape,
+						x1: this.origin[0],
+						y1: this.origin[1],
+						x2: pos[0],
+						y2: pos[1],
+					});
+					break;
+				case SvgShapeType.polygon:
+				case SvgShapeType.polyline:
+					specs({
+						shape: this.shape,
+						points: this.points,
+					})
+			}
 		});
 	}
 }
