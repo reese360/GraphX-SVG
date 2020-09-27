@@ -5,19 +5,19 @@ import { IStyleOptions } from '../interfaces/IStyleOptions';
 import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
 import { SvgFillType } from '../enums/SvgFillType.enum';
 import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
+import { SvgShapeType} from '../enums/SvgShapeType.enum';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InputService {
 	public shapeOptions: any = {
-		line: 0,
-		rectangle: 1,
-		ellipse: 2,
-		polygon: 3,
-		polyline: 4,
-		path: 5,
-		text: 6,
+		line: SvgShapeType.line,
+		rectangle: SvgShapeType.rect,
+		ellipse: SvgShapeType.ellipse,
+		polygon: SvgShapeType.polygon,
+		polyline: SvgShapeType.polyline,
+		path: SvgShapeType.path,
 	};
 
 	public toolsOptions: any = {
@@ -62,8 +62,8 @@ export class InputService {
 	public currentTool: string;
 	public ToolEvent: Subject<string> = new Subject<string>();
 
-	public currentShape: string;
-	public ShapeEvent: Subject<string> = new Subject<string>();
+	public currentShape: SvgShapeType;
+	public ShapeEvent: Subject<SvgShapeType> = new Subject<SvgShapeType>();
 
 	public objectStyleOptionsEvent: Subject<object> = new Subject<object>();
 	public canvasOptionsEvent: Subject<object> = new Subject<object>();
@@ -111,14 +111,14 @@ export class InputService {
 	}
 
 	async updateMouseCoords(pos: number[]): Promise<void> {
-		new Promise(() => {
+		return new Promise(() => {
 			this.mouseCoordsEvent.next(pos);
 			this.mouseCoords = pos;
 		});
 	}
 
 	async updateZoomLevel(level: number): Promise<void> {
-		new Promise(() => {
+		return new Promise(() => {
 			this.zoomLevelEvent.next(level);
 			this.zoomLevel = level;
 		});
@@ -129,7 +129,7 @@ export class InputService {
 		this.currentTool = tool;
 	}
 
-	changeShape(shape: string): void {
+	changeShape(shape: SvgShapeType): void {
 		this.ShapeEvent.next(shape);
 		this.currentShape = shape;
 	}

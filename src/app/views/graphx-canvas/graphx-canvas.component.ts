@@ -1,18 +1,13 @@
 import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListener } from '@angular/core';
-import { IShape } from 'src/app/Interfaces/IShape.interface';
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-import { IStyleOptions } from 'src/app/interfaces/IStyleOptions';
 import { SvgRenderOptions } from './../../enums/SvgRenderOptions.enum';
 import { SvgFillType } from './../../enums/SvgFillType.enum';
 import { SvgStrokeType } from './../../enums/SvgStrokeType.enum';
-
+import { DrawService } from '../../services/draw.service';
+import { mouseButtons } from '../../enums/mouseButtons.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
-// import { EllipseModel } from 'src/app/models/shapes/ellipse.model';
-// import { PolygonModel } from 'src/app/models/shapes/polygon.model';
-// import { LineModel } from 'src/app/models/shapes/line.model';
-// import { PolylineModel } from 'src/app/models/shapes/polyline.model';
 
 @Component({
 	selector: 'app-graphx-canvas',
@@ -26,6 +21,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	@ViewChild('gridElements') gridElementRef: ElementRef; // elements to display grid
 	@ViewChild('canvasElements') canvasElementRef: ElementRef; // elements to be exported as svg
 	@ViewChild('selectionElements') selectionElementRef: ElementRef; // used to house elements for selection tool
+	@ViewChild('drawElements') drawElementRef: ElementRef;
 
 	// faux svg viewbox == canvas
 	// canvas 'display' dimensions
@@ -44,8 +40,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	offsetX: number; // offset position x of svg element
 	offsetY: number; // offset position y of svg element
-
-	currentObject: IShape; // current shape being drawn
 
 	// panning variables
 	panning: boolean = false;
@@ -67,47 +61,33 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	//#endregion
 
-	constructor(private renderer: Renderer2, private inputSvc: InputService, private selectionSvc: SelectionService, private objectSvc: ObjectService) {
+	constructor(private renderer: Renderer2, private inputSvc: InputService, private selectionSvc: SelectionService, private objectSvc: ObjectService, private drawSvc: DrawService) {
 		this.initSubscriptions();
 	}
 
 	ngAfterViewInit(): void {
 		window.dispatchEvent(new Event('resize')); // get initial sizing of svg window
+
 		this.selectionSvc.selectionRect.domRef = this.selectionElementRef; // pass element reference to dom layer
 
-		/* preliminary drawing of an svg object */
-		/* can be used in future development to load a saved svg */
-		// const testSvg1 = new RectModel(this.renderer, {
-		//     'stroke': 'gray',
-		//     'fill': '#00fff9ff',
-		//     'stroke-width': '2',
-		//     'stroke-dasharray': '0',
-		// });
-		// testSvg1.startDraw([400, 350]);
-		// testSvg1.drawTo([600, 550]);
-		// this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
-		// this.objectService.add(testSvg1);
+		// assign element references
+		this.drawSvc.drawElRef = this.drawElementRef;
+		this.drawSvc.canvasElRef = this.canvasElementRef;
 
-		const svg2Style: IStyleOptions = {
-			stroke: '#ff00cfff',
-			fill: '#bcbcbbff',
+		// draw test svg object to canvas
+		const testSvg1 = new RectModel(this.renderer, {
+			stroke: '#000000ff',
+			fill: '#c4c2c2ff',
 			strokeWidth: 1,
 			strokeDasharray: '0',
 			strokeType: SvgStrokeType.solid,
 			fillType: SvgFillType.solid,
 			shapeRendering: SvgRenderOptions.auto,
-		};
-		const testSvg2 = new RectModel(this.renderer, svg2Style);
-		testSvg2.startDraw([10, 10]);
-		testSvg2.drawTo([100, 100]);
-		this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg2.element);
-		this.objectSvc.add(testSvg2);
-
-		// const testSvg3 = new PolygonModel(this.renderer, { stroke: 'black', fill: 'pink', 'stroke-width': 2 });
-		// testSvg3.points = [800, 100, 900, 300];
-		// testSvg3.end = [700, 300];
-		// this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg3.element);
-		// this.objectService.add(testSvg3);
+		});
+		testSvg1.startDraw([400, 300]);
+		testSvg1.drawTo([600, 500]);
+		this.renderer.appendChild(this.canvasElementRef.nativeElement, testSvg1.element);
+		this.objectSvc.add(testSvg1);
 	}
 
 	// promise to activate all event listeners
@@ -184,8 +164,11 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		});
 	}
 
-	updateSvgViewBox(defViewBox: string): void {
-		this.renderer.setAttribute(this.svgElementRef.nativeElement, 'viewBox', defViewBox);
+	// update viewBox for zoom level
+	async updateSvgViewBox(defViewBox: string): Promise<void> {
+		return new Promise(() => {
+			this.renderer.setAttribute(this.svgElementRef.nativeElement, 'viewBox', defViewBox);
+		});
 	}
 
 	// calculates user mouse position relative to screen/offset/grid-snap
@@ -233,13 +216,13 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		this.offsetX = this.svgElementRef.nativeElement.getBoundingClientRect().x;
 		this.offsetY = this.svgElementRef.nativeElement.getBoundingClientRect().y;
 
-		if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid());
+		if (this.gridDisplay) this.hideGrid().then((res) => this.showGrid()); // recalculate grid if being displayed
 	}
 
 	// mouse down event handler
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
 		// left mouse button click
-		if (e.button === 0) {
+		if (e.button === mouseButtons.left) {
 			switch (this.inputSvc.currentTool) {
 				case this.inputSvc.toolsOptions.select: {
 					const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
@@ -260,38 +243,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 					break;
 				}
 				case this.inputSvc.toolsOptions.draw: {
-					// get style setting from input tool
-					switch (this.inputSvc.currentShape) {
-						// case this.inputSvc.shapeOptions.line: {
-						//     this.currentObject = new LineModel(this.renderer, this.inputSvc.shapeStyleOptions);
-						//     break;
-						// }
-						case this.inputSvc.shapeOptions.rectangle: {
-							this.currentObject = new RectModel(this.renderer, this.inputSvc.objectStyleOptions);
-							break;
-						}
-						// case this.inputSvc.shapeOptions.ellipse: {
-						//     this.currentObject = new EllipseModel(this.renderer, this.inputSvc.shapeStyleOptions);
-						//     break;
-						// }
-						// case this.inputSvc.shapeOptions.polyline: {
-						//     // if currently drawing do not create new object
-						//     if (!this.currentObject) {
-						//         this.currentObject = new PolylineModel(this.renderer, this.inputSvc.shapeStyleOptions);
-						//     }
-						//     break;
-						// }
-						// case this.inputSvc.shapeOptions.polygon: {
-						//     // if currently drawing do not create new object
-						//     if (!this.currentObject) {
-						//         this.currentObject = new PolygonModel(this.renderer, this.inputSvc.shapeStyleOptions);
-						//     }
-						//     break;
-						// }
-					}
-					const userPosition = this.calculateUserPosition(e.clientX, e.clientY);
-					this.currentObject.startDraw(userPosition);
-					this.renderer.appendChild(this.canvasElementRef.nativeElement, this.currentObject.element);
+					this.drawSvc.startDraw(this.calculateUserPosition(e.clientX, e.clientY));
 					break;
 				}
 				case this.inputSvc.toolsOptions.pan: {
@@ -302,19 +254,17 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		}
 
 		// mousewheel button click
-		if (e.button === 1) {
+		if (e.button === mouseButtons.middle) {
 			this.panning = true;
 		}
 
 		// right mouse button click
-		if (e.button === 2) {
+		if (e.button === mouseButtons.right) {
 			e.preventDefault(); // halt default context menu
-			if (this.currentObject) {
-				this.objectSvc.add(this.currentObject);
-				this.currentObject = null;
-			}
+			this.drawSvc.handleRightClick(); // ends drawing process if 
 		}
 
+		// start panning functionality
 		if (this.panning) {
 			this.panOffsetX = e.clientX - this.offsetX;
 			this.panOffsetY = e.clientY - this.offsetY;
@@ -339,13 +289,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				break;
 			}
 			case this.inputSvc.toolsOptions.draw: {
-				if (this.currentObject) {
-					this.currentObject.drawTo(this.calculateUserPosition(e.clientX, e.clientY));
-				}
+				this.drawSvc.drawTo(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
 		}
 
+		// calculate new viewbox position
 		if (this.panning) {
 			const dx = e.clientX - this.panOffsetX - this.offsetX;
 			const dy = e.clientY - this.panOffsetY - this.offsetY;
@@ -369,15 +318,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				break;
 			}
 			case this.inputSvc.toolsOptions.draw: {
-				// do nothing if polyline or polygon
-				if (this.inputSvc.currentShape === this.inputSvc.shapeOptions.polyline || this.inputSvc.currentShape === this.inputSvc.shapeOptions.polygon) {
-					return;
-				} else if (this.currentObject) {
-					// end draw for other shapes
-					this.objectSvc.add(this.currentObject);
-					this.selectionSvc.select([this.currentObject]);
-					this.currentObject = null;
-				}
+				if (e.button === mouseButtons.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
 		}
@@ -393,7 +334,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	@HostListener('window:keydown', ['$event']) keyEvent(e: KeyboardEvent): void {
-		console.log(this.objectSvc.objects);
+		// console.log(e.key);
 	}
 
 	// updates toolService mouse coordinates
