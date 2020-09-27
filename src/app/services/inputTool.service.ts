@@ -15,10 +15,9 @@ export class InputService {
 		line: SvgShapeType.line,
 		rectangle: SvgShapeType.rect,
 		ellipse: SvgShapeType.ellipse,
-		polygon: 3,
-		polyline: 4,
-		path: 5,
-		text: 6,
+		polygon: SvgShapeType.polygon,
+		polyline: SvgShapeType.polyline,
+		path: SvgShapeType.path,
 	};
 
 	public toolsOptions: any = {

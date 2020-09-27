@@ -1,79 +1,135 @@
 import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
+import { IStyleOptions } from '../../Interfaces/IStyleOptions';
+import { SvgFillType } from '../../enums/SvgFillType.enum';
+import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
+import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
 
 export class PolylineModel extends ShapeModel implements IShape {
-	shape: string = 'polyline';
-	element: any;
+	//#region variable declarations
+	element: HTMLElement;
+	style: IStyleOptions;
+	renderer: Renderer2;
 	points: number[] = [];
+	currentEndPoint: [number, number];
 	origin: number[];
-	currentEnd: number[];
-	dragging = false;
-	selected: boolean;
+	offsetX: number;
+	offsetY: number;
+	dragX: number;
+	dragY: number;
+	dragging: boolean = false;
+	isSelected: boolean = false;
 
-	constructor(public renderer: Renderer2, public style: any) {
-		super();
-		this.renderer = renderer;
-		this.element = this.renderer.createElement(this.shape, 'svg');
-		this.renderer.setAttribute(this.element, 'style', this.styleString);
-		this.renderer.setAttribute(this.element, 'graphx-id', this.id);
+	get properties(): object {
+		return {
+			position: {
+				points: this.points,
+			},
+			style: this.style,
+		};
+	}
+	//#endregion
+
+	constructor(renderer: Renderer2, style: IStyleOptions) {
+		super(renderer, 'polyline');
+		this.setStyle(style);
+	}
+
+	// select object
+	async select(): Promise<void> {
+		return new Promise(() => {
+			this.isSelected = true;
+			this.renderer.addClass(this.element, 'selectedObject');
+		});
+	}
+
+	// deselect object
+	async deselect(): Promise<void> {
+		return new Promise(() => {
+			this.isSelected = false;
+			this.renderer.removeClass(this.element, 'selectedObject');
+		});
+	}
+
+	// begin draw process
+	async startDraw(pos: number[]): Promise<void> {
+		return new Promise(() => {});
+	}
+
+	// draw object to position
+	async drawTo(point: number[]): Promise<void> {
+		return new Promise(() => {
+			point.forEach((p) => {
+				this.points.push(p);
+			});
+			this.render();
+		});
+	}
+
+	// begin drag process
+	async startDrag(pos): Promise<void> {
+		return new Promise(() => {
+			this.dragging = true;
+			this.offsetX = pos[0];
+			this.offsetY = pos[1];
+		});
+	}
+
+	// drag object to position
+	async dragTo(pos): Promise<void> {
+		return new Promise(() => {
+			this.dragX = pos[0] - this.offsetX;
+			this.dragY = pos[1] - this.offsetY;
+			this.renderer.setAttribute(this.element, 'style', `transform: translate(${this.dragX}px, ${this.dragY}px)`);
+		});
+	}
+
+	// end drag process
+	async endDrag(): Promise<void> {
+		return new Promise(() => {
+			this.dragging = false;
+			for (let i = 0; i < this.points.length; i += 2) {
+				this.points[i] += this.dragX ? this.dragX : 0;
+				this.points[i + 1] += this.dragY ? this.dragY : 0;
+			}
+			this.dragX = this.dragY = this.offsetX = this.offsetY = null;
+			this.renderer.removeAttribute(this.element, 'style'); // remove style
+			this.render();
+		});
 	}
 
 	render(): void {
-		this.renderer.setAttribute(this.element, 'points', this.pointString + `${this.currentEnd[0]},${this.currentEnd[1]}`);
+		this.renderer.setAttribute(this.element, 'points', `${this.points.join(' ')}`);
 	}
 
-	startDrag(pos): void {
-		this.dragging = true;
-	}
-
-	drag(pos): void {
-		this.render();
-	}
-
-	endDrag(): void {
-		this.dragging = false;
-	}
-
-	select(): void {
-		this.selected = true;
-		this.renderer.addClass(this.element, 'selectedObject');
-	}
-
-	deselect(): void {
-		this.selected = false;
-		this.renderer.removeClass(this.element, 'selectedObject');
-	}
-
-	async updateProperties(): Promise<void> {}
-
-	set start(val: number[]) {
-		this.points.push(val[0]);
-		this.points.push(val[1]);
-	}
-
-	set end(val: number[]) {
-		this.currentEnd = val;
-		this.render();
-	}
-
-	get styleString(): string {
-		let style = '';
-		Object.keys(this.style).map((key) => {
-			style += `${key}: ${this.style[key]}; `;
+	// update style attributes
+	async setStyle(styling: IStyleOptions): Promise<void> {
+		this.style = Object.assign({}, styling); // create shallow copy of styling
+		Object.keys(this.style).forEach((style) => {
+			switch (style as string) {
+				case 'fillType':
+					this.renderer.setAttribute(this.element, 'fill', 'none');
+					break;
+				case 'strokeType':
+					switch (this.style.strokeType) {
+						case SvgStrokeType.solid:
+							this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
+							break;
+						case SvgStrokeType.none:
+							this.renderer.setAttribute(this.element, 'stroke', 'none');
+							break;
+					}
+					break;
+				case 'shapeRendering':
+					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					break;
+				default:
+					// convert style options to kabob casing for html styling
+					const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
+					this.renderer.setAttribute(this.element, kabobStyle, this.style[style]);
+					break;
+			}
 		});
-		return style;
-	}
-
-	get pointString(): string {
-		let ps = '';
-		for (let point in this.points) {
-			ps += `${this.points[point]}, `;
-		}
-		return ps;
-	}
-
-	get elementString(): string {
-		return `<${this.shape} />`;
 	}
 }
