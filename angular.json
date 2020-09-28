@@ -124,7 +124,7 @@
     "defaultProject": "ngGraphX",
     "schematics": {
         "@schematics/angular:component": {
-            "style": "scss",
+            "style": "css",
             "skipTests": true
         },
         "@schematics/angular:class": {

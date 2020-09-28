@@ -1,13 +1,20 @@
 <div class="mi-container">
-    <div appMenuItemTitle>
-        <i class="fas fa-chalkboard-teacher"></i> ViewBox
-    </div>
-    <div class="mi-content">
-        <app-option-selector id="show-vb" [data]="vbDisplayData" [currentValue]="vbDisplayOption" (updateEvent)="toggleViewBox($event)" #showViewBox></app-option-selector>
-        <app-number-input id="vb-width" [data]="vbWidthData" [currentValue]="vbWidthOption" (updateEvent)="updateViewBoxWidth($event)" #vbWidth></app-number-input>
-        <div appLockIcon id="vbW-vbH-lock"  (click)="toggleLock()"><i [ngClass]="isViewBoxLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
-        <app-number-input id="vb-height" [data]="vbHeightData" [currentValue]="vbHeightOption" (updateEvent)="updateViewBoxHeight($event)" #vbHeight></app-number-input>
-        <app-option-selector id="vb-outline" [data]="vbOutlineData" [currentValue]="vbOutlineOption" (updateEvent)="toggleViewBoxOutline($event)"></app-option-selector>
-        <app-option-selector id="vb-transparency" [data]="vbOpacityData" [currentValue]="vbOpacityOption" (updateEvent)="toggleViewBoxOpacity($event)"></app-option-selector>
-    </div>
+	<div appMenuItemTitle>
+		<i class="fas fa-chalkboard-teacher"></i> ViewBox
+	</div>
+	<div class="mi-content">
+		<app-option-selector id="show-vb" [data]="vbDisplayData" [currentValue]="vbDisplayOption"
+			(updateEvent)="toggleViewBox($event)" #showViewBox></app-option-selector>
+		<div class="vb-size-options">
+			<app-input-number id="vb-width" [data]="vbWidthData" [currentValue]="vbWidthOption"
+				(updateEvent)="updateViewBoxWidth($event)" #vbWidth></app-input-number>
+			<app-lock [isLocked]="isViewBoxLocked" (updateLockOption)="toggleLock()"></app-lock>
+			<app-input-number id="vb-height" [data]="vbHeightData" [currentValue]="vbHeightOption"
+				(updateEvent)="updateViewBoxHeight($event)" #vbHeight></app-input-number>
+		</div>
+		<app-option-selector id="vb-outline" [data]="vbOutlineData" [currentValue]="vbOutlineOption"
+			(updateEvent)="toggleViewBoxOutline($event)"></app-option-selector>
+		<app-option-selector id="vb-transparency" [data]="vbOpacityData" [currentValue]="vbOpacityOption"
+			(updateEvent)="toggleViewBoxOpacity($event)"></app-option-selector>
+	</div>
 </div>

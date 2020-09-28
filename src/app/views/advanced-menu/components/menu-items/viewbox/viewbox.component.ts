@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { InputService } from '../../../../../services/inputTool.service';
-import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
+import { InputNumberComponent, IInputNumberInput} from '../../form-items/input-number/input-number.component';
+
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 
 @Component({
@@ -9,8 +10,8 @@ import { IOptionSelectorInput } from '../../form-items/option-selector/option-se
 	styleUrls: ['./viewbox.component.css'],
 })
 export class ViewBoxComponent implements OnInit {
-	@ViewChild('vbWidth') vbWidth: NumberInputComponent;
-	@ViewChild('vbHeight') vbHeight: NumberInputComponent;
+	@ViewChild('vbWidth') vbWidth: InputNumberComponent;
+	@ViewChild('vbHeight') vbHeight: InputNumberComponent;
 
 	vbDisplayOption: number;
 	vbOutlineOption: number;
@@ -34,14 +35,14 @@ export class ViewBoxComponent implements OnInit {
 		options: ['0%', '50%', '100%'],
 	};
 
-	vbWidthData: INumberPickerInput = {
+	vbWidthData: IInputNumberInput = {
 		label: 'Width',
 		minimum: 1,
 		maximum: 9999,
 		step: 1,
 	};
 
-	vbHeightData: INumberPickerInput = {
+	vbHeightData: IInputNumberInput = {
 		label: 'Height',
 		minimum: 1,
 		maximum: 9999,

@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-// component input data DTO
-export interface INumberPickerInput {
+export interface IInputNumberInput {
 	label: string;
 	minimum: number;
 	maximum: number;
@@ -10,16 +9,18 @@ export interface INumberPickerInput {
 }
 
 @Component({
-	selector: 'app-number-input',
-	templateUrl: './number-input.component.html',
-	styleUrls: ['./number-input.component.css'],
+	selector: 'app-input-number',
+	templateUrl: './input-number.component.html',
+	styleUrls: ['./input-number.component.css'],
 })
-export class NumberInputComponent implements OnInit {
-	@Input() data: INumberPickerInput;
+export class InputNumberComponent implements OnInit {
+	@Input() data: IInputNumberInput;
 	@Input() currentValue: number = 1;
-	@Output() updateEvent = new EventEmitter(); // output value on change
+	@Output() updateEvent: EventEmitter<number> = new EventEmitter<number>();
 
 	showButtons: boolean = true;
+
+	constructor() {}
 
 	ngOnInit(): void {
 		this.showButtons = this.data.showButtons ? this.data.showButtons : this.showButtons; // get value if supplied

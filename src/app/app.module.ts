@@ -15,11 +15,9 @@ import { SimpleMenuComponent } from './views/simple-menu/simple-menu.component';
 import { GraphxCanvasComponent } from './views/graphx-canvas/graphx-canvas.component';
 import { GridlinesMenuItemComponent } from './views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 import { OptionSelectorComponent } from './views/advanced-menu/components/form-items/option-selector/option-selector.component';
-import { NumberInputComponent } from './views/advanced-menu/components/form-items/number-input/number-input.component';
 import { ViewBoxComponent } from './views/advanced-menu/components/menu-items/viewbox/viewbox.component';
 import { MenuItemTitleDirective } from './directives/menu-item-title.directive';
 import { MenuItemContentDirective } from './directives/menu-item-content.directive';
-import { LockIconDirective } from './directives/lock-icon.directive';
 import { AboutComponent } from './views/advanced-menu/components/menu-items/about/about.component';
 import { StrokeOptionsComponent } from './views/advanced-menu/components/menu-items/stroke-options/stroke-options.component';
 import { SaturationPickerComponent } from './views/advanced-menu/components/form-items/color/saturation-picker/saturation-picker.component';
@@ -30,6 +28,8 @@ import { HexDisplayComponent } from './views/advanced-menu/components/form-items
 import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
 import { MenuItemDisabledDirective } from './directives/menu-item-disabled.directive';
 import { InputSliderComponent } from './views/advanced-menu/components/form-items/input-slider/input-slider.component';
+import { InputNumberComponent } from './views/advanced-menu/components/form-items/input-number/input-number.component';
+import { LockComponent } from './common/components/lock/lock.component';
 
 @NgModule({
 	declarations: [
@@ -42,11 +42,9 @@ import { InputSliderComponent } from './views/advanced-menu/components/form-item
 		GraphxCanvasComponent,
 		GridlinesMenuItemComponent,
 		OptionSelectorComponent,
-		NumberInputComponent,
 		ViewBoxComponent,
 		MenuItemTitleDirective,
 		MenuItemContentDirective,
-		LockIconDirective,
 		AboutComponent,
 		StrokeOptionsComponent,
 		SaturationPickerComponent,
@@ -57,6 +55,8 @@ import { InputSliderComponent } from './views/advanced-menu/components/form-item
 		FillOptionsComponent,
 		MenuItemDisabledDirective,
 		InputSliderComponent,
+		InputNumberComponent,
+		LockComponent,
 	],
 	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
 	providers: [],

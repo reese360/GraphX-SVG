@@ -1,0 +1,52 @@
+.ni-label {
+    color: var(--graphx-dark-gray);
+    font-size: 12px;
+    padding-bottom: 2px;
+}
+
+.ni-container {
+	display: inline;
+}
+
+
+input[type="number"] {
+	float: left;
+	-webkit-appearance: none;
+	margin: 0;
+	width: 90px;
+	height: 30px;
+	text-align: center;
+	font-family: Ubuntu;
+	box-sizing: border-box;
+	border: 1px solid var(--graphx-dark-gray);
+	border-right: none;
+  }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.ni-container input:focus {
+    outline: 0;
+}
+
+.btn-container {
+	float: left;
+	border: 1px solid var(--graphx-dark-gray);
+}
+
+.ni-button {
+	text-align: center;
+	width: 14px;
+	height: 14px;
+	font-size: 9px;
+    cursor: pointer;
+	color: var(--graphx-dark-gray);
+	background-color: white;
+	line-height: 14px;
+}
+
+.ni-button:hover {
+	color: var(--graphx-highlight1);
+}

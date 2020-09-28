@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { InputNumberComponent, IInputNumberInput} from '../../form-items/input-number/input-number.component';
 import { IOptionSelectorInput, OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
-import { INumberPickerInput, NumberInputComponent } from '../../form-items/number-input/number-input.component';
 import { InputService } from 'src/app/services/inputTool.service';
 
 export interface GridlinesComponentState {
-	gridWidthData: INumberPickerInput;
-	gridHeightData: INumberPickerInput;
-	gridOffsetXData: INumberPickerInput;
-	gridOffsetYData: INumberPickerInput;
+	gridWidthData: IInputNumberInput;
+	gridHeightData: IInputNumberInput;
+	gridOffsetXData: IInputNumberInput;
+	gridOffsetYData: IInputNumberInput;
 	isDimsLocked: boolean;
 	dimsRatio: number;
 	isOffsetLocked: boolean;
@@ -22,10 +22,10 @@ export interface GridlinesComponentState {
 export class GridlinesMenuItemComponent implements OnInit {
 	@ViewChild('showGrid') showGrid: OptionSelectorComponent;
 	@ViewChild('snapGrid') snapGrid: OptionSelectorComponent;
-	@ViewChild('gridWidth') gridWidth: NumberInputComponent;
-	@ViewChild('gridHeight') gridHeight: NumberInputComponent;
-	@ViewChild('gridOffsetX') gridOffsetX: NumberInputComponent;
-	@ViewChild('gridOffsetY') gridOffsetY: NumberInputComponent;
+	@ViewChild('gridWidth') gridWidth: InputNumberComponent;
+	@ViewChild('gridHeight') gridHeight: InputNumberComponent;
+	@ViewChild('gridOffsetX') gridOffsetX: InputNumberComponent;
+	@ViewChild('gridOffsetY') gridOffsetY: InputNumberComponent;
 
 	gridDisplayOption: number;
 	gridSnapOption: number;
@@ -37,25 +37,25 @@ export class GridlinesMenuItemComponent implements OnInit {
 	dimsRatio: number = null;
 	offsetRatio: number = null;
 
-	gridWidthData: INumberPickerInput = {
+	gridWidthData: IInputNumberInput = {
 		label: 'Grid Width',
 		minimum: 10,
 		maximum: 500,
 		step: 10,
 	};
-	gridHeightData: INumberPickerInput = {
+	gridHeightData: IInputNumberInput = {
 		label: 'Grid Height',
 		minimum: 10,
 		maximum: 500,
 		step: 10,
 	};
-	gridOffsetXData: INumberPickerInput = {
+	gridOffsetXData: IInputNumberInput = {
 		label: 'Grid X Offset',
 		minimum: -9999,
 		maximum: 9999,
 		step: 1,
 	};
-	gridOffsetYData: INumberPickerInput = {
+	gridOffsetYData: IInputNumberInput = {
 		label: 'Grid Y Offset',
 		minimum: -9999,
 		maximum: 9999,
@@ -181,14 +181,13 @@ export class GridlinesMenuItemComponent implements OnInit {
 		this.gridOffsetYOption = offY;
 	}
 
-	toggleLock(lock: number): void {
-		if (lock === 0) {
-			// grid dim ratio
+	toggleLock(lock: string): void {
+		if (lock === 'gridDims') {
 			if (this.dimsRatio) this.dimsRatio = null;
 			else this.dimsRatio = this.gridWidthOption / this.gridHeightOption;
 			this.inputSvc.gridOptions['dimsRatio'] = this.dimsRatio;
-		} else {
-			// offset ratio
+		}
+		if (lock === 'offset') {
 			if (this.offsetRatio) this.offsetRatio = null;
 			else {
 				const tempRatio: number = this.gridOffsetXOption / this.gridOffsetYOption;
