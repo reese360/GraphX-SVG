@@ -12,16 +12,16 @@ export class CurrentStateService {
 	defaultColor: string = '#000000';
 
 	gridState: GridlinesComponentState = {
-		gridDisplayData: {
-			label: 'Show Grid',
-			options: ['Off', 'On'],
-			value: 0,
-		},
-		snapGridData: {
-			label: 'Snap to Grid',
-			options: ['Off', 'On'],
-			value: 0,
-		},
+		// gridDisplayData: {
+		// 	label: 'Show Grid',
+		// 	options: ['Off', 'On'],
+		// 	value: 0,
+		// },
+		// snapGridData: {
+		// 	label: 'Snap to Grid',
+		// 	options: ['Off', 'On'],
+		// 	value: 0,
+		// },
 		gridWidthData: {
 			label: 'Grid Width',
 			minimum: 10,
@@ -71,21 +71,21 @@ export class CurrentStateService {
 			step: 1,
 			value: 800,
 		},
-		vbDisplayData: {
-			label: 'ViewBox',
-			options: ['Off', 'On'],
-			value: 1,
-		},
-		vbOutlineData: {
-			label: 'ViewBox Outline',
-			options: ['Off', 'On'],
-			value: 1,
-		},
-		vbOpacityData: {
-			label: 'ViewBox Transparency',
-			options: ['0%', '50%', '100%'],
-			value: 2,
-		},
+		// vbDisplayData: {
+		// 	label: 'ViewBox',
+		// 	options: ['Off', 'On'],
+		// 	value: 1,
+		// },
+		// vbOutlineData: {
+		// 	label: 'ViewBox Outline',
+		// 	options: ['Off', 'On'],
+		// 	value: 1,
+		// },
+		// vbOpacityData: {
+		// 	label: 'ViewBox Transparency',
+		// 	options: ['0%', '50%', '100%'],
+		// 	value: 2,
+		// },
 		isViewBoxLocked: false,
 		viewBoxRatio: null,
 	};

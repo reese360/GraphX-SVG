@@ -5,8 +5,8 @@ import { InputService } from 'src/app/services/inputTool.service';
 import { CurrentStateService } from 'src/app/services/currentState.service';
 
 export interface GridlinesComponentState {
-	gridDisplayData: IOptionSelectorInput;
-	snapGridData: IOptionSelectorInput;
+	// gridDisplayData: IOptionSelectorInput;
+	// snapGridData: IOptionSelectorInput;
 	gridWidthData: INumberPickerInput;
 	gridHeightData: INumberPickerInput;
 	gridOffsetXData: INumberPickerInput;
@@ -23,6 +23,21 @@ export interface GridlinesComponentState {
 	styleUrls: ['./gridlines.component.css'],
 })
 export class GridlinesMenuItemComponent implements OnInit {
+	gridDisplayOption: number;
+	gridSnapOption: number;
+
+	gridDisplayData: IOptionSelectorInput = {
+		label: 'Show Grid',
+		options: ['Off', 'On'],
+		value: 0,
+	};
+
+	gridSnapData: IOptionSelectorInput = {
+		label: 'Snap to Grid',
+		options: ['Off', 'On'],
+		value: 0,
+	};
+
 	@ViewChild('showGrid') showGrid: OptionSelectorComponent;
 	@ViewChild('snapGrid') snapGrid: OptionSelectorComponent;
 	@ViewChild('gridWidth') gridWidth: NumberInputComponent;
@@ -32,30 +47,39 @@ export class GridlinesMenuItemComponent implements OnInit {
 
 	componentState: GridlinesComponentState;
 
-	constructor(private inputSvc: InputService, private stateSvc: CurrentStateService) {}
+	constructor(private inputSvc: InputService, private stateSvc: CurrentStateService) {
+		this.gridDisplayOption = this.inputSvc.gridOptions['display'] as number;
+		this.gridSnapOption = this.inputSvc.gridOptions['snap'] as number;
+	}
 
 	ngOnInit(): void {
+		this.gridDisplayOption = this.inputSvc.gridOptions['display'];
+		this.gridSnapOption = this.inputSvc.gridOptions['snap'];
+
 		this.componentState = this.stateSvc.gridState; // ref menu item settings
 	}
 
 	// enable/ disable displaying gridlines
 	toggleGridLines(option): void {
 		// disable grid snapping if grid display is off
-		if (option === 0 && this.snapGrid.data.value !== 0) {
-			this.snapGrid.toggleOption(0);
+		if (option === 0 && this.gridSnapOption === 1) {
+			this.gridSnapOption = 0;
+			this.inputSvc.gridOptions['snap'] = 0; // dont fire observable
 		}
-		// this.inputSvc.toggleGridDisplay(option);
+
+		this.gridDisplayOption = option;
 		this.inputSvc.updateGridOptions('display', option);
-		this.componentState.gridDisplayData.value = option;
 	}
 
 	// enable/ disable snapping to grid
-	toggleSnapGrid(option): void {
+	toggleSnapGrid(option: number): void {
 		// grid display must be enabled to snap to grid -> toggle grid display
-		if (option === 1 && this.showGrid.data.value !== 1) this.showGrid.toggleOption(1);
-		// this.inputSvc.toggleGridSnap(option);
+		if (option === 1 && this.gridDisplayOption === 0) {
+			this.gridDisplayOption = 1;
+			this.inputSvc.gridOptions['display'] = 1; // dont fire observable
+		}
+		this.gridSnapOption = option;
 		this.inputSvc.updateGridOptions('snap', option);
-		this.componentState.snapGridData.value = option;
 	}
 
 	updateGridWidth(dimWidth: number): void {
@@ -65,7 +89,6 @@ export class GridlinesMenuItemComponent implements OnInit {
 
 		if (this.gridOffsetX.data.value > dimWidth) this.gridOffsetX.updateInputValue(dimWidth);
 
-		// this.inputSvc.updateGridDimensions([dimWidth, this.gridHeight.data.value]);
 		this.inputSvc.updateGridOptions('dimensions', [dimWidth, this.componentState.gridHeightData.value]);
 		this.componentState.gridWidthData.value = dimWidth;
 	}

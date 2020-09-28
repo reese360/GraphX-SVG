@@ -3,8 +3,8 @@
         <i class="fas fa-border-all"></i> Grid Display
     </div>
     <div class="mi-content">
-        <app-option-selector id="showGrid" [data]="componentState.gridDisplayData" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
-        <app-option-selector id="snapGrid" [data]="componentState.snapGridData" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
+        <app-option-selector id="showGrid" [data]="gridDisplayData" [currentValue]="gridDisplayOption" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
+        <app-option-selector id="snapGrid" [data]="gridSnapData" [currentValue]="gridSnapOption" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
         <app-number-input id="gridWidth" [data]="componentState.gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
         <div appLockIcon id="width-height-lock" (click)="toggleLock(0)"><i [ngClass]="componentState.isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
         <app-number-input id="gridHeight" [data]="componentState.gridHeightData" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>

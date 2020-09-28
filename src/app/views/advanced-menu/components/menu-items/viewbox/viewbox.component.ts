@@ -7,9 +7,6 @@ import { IOptionSelectorInput } from '../../form-items/option-selector/option-se
 export interface ViewBoxComponentState {
 	vbWidthData: INumberPickerInput;
 	vbHeightData: INumberPickerInput;
-	vbDisplayData: IOptionSelectorInput;
-	vbOutlineData: IOptionSelectorInput;
-	vbOpacityData: IOptionSelectorInput;
 	isViewBoxLocked: boolean;
 	viewBoxRatio: number;
 }
@@ -23,27 +20,56 @@ export class ViewBoxComponent implements OnInit {
 	@ViewChild('vbWidth') vbWidth: NumberInputComponent;
 	@ViewChild('vbHeight') vbHeight: NumberInputComponent;
 
+	vbDisplayOption: number;
+	vbOutlineOption: number;
+	vbOpacityOption: number;
+
+	vbDisplayData: IOptionSelectorInput = {
+		label: 'ViewBox',
+		options: ['Off', 'On'],
+		value: 1,
+	};
+
+	vbOutlineData: IOptionSelectorInput = {
+		label: 'ViewBox Outline',
+		options: ['Off', 'On'],
+		value: 1,
+	};
+
+	vbOpacityData: IOptionSelectorInput = {
+		label: 'ViewBox Transparency',
+		options: ['0%', '50%', '100%'],
+		value: 2,
+	};
+
 	componentState: ViewBoxComponentState;
 
-	constructor(private inputSvc: InputService, private stateSvc: CurrentStateService) {}
+	constructor(private inputSvc: InputService, private stateSvc: CurrentStateService) {
+		this.vbDisplayOption = this.inputSvc.canvasViewBoxOptions['display'];
+		this.vbOutlineOption = this.inputSvc.canvasViewBoxOptions['outline'];
+		this.vbOpacityOption = this.inputSvc.canvasViewBoxOptions['opacity'];
+	}
 
 	ngOnInit(): void {
+		this.vbDisplayOption = this.inputSvc.canvasViewBoxOptions['display'];
+		this.vbOutlineOption = this.inputSvc.canvasViewBoxOptions['outline'];
+		this.vbOpacityOption = this.inputSvc.canvasViewBoxOptions['opacity'];
 		this.componentState = this.stateSvc.viewBoxState;
 	}
 
 	// modifies viewbox width
-	updateViewBoxWidth(width): void {
+	updateViewBoxWidth(width: number): void {
 		if (this.componentState.isViewBoxLocked) this.vbHeight.data.value = Math.trunc(width / this.componentState.viewBoxRatio);
 
-		this.inputSvc.updateCanvasOptions('dimensions', [width, this.componentState.vbHeightData.value]);
+		this.inputSvc.updateCanvasViewBoxOptions('dimensions', [width, this.componentState.vbHeightData.value]);
 		this.componentState.vbWidthData.value = width;
 	}
 
 	// modifies viewbox height
-	updateViewBoxHeight(height): void {
+	updateViewBoxHeight(height: number): void {
 		if (this.componentState.isViewBoxLocked) this.vbWidth.data.value = Math.trunc(height * this.componentState.viewBoxRatio);
 
-		this.inputSvc.updateCanvasOptions('dimensions', [this.componentState.vbWidthData.value, height]);
+		this.inputSvc.updateCanvasViewBoxOptions('dimensions', [this.componentState.vbWidthData.value, height]);
 		this.componentState.vbHeightData.value = height;
 	}
 
@@ -54,22 +80,21 @@ export class ViewBoxComponent implements OnInit {
 	}
 
 	// turns on/off viewbox canvas
-	toggleViewBox(option): void {
-		this.componentState.vbDisplayData.value = option;
-		this.inputSvc.updateCanvasOptions('display', option);
+	toggleViewBox(option: number): void {
+		this.vbDisplayOption = option;
+		this.inputSvc.updateCanvasViewBoxOptions('display', option);
 	}
 
 	// turns on/off viewbox outline
-	toggleViewBoxOutline(option): void {
-		this.componentState.vbOutlineData.value = option;
-		// this.inputSvc.toggleCanvasOutline(option);
-		this.inputSvc.updateCanvasOptions('outline', option);
+	toggleViewBoxOutline(option: number): void {
+		this.vbOutlineOption = option;
+		this.inputSvc.updateCanvasViewBoxOptions('outline', option);
 	}
 
 	// turns on/off viewbox outline
-	toggleViewBoxOpacity(option): void {
+	toggleViewBoxOpacity(option: number): void {
 		const optionValue = option === 0 ? 0 : option === 1 ? 0.5 : 1; // convert to numeric value
-		this.componentState.vbOpacityData.value = option;
-		this.inputSvc.updateCanvasOptions('opacity', optionValue);
+		this.vbOpacityOption = option;
+		this.inputSvc.updateCanvasViewBoxOptions('opacity', option);
 	}
 }

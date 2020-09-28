@@ -28,7 +28,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	canvasWidth: number = 1000;
 	canvasHeight: number = 800;
 	canvasOpacity: string = '1';
-	canvasStrokeWidth: string = '1';
+	canvasOutline: string = '1';
 	canvasDisplay: boolean = true;
 
 	/* 'SVG' refers to the global SVG not the faux 'Canvas' */
@@ -53,7 +53,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	zoomWidth: number;
 
 	// gridline variables
-	gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
 	gridDisplay: boolean = false;
 	gridSnap: boolean = false;
 	gridDimensions: number[] = [100, 100];
@@ -95,21 +94,23 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		return new Promise(() => {
 			// gridline options subscription
 			this.inputSvc.gridOptionsEvent.subscribe((options) => {
+				console.log(options);
 				this.gridDisplay = options['display'];
 				this.gridSnap = options['snap'];
 				this.gridDimensions = options['dimensions'];
 				this.gridOffset = options['offset'];
 
-				if (this.gridDisplay) this.hideGrid().then(() => this.showGrid());
+				// preliminary grid destruction -> display grid if display is enabled
+				this.hideGrid().then(() => this.showGrid());
 			});
 
 			// viewbox options subscription
-			this.inputSvc.canvasOptionsEvent.subscribe((options) => {
+			this.inputSvc.canvasViewBoxOptionEvent.subscribe((options) => {
 				this.canvasDisplay = options['display'];
 				this.canvasWidth = options['dimensions'][0];
 				this.canvasHeight = options['dimensions'][1];
-				this.canvasStrokeWidth = options['outline'].toString();
-				this.canvasOpacity = options['opacity'];
+				this.canvasOutline = options['outline'].toString();
+				this.canvasOpacity = options['opacity'] === 0 ? '0' : options['opacity'] === 1 ? '0.5' : '1';
 			});
 		});
 	}
@@ -117,6 +118,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// promise to calculate and display grid elements
 	async showGrid(): Promise<void> {
 		return new Promise((res) => {
+			if (!this.gridDisplay) return; // return if display is disabled
+
 			// create template for line with styling
 			const lineTemplate = this.renderer.createElement('line', 'svg');
 			this.renderer.setAttribute(lineTemplate, 'stroke', 'var(--graphx-highlight1)');
@@ -133,7 +136,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				this.renderer.setAttribute(line, 'x2', `${this.svgWidth + this.svgMinX}`);
 				this.renderer.setAttribute(line, 'y2', `${nextY}`);
 				this.renderer.appendChild(this.gridElementRef.nativeElement, line);
-				this.gridLines.push(line);
 				nextY += this.gridDimensions[1];
 			}
 
@@ -146,7 +148,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				this.renderer.setAttribute(line, 'x2', `${nextX}`);
 				this.renderer.setAttribute(line, 'y2', `${this.svgHeight + this.svgMinY}`);
 				this.renderer.appendChild(this.gridElementRef.nativeElement, line);
-				this.gridLines.push(line);
 				nextX += this.gridDimensions[0];
 			}
 			res();
@@ -155,12 +156,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	// promise to hide grid elements
 	async hideGrid(): Promise<void> {
-		return new Promise((result) => {
-			if (this.gridLines.length) {
-				this.gridLines.forEach((line) => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
-				this.gridLines = [];
-			}
-			result();
+		return new Promise((res) => {
+			for (const child of this.gridElementRef.nativeElement.children) this.renderer.removeChild(this.gridElementRef.nativeElement, child);
+			res();
 		});
 	}
 
@@ -261,7 +259,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		// right mouse button click
 		if (e.button === mouseButtons.right) {
 			e.preventDefault(); // halt default context menu
-			this.drawSvc.handleRightClick(); // ends drawing process if 
+			this.drawSvc.handleRightClick(); // ends drawing process if
 		}
 
 		// start panning functionality
