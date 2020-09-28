@@ -6,7 +6,6 @@ export interface INumberPickerInput {
 	minimum: number;
 	maximum: number;
 	step: number;
-	value: number;
 	showButtons?: boolean;
 }
 
@@ -17,6 +16,7 @@ export interface INumberPickerInput {
 })
 export class NumberInputComponent implements OnInit {
 	@Input() data: INumberPickerInput;
+	@Input() currentValue: number = 1;
 	@Output() updateEvent = new EventEmitter(); // output value on change
 
 	showButtons: boolean = true;
@@ -25,26 +25,27 @@ export class NumberInputComponent implements OnInit {
 		this.showButtons = this.data.showButtons ? this.data.showButtons : this.showButtons; // get value if supplied
 	}
 
+	// handle user directly inputting number
 	updateInputValue(val: number): void {
-		if (val > this.data.maximum) this.data.value = this.data.maximum;
-		else if (val < this.data.minimum) this.data.value = this.data.minimum;
-		else this.data.value = Number(val);
-		this.updateEvent.emit(this.data.value);
+		if (val > this.data.maximum) this.currentValue = this.data.maximum;
+		else if (val < this.data.minimum) this.currentValue = this.data.minimum;
+		else this.currentValue = Number(val);
+		this.updateEvent.emit(this.currentValue);
 	}
 
 	// increments current value by step
 	incrementInputValue(): void {
-		if (this.data.value < this.data.maximum) {
-			this.data.value = Math.round(((this.data.value += this.data.step) / this.data.step) * this.data.step);
-			this.updateEvent.emit(this.data.value);
+		if (this.currentValue < this.data.maximum) {
+			this.currentValue = Math.round(((this.currentValue += this.data.step) / this.data.step) * this.data.step);
+			this.updateEvent.emit(this.currentValue);
 		}
 	}
 
 	// decrements current value by step
 	decrementInputValue(): void {
-		if (this.data.value > this.data.minimum) {
-			this.data.value = Math.round(((this.data.value -= this.data.step) / this.data.step) * this.data.step);
-			this.updateEvent.emit(this.data.value);
+		if (this.currentValue > this.data.minimum) {
+			this.currentValue = Math.round(((this.currentValue -= this.data.step) / this.data.step) * this.data.step);
+			this.updateEvent.emit(this.currentValue);
 		}
 	}
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
@@ -24,13 +23,11 @@ export class StrokeOptionsComponent implements OnInit {
 	strokeTypeData: IOptionSelectorInput = {
 		label: 'Stroke Type',
 		options: ['Solid', 'None'],
-		value: 0,
 	};
 
 	shapeRenderData: IOptionSelectorInput = {
 		label: 'Shape Rendering',
 		options: ['Auto', 'Speed', 'Contrast', 'Precision'],
-		value: 0,
 	};
 
 	strokeWidthData: IRangeSliderInput = {

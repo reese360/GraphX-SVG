@@ -94,7 +94,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		return new Promise(() => {
 			// gridline options subscription
 			this.inputSvc.gridOptionsEvent.subscribe((options) => {
-				console.log(options);
 				this.gridDisplay = options['display'];
 				this.gridSnap = options['snap'];
 				this.gridDimensions = options['dimensions'];

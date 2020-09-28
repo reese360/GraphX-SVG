@@ -4,7 +4,7 @@
         [min]="data.minimum"
         [max]="data.maximum"
         [step]="data.step"
-        [value]="data.value"
+        [value]="currentValue"
         (blur)="updateInputValue($event.target.value)"
         (keyup.enter)="updateInputValue($event.target.value)">
         <div class="ni-button" (click)="incrementInputValue()"><i class="fas fa-angle-up"></i></div>

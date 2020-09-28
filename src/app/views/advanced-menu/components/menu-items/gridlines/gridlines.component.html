@@ -5,11 +5,11 @@
     <div class="mi-content">
         <app-option-selector id="showGrid" [data]="gridDisplayData" [currentValue]="gridDisplayOption" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
         <app-option-selector id="snapGrid" [data]="gridSnapData" [currentValue]="gridSnapOption" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
-        <app-number-input id="gridWidth" [data]="componentState.gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
-        <div appLockIcon id="width-height-lock" (click)="toggleLock(0)"><i [ngClass]="componentState.isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
-        <app-number-input id="gridHeight" [data]="componentState.gridHeightData" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>
-        <app-number-input id="gridOffsetX" [data]="componentState.gridOffsetXData" (updateEvent)="updateOffsetX($event)" #gridOffsetX></app-number-input>
-        <div appLockIcon id="offX-offY-lock" (click)="toggleLock(1)"><i [ngClass]="componentState.isOffsetLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
-        <app-number-input id="gridOffsetY" [data]="componentState.gridOffsetYData" (updateEvent)="updateOffsetY($event)" #gridOffsetY></app-number-input>
+        <app-number-input id="gridWidth" [data]="gridWidthData" [currentValue]="gridWidthOption" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
+        <div appLockIcon id="width-height-lock" (click)="toggleLock(0)"><i [ngClass]="isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
+        <app-number-input id="gridHeight" [data]="gridHeightData" [currentValue]="gridHeightOption" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>
+        <app-number-input id="gridOffsetX" [data]="gridOffsetXData" [currentValue]="gridOffsetXOption" (updateEvent)="updateOffsetX($event)" #gridOffsetX></app-number-input>
+        <div appLockIcon id="offX-offY-lock" (click)="toggleLock(1)"><i [ngClass]="isOffsetLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
+        <app-number-input id="gridOffsetY" [data]="gridOffsetYData" [currentValue]="gridOffsetYOption" (updateEvent)="updateOffsetY($event)" #gridOffsetY></app-number-input>
     </div>
 </div>

@@ -41,6 +41,7 @@ export class InputService {
 		display: 1,
 		outline: 1,
 		opacity: 2,
+		vbRatio: null,
 	};
 
 	public gridOptions: object = {
@@ -48,6 +49,8 @@ export class InputService {
 		display: 0,
 		dimensions: [100, 100],
 		offset: [0, 0],
+		dimsRatio: null,
+		offsetRatio: null,
 	};
 
 	public currentObject: IShape = null;
