@@ -28,7 +28,7 @@ export class SelectionService {
 			});
 
 			// event listener for tool change
-			this.inputSvc.ToolEvent.subscribe(() => {
+			this.inputSvc.inputOptionsEvent.subscribe(() => {
 				this.deselect();
 			});
 		});

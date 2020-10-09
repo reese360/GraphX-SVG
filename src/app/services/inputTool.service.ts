@@ -5,25 +5,26 @@ import { IStyleOptions } from '../interfaces/IStyleOptions';
 import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
 import { SvgFillType } from '../enums/SvgFillType.enum';
 import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
-import { SvgShapeType} from '../enums/SvgShapeType.enum';
+import { SvgShapeType } from '../enums/SvgShapeType.enum';
+import { InputToolOptions } from '../enums/inputTools.enum';
+import { IInputOptions } from '../interfaces/IInputOptions.interface';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InputService {
-	public shapeOptions: any = {
-		line: SvgShapeType.line,
-		rectangle: SvgShapeType.rect,
-		ellipse: SvgShapeType.ellipse,
-		polygon: SvgShapeType.polygon,
-		polyline: SvgShapeType.polyline,
-		path: SvgShapeType.path,
-	};
+	// public shapeOptions: any = {
+	// 	line: SvgShapeType.line,
+	// 	rectangle: SvgShapeType.rect,
+	// 	ellipse: SvgShapeType.ellipse,
+	// 	polygon: SvgShapeType.polygon,
+	// 	polyline: SvgShapeType.polyline,
+	// 	path: SvgShapeType.path,
+	// };
 
-	public toolsOptions: any = {
-		select: 0,
-		draw: 1,
-		pan: 2,
+	public inputOptions: IInputOptions = {
+		tool: InputToolOptions.draw,
+		shape: SvgShapeType.rect,
 	};
 
 	public objectStyleOptions: IStyleOptions = {
@@ -62,12 +63,7 @@ export class InputService {
 	public zoomLevel: number;
 	public zoomLevelEvent: Subject<number> = new Subject<number>();
 
-	public currentTool: string;
-	public ToolEvent: Subject<string> = new Subject<string>();
-
-	public currentShape: SvgShapeType;
-	public ShapeEvent: Subject<SvgShapeType> = new Subject<SvgShapeType>();
-
+	public inputOptionsEvent: Subject<IInputOptions> = new Subject<IInputOptions>();
 	public objectStyleOptionsEvent: Subject<object> = new Subject<object>();
 	public canvasViewBoxOptionEvent: Subject<object> = new Subject<object>();
 	public gridOptionsEvent: Subject<object> = new Subject<object>();
@@ -127,13 +123,17 @@ export class InputService {
 		});
 	}
 
-	changeTool(tool: string): void {
-		this.ToolEvent.next(tool);
-		this.currentTool = tool;
+	async updateInputToolOptions(tool: InputToolOptions): Promise<void> {
+		return new Promise(() => {
+			this.inputOptions.tool = tool;
+			this.inputOptionsEvent.next(this.inputOptions);
+		});
 	}
 
-	changeShape(shape: SvgShapeType): void {
-		this.ShapeEvent.next(shape);
-		this.currentShape = shape;
+	async updateInputShapeOptions(shape: SvgShapeType): Promise<void> {
+		return new Promise(() => {
+			this.inputOptions.shape = shape;
+			this.inputOptionsEvent.next(this.inputOptions);
+		});
 	}
 }

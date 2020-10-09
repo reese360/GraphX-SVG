@@ -12,29 +12,29 @@
 		<i class="fas fa-hand-paper"></i>
 	</div>
 	<div appMenuIcon></div>
-	<div appMenuIcon [ngClass]="selectedShape === 0 ? 'selected-menu-item' : ''" (click)="handleShapeClick(0)"
+	<div appMenuIcon [ngClass]="selectedShape === 'line' ? 'selected-menu-item' : ''" (click)="handleShapeClick('line')"
 		title="Line">
 		<i class="fas fa-slash"></i>
 	</div>
-	<div appMenuIcon [ngClass]="selectedShape === 1 ? 'selected-menu-item' : ''" (click)="handleShapeClick(1)"
+	<div appMenuIcon [ngClass]="selectedShape === 'rect' ? 'selected-menu-item' : ''" (click)="handleShapeClick('rect')"
 		title="Rectangle">
 		<i class="fas fa-square"></i>
 	</div>
-	<div appMenuIcon [ngClass]="selectedShape === 2 ? 'selected-menu-item' : ''" (click)="handleShapeClick(2)"
+	<div appMenuIcon [ngClass]="selectedShape === 'ellipse' ? 'selected-menu-item' : ''" (click)="handleShapeClick('ellipse')"
 		title="Ellipse">
 		<i class="fas fa-circle"></i>
 	</div>
-	<div appMenuIcon [ngClass]="selectedShape === 3 ? 'selected-menu-item' : ''" (click)="handleShapeClick(3)"
+	<div appMenuIcon [ngClass]="selectedShape === 'polygon' ? 'selected-menu-item' : ''" (click)="handleShapeClick('polygon')"
 		title="Polygon">
 		<svg viewBox="0 0 16 16" width="16px" height="20px" shape-rendering="geometricPrecision" style="padding-top: 6px; stroke-linejoin: round; stroke-linecap: round;">
 			<polygon xmlns="http://www.w3.org/2000/svg" points="0,4 0,12 8,16 16,12 16,4 8,0 "/>
 		</svg>
 	</div>
-	<div appMenuIcon [ngClass]="selectedShape === 4 ? 'selected-menu-item' : ''" (click)="handleShapeClick(4)"
+	<div appMenuIcon [ngClass]="selectedShape === 'polyline' ? 'selected-menu-item' : ''" (click)="handleShapeClick('polyline')"
 		title="Polyline">
 		<i class="fas fa-wave-square"></i>
 	</div>
-	<div appMenuIcon [ngClass]="selectedShape === 5 ? 'selected-menu-item' : ''" (click)="handleShapeClick(5)"
+	<div appMenuIcon class="disabled-feat"
 		title="Free Draw">
 		<i class="fas fa-signature"></i>
 	</div>
