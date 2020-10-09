@@ -7,11 +7,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { ColorHueModule } from 'ngx-color/hue';
 import { ColorAlphaModule } from 'ngx-color/alpha';
-import { DropDownComponent } from './views/simple-menu/components/drop-down/drop-down.component';
 import { SliderComponent } from './views/advanced-menu/components/slider/slider.component';
 import { CodeDrawerComponent } from './views/code-drawer/code-drawer.component';
 import { AdvancedMenuComponent } from './views/advanced-menu/advanced-menu.component';
-import { SimpleMenuComponent } from './views/simple-menu/simple-menu.component';
+import { TopMenuComponent } from './views/top-menu/top-menu.component';
 import { GraphxCanvasComponent } from './views/graphx-canvas/graphx-canvas.component';
 import { GridlinesMenuItemComponent } from './views/advanced-menu/components/menu-items/gridlines/gridlines.component';
 import { OptionSelectorComponent } from './views/advanced-menu/components/form-items/option-selector/option-selector.component';
@@ -38,11 +37,10 @@ import { DropDownMenuItemComponent } from './common/components/drop-down-menu-it
 @NgModule({
 	declarations: [
 		AppComponent,
-		DropDownComponent,
 		SliderComponent,
 		CodeDrawerComponent,
 		AdvancedMenuComponent,
-		SimpleMenuComponent,
+		TopMenuComponent,
 		GraphxCanvasComponent,
 		GridlinesMenuItemComponent,
 		OptionSelectorComponent,

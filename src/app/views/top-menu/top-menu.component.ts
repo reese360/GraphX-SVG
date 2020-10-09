@@ -3,11 +3,11 @@ import { InputService } from 'src/app/services/inputTool.service';
 import { SvgShapeType } from '../../enums/SvgShapeType.enum';
 
 @Component({
-	selector: 'app-simple-menu',
-	templateUrl: './simple-menu.component.html',
-	styleUrls: ['./simple-menu.component.css'],
+	selector: 'app-top-menu',
+	templateUrl: './top-menu.component.html',
+	styleUrls: ['./top-menu.component.css'],
 })
-export class SimpleMenuComponent implements AfterViewInit {
+export class TopMenuComponent implements AfterViewInit {
 	strokePickerOpen: boolean = false;
 	fillPickerOpen: boolean = false;
 	strokeColor: string;
