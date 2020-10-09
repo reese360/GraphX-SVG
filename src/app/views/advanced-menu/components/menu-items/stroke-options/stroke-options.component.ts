@@ -4,6 +4,7 @@ import { IOptionSelectorInput } from '../../form-items/option-selector/option-se
 import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
 import { IRangeSliderInput } from '../../form-items/input-slider/input-slider.component';
+import { IInputNumberInput } from '../../form-items/input-number/input-number.component';
 
 @Component({
 	selector: 'app-stroke-options',
@@ -33,6 +34,13 @@ export class StrokeOptionsComponent implements OnInit {
 	strokeWidthData: IRangeSliderInput = {
 		label: 'Stroke Width',
 		maximum: 100,
+		minimum: 1,
+		step: 1,
+	};
+
+	strokeWidthNumberData: IInputNumberInput = {
+		label: 'Pixel Width',
+		maximum: 1000,
 		minimum: 1,
 		step: 1,
 	};

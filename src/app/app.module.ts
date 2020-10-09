@@ -30,6 +30,10 @@ import { MenuItemDisabledDirective } from './directives/menu-item-disabled.direc
 import { InputSliderComponent } from './views/advanced-menu/components/form-items/input-slider/input-slider.component';
 import { InputNumberComponent } from './views/advanced-menu/components/form-items/input-number/input-number.component';
 import { LockComponent } from './common/components/lock/lock.component';
+import { ShapeMenuComponent } from './views/shape-menu/shape-menu.component';
+import { MenuIconDirective } from './directives/menu-icon.directive';
+import { DropDownMenuComponent } from './common/components/drop-down-menu/drop-down-menu.component';
+import { DropDownMenuItemComponent } from './common/components/drop-down-menu-item/drop-down-menu-item.component';
 
 @NgModule({
 	declarations: [
@@ -57,6 +61,10 @@ import { LockComponent } from './common/components/lock/lock.component';
 		InputSliderComponent,
 		InputNumberComponent,
 		LockComponent,
+		ShapeMenuComponent,
+		MenuIconDirective,
+		DropDownMenuComponent,
+		DropDownMenuItemComponent,
 	],
 	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
 	providers: [],

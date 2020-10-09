@@ -1,14 +1,11 @@
-<div class="ni-label">{{ data.label }}</div>
 <div class="ni-container">
-	<input type="number"
-	[min]="data.minimum"
-	[max]="data.maximum"
-	[step]="data.step"
-	[value]="currentValue"
-	(blur)="updateInputValue($event.target.value)"
-	(keyup.enter)="updateInputValue($event.target.value)">
-	<div class="btn-container">
-		<div class="ni-button" (click)="incrementInputValue()"><i class="fas fa-angle-up"></i></div>
-		<div class="ni-button" (click)="decrementInputValue()"><i class="fas fa-angle-down"></i></div>
+	<div class="ni-label" appFormItemLabel>{{ data.label }}</div>
+	<div class="ni-input">
+		<input type="number" [min]="data.minimum" [max]="data.maximum" [step]="data.step" [value]="currentValue"
+			(blur)="updateInputValue($event.target.value)" (keyup.enter)="updateInputValue($event.target.value)">
+		<div class="btn-container">
+			<div class="ni-button" (click)="incrementInputValue()"><i class="fas fa-angle-up"></i></div>
+			<div class="ni-button" (click)="decrementInputValue()"><i class="fas fa-angle-down"></i></div>
+		</div>
 	</div>
 </div>

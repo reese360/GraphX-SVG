@@ -1,0 +1,22 @@
+#shape-menu {
+	font-size: 16px;
+    background-color: var(--graphx-light-gray);
+    border-right: 1px solid var(--graphx-dark-gray);
+    height: calc(100vh - 30px);
+    width: 35px;
+}
+
+#shape-menu > div {
+	cursor: pointer;
+}
+
+#shape-menu > div:nth-child(4){
+	cursor: default; /* disable blank menu spacing cursor*/
+}
+
+.selected-menu-item {
+	background-color: var(--graphx-highlight1);
+	color: #ffffff;
+	stroke: #ffffff;
+	fill: #ffffff;
+}

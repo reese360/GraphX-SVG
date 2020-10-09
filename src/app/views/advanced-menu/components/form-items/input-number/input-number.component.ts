@@ -36,7 +36,7 @@ export class InputNumberComponent implements OnInit {
 
 	// increments current value by step
 	incrementInputValue(): void {
-		if (this.currentValue < this.data.maximum) {
+		if (this.currentValue + 1 < this.data.maximum) {
 			this.currentValue = Math.round(((this.currentValue += this.data.step) / this.data.step) * this.data.step);
 			this.updateEvent.emit(this.currentValue);
 		}

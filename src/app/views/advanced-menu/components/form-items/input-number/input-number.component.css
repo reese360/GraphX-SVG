@@ -1,20 +1,19 @@
-.ni-label {
-    color: var(--graphx-dark-gray);
-    font-size: 12px;
-    padding-bottom: 2px;
-}
 
 .ni-container {
-	display: inline;
+	display: grid;
+	width: fit-content;
 }
 
+.ni-input {
+	padding-top: 1px;
+}
 
 input[type="number"] {
 	float: left;
 	-webkit-appearance: none;
 	margin: 0;
-	width: 90px;
-	height: 30px;
+	width: 74px;
+	height: 32px;
 	text-align: center;
 	font-family: Ubuntu;
 	box-sizing: border-box;
@@ -39,7 +38,7 @@ input[type=number]::-webkit-outer-spin-button {
 .ni-button {
 	text-align: center;
 	width: 14px;
-	height: 14px;
+	height: 15px;
 	font-size: 9px;
     cursor: pointer;
 	color: var(--graphx-dark-gray);
