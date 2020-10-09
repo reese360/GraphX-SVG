@@ -4,15 +4,19 @@
   overflow: hidden;
   display: grid;
   grid-template-areas:
-    "simple-menu simple-menu"
-    "graphx-canvas advanced-menu"
-    "code-drawer code-drawer";
-  grid-template-columns: calc(100vw - 37px) 37px;
-  grid-template-rows: 32px calc(100vh - 32px - 32px) 32px;
+    "top-menu top-menu top-menu"
+    "shape-menu graphx-canvas advanced-menu"
+    "code-drawer code-drawer code-drawer";
+  grid-template-columns: 36px calc(100vw - (2 * 36px)) 36px;
+  grid-template-rows: 31px calc(100vh - 31px - 32px) 32px;
 }
 
-#simple-menu {
-    grid-area: simple-menu;
+#top-menu {
+    grid-area: top-menu;
+}
+
+#shape-menu {
+	grid-area: shape-menu;
 }
 
 #graphx-canvas {

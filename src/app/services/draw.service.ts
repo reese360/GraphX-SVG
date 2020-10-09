@@ -29,13 +29,13 @@ export class DrawService {
 		return new Promise(() => {
 			if (!this.drawing) this.resetAnchors(); // if user let go of mouse outside of canvas -> remove any anchor remnants
 
-			switch (this.inputSvc.currentShape) {
+			switch (this.inputSvc.inputOptions.shape) {
 				case SvgShapeType.line:
 				case SvgShapeType.rect:
 				case SvgShapeType.ellipse:
 					this.drawing = true;
 					this.renderer.appendChild(this.drawElRef.nativeElement, new AnchorPoint(this.renderer, point).element); // starting anchor point
-					this.anchorOutline = new AnchorOutline(this.renderer, this.inputSvc.currentShape, point);
+					this.anchorOutline = new AnchorOutline(this.renderer, this.inputSvc.inputOptions.shape, point);
 					this.renderer.appendChild(this.drawElRef.nativeElement, this.anchorOutline.element);
 					this.mouseAnchor = new AnchorPoint(this.renderer, point);
 					this.renderer.appendChild(this.drawElRef.nativeElement, this.mouseAnchor.element);
@@ -46,7 +46,7 @@ export class DrawService {
 						// start drawing a polyline | polygon
 						this.drawing = true;
 						this.renderer.appendChild(this.drawElRef.nativeElement, new AnchorPoint(this.renderer, point).element); // starting anchor point
-						this.anchorOutline = new AnchorOutline(this.renderer, this.inputSvc.currentShape, point);
+						this.anchorOutline = new AnchorOutline(this.renderer, this.inputSvc.inputOptions.shape, point);
 						this.renderer.appendChild(this.drawElRef.nativeElement, this.anchorOutline.element);
 						this.mouseAnchor = new AnchorPoint(this.renderer, point);
 						this.renderer.appendChild(this.drawElRef.nativeElement, this.mouseAnchor.element);
@@ -74,7 +74,7 @@ export class DrawService {
 	// end draw -> remove anchors & render shape
 	async endDraw(point: [number, number]): Promise<void> {
 		return new Promise(() => {
-			switch (this.inputSvc.currentShape) {
+			switch (this.inputSvc.inputOptions.shape) {
 				case SvgShapeType.rect:
 				case SvgShapeType.line:
 				case SvgShapeType.ellipse:
@@ -107,7 +107,7 @@ export class DrawService {
 	// render shape to canvas
 	async drawShape(spec: object): Promise<void> {
 		let shape: RectModel | LineModel | EllipseModel | PolylineModel;
-		switch (this.inputSvc.currentShape) {
+		switch (this.inputSvc.inputOptions.shape) {
 			case SvgShapeType.line:
 			case SvgShapeType.rect:
 			case SvgShapeType.ellipse:

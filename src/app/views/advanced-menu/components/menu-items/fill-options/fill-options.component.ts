@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { SvgFillType } from 'src/app/enums/SvgFillType.enum';
-import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 
@@ -19,7 +18,6 @@ export class FillOptionsComponent implements OnInit {
 	fillTypeData: IOptionSelectorInput = {
 		label: 'Fill Type',
 		options: ['Solid', 'None'],
-		value: 0,
 	};
 
 	constructor(private inputSvc: InputService) {

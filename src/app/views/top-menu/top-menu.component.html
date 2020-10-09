@@ -1,18 +1,31 @@
-<div id="tool-container">
-    <div class="icon" title="Save" (click)="toolAction('save')">
+<div id="top-menu">
+	<div id="menu-items">
+		<app-drop-down-menu [label]="'File'"
+			[menuItems]="['New File','Open File...', 'Save', 'Save As...', 'Import SVG', 'Export SVG']">
+		</app-drop-down-menu>
+		<app-drop-down-menu [label]="'Edit'"
+			[menuItems]="['Undo','Redo', 'Cut', 'Copy', 'Paste']">
+		</app-drop-down-menu>
+		<app-drop-down-menu [label]="'Panels'"
+			[menuItems]="['Stroke','Fill', 'Grid', 'Properties', 'Arrangement', 'ViewBox', 'Objects', 'Typography', 'Library', 'Settings','History', 'Import', 'Export', 'Documentation', 'About']">
+		</app-drop-down-menu>
+	</div>
+	<div id="menu-info">
+		<div class="mouse-coordinate-display">
+			<span>x:{{mouseX}} y:{{mouseY}}</span>
+		</div>
+	</div>
+</div>
+
+<!--<div id="tool-container">
+ <div class="icon" title="Save" (click)="toolAction('save')">
         <i class="fas fa-save"></i>
     </div>
     <div class="icon" title="Open" (click)="toolAction('open')">
         <i class="fas fa-folder-open"></i>
     </div>
-    <div class="icon" title="Import" (click)="toolAction('import')">
-        <i class="fas fa-file-import"></i>
-    </div>
-    <div class="icon" title="Export" (click)="toolAction('export')">
-        <i class="fas fa-file-export"></i>
-    </div>
     <div class="icon">
-        <div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+        <div class="tool-item-spacer"></div>
 	</div>
     <div [ngClass]="inputSvc.currentTool == '0' ? 'icon selected-tool' : 'icon'" title="Select Tool" (click)="changeTool('select')">
         <i class="fas fa-mouse-pointer"></i>
@@ -24,7 +37,7 @@
 		<i class="fas fa-hand-paper"></i>
     </div>
     <div class="icon">
-        <div class="tool-item-spacer"></div> <!-- spacer between tooling groups -->
+        <div class="tool-item-spacer"></div>
 	</div>
 	<div [ngClass]="inputSvc.currentShape == 'line' ? 'icon selected-tool' : 'icon'" title="Line" (click)="updateShape('line')">
 		<i class="fas fa-slash"></i>
@@ -42,15 +55,15 @@
     </div>
     <div [ngClass]="inputSvc.currentShape == 'polyline' ? 'icon selected-tool' : 'icon'" title="Polyline"  (click)="updateShape('polyline')">
 		<i class="fas fa-wave-square"></i>
-	</div>
-	<!-- <div [ngClass]="inputSvc.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
+	</div> -->
+<!-- <div [ngClass]="inputSvc.currentShape == '5' ? 'icon selected-tool' : 'icon'" title="Path"  (click)="updateShape('path')">
 		<i class="fas fa-signature"></i>
     </div>  -->
-	<!-- <div [ngClass]="inputSvc.currentShape == '6' ? 'icon selected-tool' : 'icon'" title="Text"  (click)="updateShape('text')">
+<!-- <div [ngClass]="inputSvc.currentShape == '6' ? 'icon selected-tool' : 'icon'" title="Text"  (click)="updateShape('text')">
 		<i class="fas fa-font"></i>
     </div>	 -->
-    
-    <!-- <div class="colorBox" title="Stroke Color">
+
+<!-- <div class="colorBox" title="Stroke Color">
         <div class="color-col-1">
             <div class="color-icon" (click)="updateColors(null,'scp')">
                 <i class="fas fa-paint-brush"></i>
@@ -80,16 +93,16 @@
             <color-sketch #fcp class="color-picker-element" height="250px" width="250px" color="##000" (onChange)="updateColors($event, 'fcp')"></color-sketch>
         </div>
     </div> -->
-    <!-- <div class="icon">
+<!-- <div class="icon">
         <app-drop-down [dropDownOptions]="strokeWidthOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-width', $event)"></app-drop-down>
     </div>
     <div class="icon">
         <app-drop-down [dropDownOptions]="dashArrayOptions" (dropDownSelectionEvent)="updateStrokeStyle('stroke-dasharray', $event)"></app-drop-down>
-    </div> -->
+    </div> 
     <div class="mouse-coordinate-display">
        <span>x:{{mouseX}} y:{{mouseY}}</span>&nbsp;<i class="fas fa-mouse"></i>
     </div>
     <div class="zoom-level-display">
         <span>{{ zoomLevelDisplay }}</span>&nbsp;<i class="fas fa-binoculars"></i>
     </div>
-</div>
+</div>-->

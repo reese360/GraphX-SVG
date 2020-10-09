@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { CurrentStateService } from 'src/app/services/currentState.service';
 import { InputService } from 'src/app/services/inputTool.service';
 import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
 import { IRangeSliderInput } from '../../form-items/input-slider/input-slider.component';
+import { IInputNumberInput } from '../../form-items/input-number/input-number.component';
 
 @Component({
 	selector: 'app-stroke-options',
@@ -24,18 +24,23 @@ export class StrokeOptionsComponent implements OnInit {
 	strokeTypeData: IOptionSelectorInput = {
 		label: 'Stroke Type',
 		options: ['Solid', 'None'],
-		value: 0,
 	};
 
 	shapeRenderData: IOptionSelectorInput = {
 		label: 'Shape Rendering',
 		options: ['Auto', 'Speed', 'Contrast', 'Precision'],
-		value: 0,
 	};
 
 	strokeWidthData: IRangeSliderInput = {
 		label: 'Stroke Width',
 		maximum: 100,
+		minimum: 1,
+		step: 1,
+	};
+
+	strokeWidthNumberData: IInputNumberInput = {
+		label: 'Pixel Width',
+		maximum: 1000,
 		minimum: 1,
 		step: 1,
 	};

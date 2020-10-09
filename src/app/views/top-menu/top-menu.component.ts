@@ -3,11 +3,11 @@ import { InputService } from 'src/app/services/inputTool.service';
 import { SvgShapeType } from '../../enums/SvgShapeType.enum';
 
 @Component({
-	selector: 'app-simple-menu',
-	templateUrl: './simple-menu.component.html',
-	styleUrls: ['./simple-menu.component.css'],
+	selector: 'app-top-menu',
+	templateUrl: './top-menu.component.html',
+	styleUrls: ['./top-menu.component.css'],
 })
-export class SimpleMenuComponent implements AfterViewInit {
+export class TopMenuComponent implements AfterViewInit {
 	strokePickerOpen: boolean = false;
 	fillPickerOpen: boolean = false;
 	strokeColor: string;
@@ -19,8 +19,8 @@ export class SimpleMenuComponent implements AfterViewInit {
 
 	constructor(public inputSvc: InputService, public renderer: Renderer2) {
 		// set initial tooling options
-		this.inputSvc.currentTool = this.inputSvc.toolsOptions.draw;
-		this.inputSvc.currentShape = SvgShapeType.polyline;
+		// this.inputSvc.currentTool = this.inputSvc.toolsOptions.draw;
+		// this.inputSvc.currentShape = SvgShapeType.polyline;
 
 		// subscription for mouse coord display
 		this.inputSvc.mouseCoordsEvent.subscribe((pos) => {
@@ -55,11 +55,11 @@ export class SimpleMenuComponent implements AfterViewInit {
 
 	// change the currently selected tool
 	changeTool(tool: string): void {
-		this.inputSvc.changeTool(this.inputSvc.toolsOptions[tool]);
+		// this.inputSvc.changeTool(this.inputSvc.toolsOptions[tool]);
 	}
 
 	updateShape(shape: string): void {
-		this.inputSvc.currentShape = this.inputSvc.shapeOptions[shape];
-		this.inputSvc.changeTool(this.inputSvc.toolsOptions.draw); // activate draw tool on shape change
+		// this.inputSvc.currentShape = this.inputSvc.shapeOptions[shape];
+		// this.inputSvc.changeTool(this.inputSvc.toolsOptions.draw); // activate draw tool on shape change
 	}
 }

@@ -1,0 +1,10 @@
+.lock-container {
+	color: var(--graphx-dark-gray);
+	padding-top: 150%;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+.fa-lock {
+	color: var(--graphx-highlight1);
+}

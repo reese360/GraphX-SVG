@@ -28,3 +28,6 @@ input[type="range"]::-webkit-slider-thumb {
 .is-display-area {
     width: 183px;
 }
+
+.is-container {
+}

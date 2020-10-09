@@ -1,0 +1,34 @@
+.drop-down-menu-button {
+	padding: 0 10px;
+	line-height: 30px;
+	cursor: pointer;
+	height: 30px;
+}
+
+.drop-down-menu-button:hover {
+	background-color: var(--graphx-dark-gray);
+	/* background-color: var(--graphx-highlight1); */
+	color: #fff;
+}
+
+.drop-down-content {
+	display: none;
+	position: absolute;
+	border: 1px solid var(--graphx-dark-gray);
+	background-color: var(--graphx-light-gray);
+	min-width: 150px;
+}
+
+.drop-down-content-open {
+	display: inherit;
+}
+
+.drop-down-menu-button-active {
+	background-color: var(--graphx-dark-gray);
+	color: #fff;
+}
+
+.drop-down-content > *:hover {
+	background-color: var(--graphx-highlight1);
+	color: #fff;
+}

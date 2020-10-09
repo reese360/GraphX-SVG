@@ -1,0 +1,51 @@
+
+.ni-container {
+	display: grid;
+	width: fit-content;
+}
+
+.ni-input {
+	padding-top: 1px;
+}
+
+input[type="number"] {
+	float: left;
+	-webkit-appearance: none;
+	margin: 0;
+	width: 74px;
+	height: 32px;
+	text-align: center;
+	font-family: Ubuntu;
+	box-sizing: border-box;
+	border: 1px solid var(--graphx-dark-gray);
+	border-right: none;
+  }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+.ni-container input:focus {
+    outline: 0;
+}
+
+.btn-container {
+	float: left;
+	border: 1px solid var(--graphx-dark-gray);
+}
+
+.ni-button {
+	text-align: center;
+	width: 14px;
+	height: 15px;
+	font-size: 9px;
+    cursor: pointer;
+	color: var(--graphx-dark-gray);
+	background-color: white;
+	line-height: 14px;
+}
+
+.ni-button:hover {
+	color: var(--graphx-highlight1);
+}

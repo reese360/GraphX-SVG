@@ -6,8 +6,9 @@ import { SvgRenderOptions } from './../../enums/SvgRenderOptions.enum';
 import { SvgFillType } from './../../enums/SvgFillType.enum';
 import { SvgStrokeType } from './../../enums/SvgStrokeType.enum';
 import { DrawService } from '../../services/draw.service';
-import { mouseButtons } from '../../enums/mouseButtons.enum';
+import { MouseButtons } from '../../enums/mouseButtons.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
+import { InputToolOptions } from 'src/app/enums/inputTools.enum';
 
 @Component({
 	selector: 'app-graphx-canvas',
@@ -28,7 +29,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	canvasWidth: number = 1000;
 	canvasHeight: number = 800;
 	canvasOpacity: string = '1';
-	canvasStrokeWidth: string = '1';
+	canvasOutline: string = '1';
 	canvasDisplay: boolean = true;
 
 	/* 'SVG' refers to the global SVG not the faux 'Canvas' */
@@ -53,7 +54,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	zoomWidth: number;
 
 	// gridline variables
-	gridLines: HTMLElement[] = []; // container to hold dynamic grid line elements
 	gridDisplay: boolean = false;
 	gridSnap: boolean = false;
 	gridDimensions: number[] = [100, 100];
@@ -100,16 +100,17 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				this.gridDimensions = options['dimensions'];
 				this.gridOffset = options['offset'];
 
-				if (this.gridDisplay) this.hideGrid().then(() => this.showGrid());
+				// preliminary grid destruction -> display grid if display is enabled
+				this.hideGrid().then(() => this.showGrid());
 			});
 
 			// viewbox options subscription
-			this.inputSvc.canvasOptionsEvent.subscribe((options) => {
+			this.inputSvc.canvasViewBoxOptionEvent.subscribe((options) => {
 				this.canvasDisplay = options['display'];
 				this.canvasWidth = options['dimensions'][0];
 				this.canvasHeight = options['dimensions'][1];
-				this.canvasStrokeWidth = options['outline'].toString();
-				this.canvasOpacity = options['opacity'];
+				this.canvasOutline = options['outline'].toString();
+				this.canvasOpacity = options['opacity'] === 0 ? '0' : options['opacity'] === 1 ? '0.5' : '1';
 			});
 		});
 	}
@@ -117,6 +118,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// promise to calculate and display grid elements
 	async showGrid(): Promise<void> {
 		return new Promise((res) => {
+			if (!this.gridDisplay) return; // return if display is disabled
+
 			// create template for line with styling
 			const lineTemplate = this.renderer.createElement('line', 'svg');
 			this.renderer.setAttribute(lineTemplate, 'stroke', 'var(--graphx-highlight1)');
@@ -133,7 +136,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				this.renderer.setAttribute(line, 'x2', `${this.svgWidth + this.svgMinX}`);
 				this.renderer.setAttribute(line, 'y2', `${nextY}`);
 				this.renderer.appendChild(this.gridElementRef.nativeElement, line);
-				this.gridLines.push(line);
 				nextY += this.gridDimensions[1];
 			}
 
@@ -146,7 +148,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				this.renderer.setAttribute(line, 'x2', `${nextX}`);
 				this.renderer.setAttribute(line, 'y2', `${this.svgHeight + this.svgMinY}`);
 				this.renderer.appendChild(this.gridElementRef.nativeElement, line);
-				this.gridLines.push(line);
 				nextX += this.gridDimensions[0];
 			}
 			res();
@@ -155,12 +156,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	// promise to hide grid elements
 	async hideGrid(): Promise<void> {
-		return new Promise((result) => {
-			if (this.gridLines.length) {
-				this.gridLines.forEach((line) => this.renderer.removeChild(this.svgElementRef.nativeElement, line));
-				this.gridLines = [];
-			}
-			result();
+		return new Promise((res) => {
+			for (const child of this.gridElementRef.nativeElement.children) this.renderer.removeChild(this.gridElementRef.nativeElement, child);
+			res();
 		});
 	}
 
@@ -222,9 +220,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// mouse down event handler
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
 		// left mouse button click
-		if (e.button === mouseButtons.left) {
-			switch (this.inputSvc.currentTool) {
-				case this.inputSvc.toolsOptions.select: {
+		if (e.button === MouseButtons.left) {
+			switch (this.inputSvc.inputOptions.tool) {
+				case InputToolOptions.select: {
 					const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
 					const hitObjectRef = this.objectSvc.fetch(hitObjectId);
 					if (hitObjectRef) {
@@ -242,11 +240,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
 					}
 					break;
 				}
-				case this.inputSvc.toolsOptions.draw: {
+				case InputToolOptions.draw: {
 					this.drawSvc.startDraw(this.calculateUserPosition(e.clientX, e.clientY));
 					break;
 				}
-				case this.inputSvc.toolsOptions.pan: {
+				case InputToolOptions.pan: {
+					console.log(true);
 					this.panning = true;
 					break;
 				}
@@ -254,14 +253,14 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		}
 
 		// mousewheel button click
-		if (e.button === mouseButtons.middle) {
+		if (e.button === MouseButtons.middle) {
 			this.panning = true;
 		}
 
 		// right mouse button click
-		if (e.button === mouseButtons.right) {
+		if (e.button === MouseButtons.right) {
 			e.preventDefault(); // halt default context menu
-			this.drawSvc.handleRightClick(); // ends drawing process if 
+			this.drawSvc.handleRightClick(); // ends drawing process
 		}
 
 		// start panning functionality
@@ -276,8 +275,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	@HostListener('mousemove', ['$event']) onMouseMove(e): void {
 		this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
-		switch (this.inputSvc.currentTool) {
-			case this.inputSvc.toolsOptions.select: {
+		switch (this.inputSvc.inputOptions.tool) {
+			case InputToolOptions.select: {
 				if (this.selectionSvc.canDragSelected) {
 					this.selectionSvc.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
 					break;
@@ -288,7 +287,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				}
 				break;
 			}
-			case this.inputSvc.toolsOptions.draw: {
+			case InputToolOptions.draw: {
 				this.drawSvc.drawTo(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
@@ -305,8 +304,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	// mouse up event handler
 	@HostListener('mouseup', ['$event']) onMouseUp(e): void {
-		switch (this.inputSvc.currentTool) {
-			case this.inputSvc.toolsOptions.select: {
+		switch (this.inputSvc.inputOptions.tool) {
+			case InputToolOptions.select: {
 				if (this.selectionSvc.dragging)
 					// end drag process
 					this.selectionSvc.endDrag();
@@ -317,8 +316,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 				break;
 			}
-			case this.inputSvc.toolsOptions.draw: {
-				if (e.button === mouseButtons.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
+			case InputToolOptions.draw: {
+				if (e.button === MouseButtons.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
 		}
