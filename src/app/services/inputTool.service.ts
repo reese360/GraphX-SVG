@@ -13,15 +13,6 @@ import { IInputOptions } from '../interfaces/IInputOptions.interface';
 	providedIn: 'root',
 })
 export class InputService {
-	// public shapeOptions: any = {
-	// 	line: SvgShapeType.line,
-	// 	rectangle: SvgShapeType.rect,
-	// 	ellipse: SvgShapeType.ellipse,
-	// 	polygon: SvgShapeType.polygon,
-	// 	polyline: SvgShapeType.polyline,
-	// 	path: SvgShapeType.path,
-	// };
-
 	public inputOptions: IInputOptions = {
 		tool: InputToolOptions.draw,
 		shape: SvgShapeType.rect,

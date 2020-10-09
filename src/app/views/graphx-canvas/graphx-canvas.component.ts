@@ -221,7 +221,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
 		// left mouse button click
 		if (e.button === MouseButtons.left) {
-			console.log(this.inputSvc.inputOptions.tool);
 			switch (this.inputSvc.inputOptions.tool) {
 				case InputToolOptions.select: {
 					const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
@@ -246,6 +245,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 					break;
 				}
 				case InputToolOptions.pan: {
+					console.log(true);
 					this.panning = true;
 					break;
 				}
@@ -260,7 +260,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		// right mouse button click
 		if (e.button === MouseButtons.right) {
 			e.preventDefault(); // halt default context menu
-			this.drawSvc.handleRightClick(); // ends drawing process if
+			this.drawSvc.handleRightClick(); // ends drawing process
 		}
 
 		// start panning functionality

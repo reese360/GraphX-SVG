@@ -25,7 +25,6 @@ import { HuePickerComponent } from './views/advanced-menu/components/form-items/
 import { AlphaPickerComponent } from './views/advanced-menu/components/form-items/color/alpha-picker/alpha-picker.component';
 import { HexDisplayComponent } from './views/advanced-menu/components/form-items/color/hex-display/hex-display.component';
 import { FillOptionsComponent } from './views/advanced-menu/components/menu-items/fill-options/fill-options.component';
-import { MenuItemDisabledDirective } from './directives/menu-item-disabled.directive';
 import { InputSliderComponent } from './views/advanced-menu/components/form-items/input-slider/input-slider.component';
 import { InputNumberComponent } from './views/advanced-menu/components/form-items/input-number/input-number.component';
 import { LockComponent } from './common/components/lock/lock.component';
@@ -55,7 +54,6 @@ import { DropDownMenuItemComponent } from './common/components/drop-down-menu-it
 		AlphaPickerComponent,
 		HexDisplayComponent,
 		FillOptionsComponent,
-		MenuItemDisabledDirective,
 		InputSliderComponent,
 		InputNumberComponent,
 		LockComponent,

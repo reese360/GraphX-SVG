@@ -47,5 +47,5 @@ body {
 }
 
 .disabled-feat {
-	cursor: not-allowed !important;
+	cursor: no-drop !important;
 }
