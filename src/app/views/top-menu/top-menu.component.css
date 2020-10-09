@@ -1,0 +1,43 @@
+#top-menu {
+	font-size: 14px;
+    height: 30px;
+	min-width: 100vw;
+    background-color: var(--graphx-light-gray);
+	border-bottom: 1px solid var(--graphx-dark-gray);
+	padding-left: 20px;
+}
+
+#menu-items {
+	width: fit-content;
+	display: flex;
+	user-select: none;
+}
+
+#menu-info {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 30px;
+}
+
+.mouse-coordinate-display {
+    width: 100px;
+    height: 30px;
+    float: right;
+    text-align: center;
+    line-height: 30px;
+    font-size: 11px;
+    border-left: 1px solid var(--graphx-dark-gray);
+    user-select: none;
+}
+
+.zoom-level-display {
+    width: 50px;
+    height: 30px;
+    float: right;
+    text-align: center;
+    line-height: 30px;
+    font-size: 11px;
+    border-left: 1px solid var(--graphx-dark-gray);
+    user-select: none;
+}

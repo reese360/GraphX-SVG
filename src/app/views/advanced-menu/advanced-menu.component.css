@@ -1,14 +1,9 @@
-@import '../../../../node_modules/@fortawesome/fontawesome-free/css/all.css';
-
-/* :root {
-    --background-color: #e9e9e9;
-} */
-
 #advanced-menu {
     font-size: 16px;
     background-color: var(--graphx-light-gray);
     border: 1px solid var(--graphx-dark-gray);
-    border-top: none;
+	border-top: none;
+	border-right: none;
     height: calc(100vh - 30px);
     width: 35px;
 

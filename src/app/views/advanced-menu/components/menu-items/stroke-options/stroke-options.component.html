@@ -9,6 +9,7 @@
         <app-saturation-picker id="sat-picker" [label]="'Saturation'" [color]="strokeColor" (colorEvent)="handleColorChange($event)"></app-saturation-picker>
         <app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="strokeColor" [alpha]="strokeAlphaPercent" (colorEvent)="handleAlphaChange($event)"></app-alpha-picker>
         <app-hex-display id="hex-display" [label]="'Hex'" [color]="strokeColor" (colorEvent)="handleColorChange($event)"></app-hex-display>
-        <app-input-slider id="stroke-slider" [data]="strokeWidthData" [value]="strokeWidth" (updateEvent)="handleStrokeWidthChange($event)"></app-input-slider>
-    </div>
-</div>
+		<app-input-slider id="stroke-slider" [data]="strokeWidthData" [value]="strokeWidth" (updateEvent)="handleStrokeWidthChange($event)"></app-input-slider>
+	<app-input-number id="stroke-number" [data]="strokeWidthNumberData" [currentValue]="strokeWidth" (updateEvent)="handleStrokeWidthChange($event)"></app-input-number>
+
+	</div>

@@ -32,5 +32,9 @@
 }
 
 #stroke-slider {
-    grid-area: 6 / 1 / 7 / 4;
-}   
+    grid-area: 6 / 1 / 7 / 3;
+}
+
+#stroke-number {
+	grid-area: 6 / 3 / 7 / 4;
+}

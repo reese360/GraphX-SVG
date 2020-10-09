@@ -1,15 +1,25 @@
 <div class="mi-container">
-    <div appMenuItemTitle>
-        <i class="fas fa-border-all"></i> Grid Display
-    </div>
-    <div class="mi-content">
-        <app-option-selector id="showGrid" [data]="componentState.gridDisplayData" (updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
-        <app-option-selector id="snapGrid" [data]="componentState.snapGridData" (updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
-        <app-number-input id="gridWidth" [data]="componentState.gridWidthData" (updateEvent)="updateGridWidth($event)" #gridWidth></app-number-input>
-        <div appLockIcon id="width-height-lock" (click)="toggleLock(0)"><i [ngClass]="componentState.isDimsLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
-        <app-number-input id="gridHeight" [data]="componentState.gridHeightData" (updateEvent)="updateGridHeight($event)" #gridHeight></app-number-input>
-        <app-number-input id="gridOffsetX" [data]="componentState.gridOffsetXData" (updateEvent)="updateOffsetX($event)" #gridOffsetX></app-number-input>
-        <div appLockIcon id="offX-offY-lock" (click)="toggleLock(1)"><i [ngClass]="componentState.isOffsetLocked ? 'fas fa-lock' : 'fas fa-unlock'"></i></div>
-        <app-number-input id="gridOffsetY" [data]="componentState.gridOffsetYData" (updateEvent)="updateOffsetY($event)" #gridOffsetY></app-number-input>
-    </div>
+	<div appMenuItemTitle>
+		<i class="fas fa-border-all"></i> Grid Display
+	</div>
+	<div class="mi-content">
+		<app-option-selector id="showGrid" [data]="gridDisplayData" [currentValue]="gridDisplayOption"
+			(updateEvent)="toggleGridLines($event)" #showGrid></app-option-selector>
+		<app-option-selector id="snapGrid" [data]="gridSnapData" [currentValue]="gridSnapOption"
+			(updateEvent)="toggleSnapGrid($event)" #snapGrid></app-option-selector>
+		<div class="grid-dims">
+			<app-input-number [data]="gridWidthData" [currentValue]="gridWidthOption"
+				(updateEvent)="updateGridWidth($event)" #gridWidth></app-input-number>
+				<app-lock [isLocked]="isDimsLocked" (updateLockOption)="toggleLock('gridDims')"></app-lock>
+			<app-input-number [data]="gridHeightData" [currentValue]="gridWidthOption"
+				(updateEvent)="updateGridHeight($event)" #gridHeight></app-input-number>
+		</div>
+		<div class="offset-options">
+			<app-input-number [data]="gridOffsetXData" [currentValue]="gridOffsetXOption"
+				(updateEvent)="updateOffsetX($event)" #gridOffsetX></app-input-number>
+				<app-lock [isLocked]="isOffsetLocked" (updateLockOption)="toggleLock('offset')"></app-lock>
+			<app-input-number [data]="gridOffsetYData" [currentValue]="gridOffsetYOption"
+				(updateEvent)="updateOffsetY($event)" #gridOffsetY></app-input-number>
+		</div>
+	</div>
 </div>

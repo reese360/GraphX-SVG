@@ -3,7 +3,7 @@
     width: 0;
     position: fixed;
     z-index: 1;
-    top: 32px;
+    top: 31px;
     right: 37px;
     background-color: var(--graphx-light-gray);
     overflow-x: hidden;

@@ -1,0 +1,8 @@
+<div class="drop-down-menu">
+	<div class="drop-down-menu-button" (click)="handleDropDownClick()" #dropDownButton>{{ label }}</div>
+	<div class="drop-down-content" #dropDownContent>
+		<div *ngFor="let item of menuItems; index as i">
+			<app-drop-down-menu-item [label]="menuItems[i]" (menuItemClickEvent)="handleMenuItemClickEvent($event)"></app-drop-down-menu-item>
+		</div>
+	</div>
+</div>

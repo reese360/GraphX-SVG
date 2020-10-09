@@ -4,7 +4,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export interface IOptionSelectorInput {
 	label: string;
 	options: string[];
-	value: number; // ! remove this
 }
 
 @Component({
