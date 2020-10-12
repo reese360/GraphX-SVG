@@ -15,15 +15,16 @@ import { IInputOptions } from '../interfaces/IInputOptions.interface';
 export class InputService {
 	public inputOptions: IInputOptions = {
 		tool: InputToolOptions.draw,
-		shape: SvgShapeType.rect,
+		shape: SvgShapeType.path,
 	};
 
 	public objectStyleOptions: IStyleOptions = {
 		stroke: '#000000ff',
-		strokeWidth: 1,
+		strokeWidth: 5,
 		strokeDasharray: '0',
 		shapeRendering: SvgRenderOptions.auto,
 		strokeType: SvgStrokeType.solid,
+		strokeLinecap: 'round',
 		fill: '#ccccccff',
 		fillType: SvgFillType.solid,
 	};

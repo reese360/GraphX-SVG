@@ -80,6 +80,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 			fill: '#c4c2c2ff',
 			strokeWidth: 1,
 			strokeDasharray: '0',
+			strokeLinecap: 'round',
 			strokeType: SvgStrokeType.solid,
 			fillType: SvgFillType.solid,
 			shapeRendering: SvgRenderOptions.auto,
@@ -245,7 +246,6 @@ export class GraphxCanvasComponent implements AfterViewInit {
 					break;
 				}
 				case InputToolOptions.pan: {
-					console.log(true);
 					this.panning = true;
 					break;
 				}
@@ -273,6 +273,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 	// mouse move event handler
 	@HostListener('mousemove', ['$event']) onMouseMove(e): void {
+		e.preventDefault();
 		this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
 		switch (this.inputSvc.inputOptions.tool) {

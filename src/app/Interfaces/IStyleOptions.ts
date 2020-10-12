@@ -7,6 +7,7 @@ export interface IStyleOptions {
 	strokeWidth: number;
 	strokeDasharray: string;
 	strokeType: SvgStrokeType;
+	strokeLinecap: string;
 
 	fill: string;
 	fillType: SvgFillType;
