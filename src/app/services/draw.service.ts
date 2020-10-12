@@ -7,8 +7,14 @@ import { LineModel } from './../models/shapes/line.model';
 import { EllipseModel } from './../models/shapes/ellipse.model';
 import { PolylineModel } from '../models/shapes/polyline.model';
 import { PolygonModel } from '../models/shapes/polygon.model';
+import { PathModel } from '../models/shapes/path.model';
 import { SvgShapeType } from '../enums/SvgShapeType.enum';
 import { ObjectService } from './object.service';
+import { IShape } from '../Interfaces/IShape.interface';
+import { render } from 'ngx-color';
+import { SvgFillType } from '../enums/SvgFillType.enum';
+import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
+import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -21,6 +27,7 @@ export class DrawService {
 	anchorOutline: AnchorOutline;
 
 	drawing: boolean = false;
+	shape: IShape;
 
 	constructor(private renderer: Renderer2, private inputSvc: InputService, private objectSvc: ObjectService) {}
 
@@ -55,7 +62,16 @@ export class DrawService {
 						this.mouseAnchor = new AnchorPoint(this.renderer, point);
 						this.renderer.appendChild(this.drawElRef.nativeElement, this.mouseAnchor.element);
 						this.anchorOutline.points.push(point[0], point[1]);
+						this.mouseAnchor = new AnchorPoint(this.renderer, point);
 					}
+					break;
+				case SvgShapeType.path:
+					this.drawing = true;
+					this.renderer.appendChild(this.drawElRef.nativeElement, new AnchorPoint(this.renderer, point).element); // starting anchor point
+					this.anchorOutline = new AnchorOutline(this.renderer, this.inputSvc.inputOptions.shape, point);
+					this.renderer.appendChild(this.drawElRef.nativeElement, this.anchorOutline.element);
+					this.mouseAnchor = new AnchorPoint(this.renderer, point);
+					this.renderer.appendChild(this.drawElRef.nativeElement, this.mouseAnchor.element);
 					break;
 			}
 		});
@@ -78,6 +94,7 @@ export class DrawService {
 				case SvgShapeType.rect:
 				case SvgShapeType.line:
 				case SvgShapeType.ellipse:
+				case SvgShapeType.path:
 					if (this.drawing) {
 						this.drawing = false;
 						this.anchorOutline.endDraw(point).then((spec) =>
@@ -106,7 +123,7 @@ export class DrawService {
 
 	// render shape to canvas
 	async drawShape(spec: object): Promise<void> {
-		let shape: RectModel | LineModel | EllipseModel | PolylineModel;
+		let shape: RectModel | LineModel | EllipseModel | PolylineModel | PathModel;
 		switch (this.inputSvc.inputOptions.shape) {
 			case SvgShapeType.line:
 			case SvgShapeType.rect:
@@ -143,7 +160,16 @@ export class DrawService {
 							shape = new PolygonModel(this.renderer, this.inputSvc.objectStyleOptions);
 							break;
 					}
-					shape.drawTo(this.anchorOutline.points);
+					shape.drawTo(spec['points']);
+					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);
+					this.objectSvc.add(shape); // add shape to object service map
+					res();
+				});
+			case SvgShapeType.path:
+				return new Promise((res) => {
+					shape = new PathModel(this.renderer, this.inputSvc.objectStyleOptions);
+					// shape.startDraw([spec['points'].shift(), spec['points'].shift()]);
+					shape.drawTo(spec['points']);
 					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);
 					this.objectSvc.add(shape); // add shape to object service map
 					res();

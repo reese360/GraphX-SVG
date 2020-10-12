@@ -11,6 +11,9 @@
 		title="Pan">
 		<i class="fas fa-hand-paper"></i>
 	</div>
+	<div appMenuIcon class="disabled-feat">
+		<i class="fas fa-font"></i>
+	</div>
 	<div appMenuIcon></div>
 	<div appMenuIcon [ngClass]="selectedShape === 'line' ? 'selected-menu-item' : ''" (click)="handleShapeClick('line')"
 		title="Line">
@@ -34,11 +37,8 @@
 		title="Polyline">
 		<i class="fas fa-wave-square"></i>
 	</div>
-	<div appMenuIcon class="disabled-feat"
-		title="Free Draw">
+	<div appMenuIcon [ngClass]="selectedShape === 'path' ? 'selected-menu-item' : ''" (click)="handleShapeClick('path')"
+		title="Path">
 		<i class="fas fa-signature"></i>
-	</div>
-	<div appMenuIcon class="disabled-feat">
-		<i class="fas fa-font"></i>
 	</div>
 </div>

@@ -20,6 +20,7 @@ export class AnchorOutline {
 				break;
 			case SvgShapeType.polyline:
 			case SvgShapeType.polygon:
+			case SvgShapeType.path:
 				this.points.push(point[0], point[1]);
 				break;
 		}
@@ -61,6 +62,10 @@ export class AnchorOutline {
 				case SvgShapeType.polygon:
 					this.renderer.setAttribute(this.element, 'points', `${this.points.join(' ')} ${point[0]} ${point[1]}`);
 					break;
+				case SvgShapeType.path:
+					this.points.push(point[0], point[1]);
+					this.renderer.setAttribute(this.element, 'd', `M${this.points.join(' ')}`);
+					break;
 			}
 		});
 	}
@@ -82,10 +87,12 @@ export class AnchorOutline {
 					break;
 				case SvgShapeType.polygon:
 				case SvgShapeType.polyline:
+				case SvgShapeType.path:
 					specs({
 						shape: this.shape,
 						points: this.points,
-					})
+					});
+					break;
 			}
 		});
 	}

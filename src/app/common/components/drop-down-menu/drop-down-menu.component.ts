@@ -30,8 +30,7 @@ export class DropDownMenuComponent implements OnInit {
 		if (this.displayOpen) {
 			this.renderer.addClass(this.menuContentRef.nativeElement, 'drop-down-content-open');
 			this.renderer.addClass(this.menuButtonRef.nativeElement, 'drop-down-menu-button-active');
-		} else
-			this.closeContent();
+		} else this.closeContent();
 	}
 
 	// remove display classes on drop down menu
@@ -41,7 +40,5 @@ export class DropDownMenuComponent implements OnInit {
 	}
 
 	// handle output of menu item that is clicked
-	handleMenuItemClickEvent(e: string): void {
-		console.log(e);
-	}
+	handleMenuItemClickEvent(e: string): void {}
 }
