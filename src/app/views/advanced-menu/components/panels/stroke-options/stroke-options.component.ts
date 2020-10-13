@@ -5,6 +5,7 @@ import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
 import { IRangeSliderInput } from '../../form-items/input-slider/input-slider.component';
 import { IInputNumberInput } from '../../form-items/input-number/input-number.component';
+import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
 
 @Component({
 	selector: 'app-stroke-options',
@@ -18,6 +19,7 @@ export class StrokeOptionsComponent implements OnInit {
 	strokeAlpha: number;
 	strokeType: SvgStrokeType;
 	strokeWidth: number;
+	strokeLinecap: SvgStrokeLinecapType;
 	shapeRendering: SvgRenderOptions;
 
 	// input fields component data
@@ -45,12 +47,18 @@ export class StrokeOptionsComponent implements OnInit {
 		step: 1,
 	};
 
+	strokeLinecapData: IOptionSelectorInput = {
+		label: 'Stroke Linecap',
+		options: ['Butt', 'Round', 'Square'],
+	};
+
 	constructor(private inputSvc: InputService) {
 		// set input values
 		this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
 		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
 		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
 		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+		this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
 		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
 
 		// subscription to single selected object
@@ -59,6 +67,7 @@ export class StrokeOptionsComponent implements OnInit {
 			this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
 			this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
 			this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+			this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
 			this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
 		});
 	}
@@ -69,6 +78,7 @@ export class StrokeOptionsComponent implements OnInit {
 		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
 		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
 		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
+		this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
 		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
 	}
 
@@ -95,6 +105,11 @@ export class StrokeOptionsComponent implements OnInit {
 	handleAlphaChange(alpha): void {
 		this.strokeAlpha = alpha * 100;
 		this.inputSvc.updateObjectStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
+	}
+
+	handleStrokeLinecapChange(option: number): void {
+		this.strokeLinecap = option as SvgStrokeLinecapType;
+		this.inputSvc.updateObjectStyleOptions('strokeLinecap', option as SvgStrokeLinecapType);
 	}
 
 	// convert alpha hex value to decimal percentage

@@ -9,7 +9,7 @@ import { DrawService } from '../../services/draw.service';
 import { MouseButtons } from '../../enums/mouseButtons.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
 import { InputToolOptions } from 'src/app/enums/inputTools.enum';
-import { SvgStrokeLinecap } from 'src/app/enums/SvgStrokeLinecap.enum';
+import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
 
 @Component({
 	selector: 'app-graphx-canvas',
@@ -81,7 +81,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 			fill: '#c4c2c2ff',
 			strokeWidth: 1,
 			strokeDasharray: '0',
-			strokeLinecap: SvgStrokeLinecap.round,
+			strokeLinecap: SvgStrokeLinecapType.round,
 			strokeType: SvgStrokeType.solid,
 			fillType: SvgFillType.solid,
 			shapeRendering: SvgRenderOptions.auto,

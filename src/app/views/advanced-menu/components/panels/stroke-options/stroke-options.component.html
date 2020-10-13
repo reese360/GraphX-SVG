@@ -1,0 +1,24 @@
+<div class="mi-container">
+	<div appMenuItemTitle>
+		<i class="fas fa-paint-brush"></i> Stroke Options
+	</div>
+	<div class="mi-content">
+		<app-option-selector id="stroke-type" [data]="strokeTypeData" [currentValue]="strokeType"
+			(updateEvent)="handleStrokeTypeChange($event)"></app-option-selector>
+		<app-option-selector id="stroke-rendering" [data]="shapeRenderData" [currentValue]="shapeRendering"
+			(updateEvent)="handleShapeRenderChange($event)"></app-option-selector>
+		<app-hue-picker id="hue-picker" [label]="'Hue'" [color]="strokeColor" (colorEvent)="handleColorChange($event)">
+		</app-hue-picker>
+		<app-saturation-picker id="sat-picker" [label]="'Saturation'" [color]="strokeColor"
+			(colorEvent)="handleColorChange($event)"></app-saturation-picker>
+		<app-alpha-picker id="alpha-picker" [label]="'Alpha'" [color]="strokeColor" [alpha]="strokeAlphaPercent"
+			(colorEvent)="handleAlphaChange($event)"></app-alpha-picker>
+		<app-hex-display id="hex-display" [label]="'Hex'" [color]="strokeColor"
+			(colorEvent)="handleColorChange($event)"></app-hex-display>
+		<app-input-slider id="stroke-slider" [data]="strokeWidthData" [value]="strokeWidth"
+			(updateEvent)="handleStrokeWidthChange($event)"></app-input-slider>
+		<app-input-number id="stroke-number" [data]="strokeWidthNumberData" [currentValue]="strokeWidth"
+			(updateEvent)="handleStrokeWidthChange($event)"></app-input-number>
+		<app-option-selector id="stroke-linecap" [data]="strokeLinecapData" [currentValue]="strokeLinecap"
+			(updateEvent)="handleStrokeLinecapChange($event)"></app-option-selector>
+	</div>

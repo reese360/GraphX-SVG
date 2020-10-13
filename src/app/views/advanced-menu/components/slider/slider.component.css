@@ -4,7 +4,7 @@
     position: fixed;
     z-index: 1;
     top: 31px;
-    right: 37px;
+    right: 36px;
     background-color: var(--graphx-light-gray);
     overflow-x: hidden;
     transition: ease .5s;
@@ -21,7 +21,7 @@
     white-space: nowrap;
 }
 
-/* remove this after moving menu items */
+/* todo: remove this after moving menu items */
 .slider-title {
     font-size: 30px;
     color: gray;
