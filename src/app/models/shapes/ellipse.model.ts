@@ -133,6 +133,8 @@ export class EllipseModel extends ShapeModel implements IShape {
 				case 'shapeRendering':
 					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
 					break;
+				case 'strokeLinecap':
+					break;
 				default:
 					// convert style options to kabob casing for html styling
 					const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing

@@ -5,6 +5,7 @@ import { IStyleOptions } from '../../Interfaces/IStyleOptions';
 import { SvgFillType } from '../../enums/SvgFillType.enum';
 import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { faAllergies } from '@fortawesome/free-solid-svg-icons';
 
 export class PolygonModel extends ShapeModel implements IShape {
 	//#region variable declarations
@@ -130,6 +131,8 @@ export class PolygonModel extends ShapeModel implements IShape {
 					break;
 				case 'shapeRendering':
 					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					break;
+				case 'strokeLinecap':
 					break;
 				default:
 					// convert style options to kabob casing for html styling

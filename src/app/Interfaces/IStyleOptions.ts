@@ -1,14 +1,14 @@
 import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
 import { SvgFillType } from '../enums/SvgFillType.enum';
 import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
-import { SvgStrokeLinecap } from '../enums/SvgStrokeLinecap.enum';
+import { SvgStrokeLinecapType } from '../enums/SvgStrokeLinecap.enum';
 
 export interface IStyleOptions {
 	stroke: string;
 	strokeWidth: number;
 	strokeDasharray: string;
 	strokeType: SvgStrokeType;
-	strokeLinecap: SvgStrokeLinecap;
+	strokeLinecap: SvgStrokeLinecapType;
 
 	fill: string;
 	fillType: SvgFillType;

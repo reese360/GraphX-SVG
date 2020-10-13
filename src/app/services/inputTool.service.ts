@@ -8,7 +8,7 @@ import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
 import { SvgShapeType } from '../enums/SvgShapeType.enum';
 import { InputToolOptions } from '../enums/inputTools.enum';
 import { IInputOptions } from '../interfaces/IInputOptions.interface';
-import { SvgStrokeLinecap } from '../enums/SvgStrokeLinecap.enum';
+import { SvgStrokeLinecapType } from '../enums/SvgStrokeLinecap.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -25,7 +25,7 @@ export class InputService {
 		strokeDasharray: '0',
 		shapeRendering: SvgRenderOptions.auto,
 		strokeType: SvgStrokeType.solid,
-		strokeLinecap: SvgStrokeLinecap.round,
+		strokeLinecap: SvgStrokeLinecapType.round,
 		fill: '#ccccccff',
 		fillType: SvgFillType.solid,
 	};

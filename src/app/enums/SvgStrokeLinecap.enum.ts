@@ -1,5 +1,5 @@
-export enum SvgStrokeLinecap {
-	butt = 'butt',
-	round = 'round',
-	square = 'square',
+export enum SvgStrokeLinecapType {
+	butt = 0,
+	round = 1,
+	square = 2,
 }

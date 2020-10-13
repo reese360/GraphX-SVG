@@ -5,6 +5,7 @@ import { IStyleOptions } from '../../Interfaces/IStyleOptions';
 import { SvgFillType } from '../../enums/SvgFillType.enum';
 import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
 
 export class PolylineModel extends ShapeModel implements IShape {
 	//#region variable declarations
@@ -123,6 +124,9 @@ export class PolylineModel extends ShapeModel implements IShape {
 					break;
 				case 'shapeRendering':
 					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					break;
+				case 'strokeLinecap':
+					this.renderer.setAttribute(this.element, 'stroke-linecap', SvgStrokeLinecapType[this.style['strokeLinecap']]);
 					break;
 				default:
 					// convert style options to kabob casing for html styling

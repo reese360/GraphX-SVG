@@ -4,6 +4,7 @@ import { Renderer2 } from '@angular/core';
 import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
 import { IStyleOptions } from '../../Interfaces/IStyleOptions';
 import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
+import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
 
 export class LineModel extends ShapeModel implements IShape {
 	//#region variable declarations
@@ -135,6 +136,9 @@ export class LineModel extends ShapeModel implements IShape {
 					break;
 				case 'shapeRendering':
 					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					break;
+				case 'strokeLinecap':
+					this.renderer.setAttribute(this.element, 'stroke-linecap', SvgStrokeLinecapType[this.style['strokeLinecap']]);
 					break;
 				default:
 					// convert style options to kabob casing for html styling
