@@ -25,7 +25,7 @@ export class InputService {
 		strokeDasharray: '0',
 		shapeRendering: SvgRenderOptions.auto,
 		strokeType: SvgStrokeType.solid,
-		strokeLinecap: SvgStrokeLinecapType.round,
+		strokeLinecap: SvgStrokeLinecapType.butt,
 		fill: '#ccccccff',
 		fillType: SvgFillType.solid,
 	};
