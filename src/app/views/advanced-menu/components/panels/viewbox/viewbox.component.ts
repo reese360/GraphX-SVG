@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { InputService } from '../../../../../services/inputTool.service';
-import { InputNumberComponent, IInputNumberInput} from '../../form-items/input-number/input-number.component';
+import { InputNumberComponent, InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
 
-import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
+import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 
 @Component({
 	selector: 'app-viewbox',
@@ -20,29 +20,29 @@ export class ViewBoxComponent implements OnInit {
 	vbHeightOption: number;
 	viewBoxRatio: number;
 
-	vbDisplayData: IOptionSelectorInput = {
+	vbDisplayData: OptionSelectorComponentInput = {
 		label: 'ViewBox',
 		options: ['Off', 'On'],
 	};
 
-	vbOutlineData: IOptionSelectorInput = {
+	vbOutlineData: OptionSelectorComponentInput = {
 		label: 'ViewBox Outline',
 		options: ['Off', 'On'],
 	};
 
-	vbOpacityData: IOptionSelectorInput = {
+	vbOpacityData: OptionSelectorComponentInput = {
 		label: 'ViewBox Transparency',
 		options: ['0%', '50%', '100%'],
 	};
 
-	vbWidthData: IInputNumberInput = {
+	vbWidthData: InputNumberComponentInput = {
 		label: 'Width',
 		minimum: 1,
 		maximum: 9999,
 		step: 1,
 	};
 
-	vbHeightData: IInputNumberInput = {
+	vbHeightData: InputNumberComponentInput = {
 		label: 'Height',
 		minimum: 1,
 		maximum: 9999,

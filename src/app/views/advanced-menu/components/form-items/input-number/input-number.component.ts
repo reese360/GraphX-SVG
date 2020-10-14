@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-export interface IInputNumberInput {
+export type InputNumberComponentInput = {
 	label: string;
 	minimum: number;
 	maximum: number;
 	step: number;
 	showButtons?: boolean;
-}
+};
 
 @Component({
 	selector: 'app-input-number',
@@ -14,17 +14,13 @@ export interface IInputNumberInput {
 	styleUrls: ['./input-number.component.css'],
 })
 export class InputNumberComponent implements OnInit {
-	@Input() data: IInputNumberInput;
+	@Input() data: InputNumberComponentInput;
 	@Input() currentValue: number = 1;
 	@Output() updateEvent: EventEmitter<number> = new EventEmitter<number>();
 
-	showButtons: boolean = true;
-
 	constructor() {}
 
-	ngOnInit(): void {
-		this.showButtons = this.data.showButtons ? this.data.showButtons : this.showButtons; // get value if supplied
-	}
+	ngOnInit(): void {}
 
 	// handle user directly inputting number
 	updateInputValue(val: number): void {

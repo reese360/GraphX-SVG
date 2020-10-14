@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
-import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
+import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
+// import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
 import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
 import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
-import { IRangeSliderInput } from '../../form-items/input-slider/input-slider.component';
-import { IInputNumberInput } from '../../form-items/input-number/input-number.component';
+import { RangeSliderComponentInput } from '../../form-items/input-slider/input-slider.component';
+import { InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
 import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
 
 @Component({
@@ -23,31 +24,31 @@ export class StrokeOptionsComponent implements OnInit {
 	shapeRendering: SvgRenderOptions;
 
 	// input fields component data
-	strokeTypeData: IOptionSelectorInput = {
+	strokeTypeData: OptionSelectorComponentInput = {
 		label: 'Stroke Type',
 		options: ['Solid', 'None'],
 	};
 
-	shapeRenderData: IOptionSelectorInput = {
+	shapeRenderData: OptionSelectorComponentInput = {
 		label: 'Shape Rendering',
 		options: ['Auto', 'Speed', 'Contrast', 'Precision'],
 	};
 
-	strokeWidthData: IRangeSliderInput = {
+	strokeWidthData: RangeSliderComponentInput = {
 		label: 'Stroke Width',
 		maximum: 100,
 		minimum: 1,
 		step: 1,
 	};
 
-	strokeWidthNumberData: IInputNumberInput = {
+	strokeWidthNumberData: InputNumberComponentInput = {
 		label: 'Pixel Width',
 		maximum: 1000,
 		minimum: 1,
 		step: 1,
 	};
 
-	strokeLinecapData: IOptionSelectorInput = {
+	strokeLinecapData: OptionSelectorComponentInput = {
 		label: 'Stroke Linecap',
 		options: ['Butt', 'Round', 'Square'],
 	};

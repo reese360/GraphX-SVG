@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { InputNumberComponent, IInputNumberInput} from '../../form-items/input-number/input-number.component';
-import { IOptionSelectorInput, OptionSelectorComponent } from '../../form-items/option-selector/option-selector.component';
+import { InputNumberComponent, InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
+import { OptionSelectorComponent, OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 import { InputService } from 'src/app/services/inputTool.service';
 
 export interface GridlinesComponentState {
-	gridWidthData: IInputNumberInput;
-	gridHeightData: IInputNumberInput;
-	gridOffsetXData: IInputNumberInput;
-	gridOffsetYData: IInputNumberInput;
+	gridWidthData: InputNumberComponentInput;
+	gridHeightData: InputNumberComponentInput;
+	gridOffsetXData: InputNumberComponentInput;
+	gridOffsetYData: InputNumberComponentInput;
 	isDimsLocked: boolean;
 	dimsRatio: number;
 	isOffsetLocked: boolean;
@@ -37,37 +37,37 @@ export class GridlinesMenuItemComponent implements OnInit {
 	dimsRatio: number = null;
 	offsetRatio: number = null;
 
-	gridWidthData: IInputNumberInput = {
+	gridWidthData: InputNumberComponentInput = {
 		label: 'Grid Width',
 		minimum: 10,
 		maximum: 500,
 		step: 10,
 	};
-	gridHeightData: IInputNumberInput = {
+	gridHeightData: InputNumberComponentInput = {
 		label: 'Grid Height',
 		minimum: 10,
 		maximum: 500,
 		step: 10,
 	};
-	gridOffsetXData: IInputNumberInput = {
+	gridOffsetXData: InputNumberComponentInput = {
 		label: 'Grid X Offset',
 		minimum: -9999,
 		maximum: 9999,
 		step: 1,
 	};
-	gridOffsetYData: IInputNumberInput = {
+	gridOffsetYData: InputNumberComponentInput = {
 		label: 'Grid Y Offset',
 		minimum: -9999,
 		maximum: 9999,
 		step: 1,
 	};
 
-	gridDisplayData: IOptionSelectorInput = {
+	gridDisplayData: OptionSelectorComponentInput = {
 		label: 'Show Grid',
 		options: ['Off', 'On'],
 	};
 
-	gridSnapData: IOptionSelectorInput = {
+	gridSnapData: OptionSelectorComponentInput = {
 		label: 'Snap to Grid',
 		options: ['Off', 'On'],
 	};
