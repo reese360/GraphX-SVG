@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
 import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 // import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
-import { SvgRenderOption } from '../../../../../enums/SvgRenderOption.enum';
-import { SvgStrokeOption } from '../../../../../enums/SvgStrokeOption.enum';
+import { SvgRenderOption } from '../../../../../enums/svgRenderOption.enum';
+import { SvgStrokeOption } from '../../../../../enums/svgStrokeOption.enum';
 import { RangeSliderComponentInput } from '../../form-items/input-slider/input-slider.component';
 import { InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
-import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/svgStrokeLinecapOption.enum';
 
 @Component({
 	selector: 'app-stroke-options',
@@ -55,62 +55,62 @@ export class StrokeOptionsComponent implements OnInit {
 
 	constructor(private inputSvc: InputService) {
 		// set input values
-		this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
-		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
-		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
-		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
-		this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
-		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
+		this.strokeColor = this.inputSvc.styleOptions.stroke.substr(0, 7);
+		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.styleOptions.stroke.substr(7, 9));
+		this.strokeType = this.inputSvc.styleOptions.strokeType;
+		this.strokeWidth = this.inputSvc.styleOptions.strokeWidth;
+		this.strokeLinecap = this.inputSvc.styleOptions.strokeLinecap;
+		this.shapeRendering = this.inputSvc.styleOptions.shapeRendering;
 
 		// subscription to single selected object
 		inputSvc.currentObjectEvent.subscribe((obj) => {
-			this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
-			this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
-			this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
-			this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
-			this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
-			this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
+			this.strokeColor = this.inputSvc.styleOptions.stroke.substr(0, 7);
+			this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.styleOptions.stroke.substr(7, 9));
+			this.strokeType = this.inputSvc.styleOptions.strokeType;
+			this.strokeWidth = this.inputSvc.styleOptions.strokeWidth;
+			this.strokeLinecap = this.inputSvc.styleOptions.strokeLinecap;
+			this.shapeRendering = this.inputSvc.styleOptions.shapeRendering;
 		});
 	}
 
 	ngOnInit(): void {
 		// set input values
-		this.strokeColor = this.inputSvc.objectStyleOptions.stroke.substr(0, 7);
-		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.stroke.substr(7, 9));
-		this.strokeType = this.inputSvc.objectStyleOptions.strokeType;
-		this.strokeWidth = this.inputSvc.objectStyleOptions.strokeWidth;
-		this.strokeLinecap = this.inputSvc.objectStyleOptions.strokeLinecap;
-		this.shapeRendering = this.inputSvc.objectStyleOptions.shapeRendering;
+		this.strokeColor = this.inputSvc.styleOptions.stroke.substr(0, 7);
+		this.strokeAlpha = this.alphaHexToDecimal(this.inputSvc.styleOptions.stroke.substr(7, 9));
+		this.strokeType = this.inputSvc.styleOptions.strokeType;
+		this.strokeWidth = this.inputSvc.styleOptions.strokeWidth;
+		this.strokeLinecap = this.inputSvc.styleOptions.strokeLinecap;
+		this.shapeRendering = this.inputSvc.styleOptions.shapeRendering;
 	}
 
 	handleStrokeTypeChange(type): void {
 		this.strokeType = type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none;
-		this.inputSvc.updateObjectStyleOptions('strokeType', type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none);
+		this.inputSvc.updateStyleOptions('strokeType', type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none);
 	}
 
 	handleColorChange(color): void {
 		this.strokeColor = color;
-		this.inputSvc.updateObjectStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
+		this.inputSvc.updateStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
 	}
 
 	handleStrokeWidthChange(width: number): void {
 		this.strokeWidth = width;
-		this.inputSvc.updateObjectStyleOptions('strokeWidth', width);
+		this.inputSvc.updateStyleOptions('strokeWidth', width);
 	}
 
 	handleShapeRenderChange(option): void {
 		this.shapeRendering = option as SvgRenderOption;
-		this.inputSvc.updateObjectStyleOptions('shapeRendering', option as SvgRenderOption);
+		this.inputSvc.updateStyleOptions('shapeRendering', option as SvgRenderOption);
 	}
 
 	handleAlphaChange(alpha): void {
 		this.strokeAlpha = alpha * 100;
-		this.inputSvc.updateObjectStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
+		this.inputSvc.updateStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
 	}
 
 	handleStrokeLinecapChange(option: number): void {
 		this.strokeLinecap = option as SvgStrokeLinecapOption;
-		this.inputSvc.updateObjectStyleOptions('strokeLinecap', option as SvgStrokeLinecapOption);
+		this.inputSvc.updateStyleOptions('strokeLinecap', option as SvgStrokeLinecapOption);
 	}
 
 	// convert alpha hex value to decimal percentage

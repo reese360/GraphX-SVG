@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IShape } from '../Interfaces/IShape.interface';
-import { IStyleOptions } from '../interfaces/IStyleOptions';
-import { SvgRenderOption } from '../enums/SvgRenderOption.enum';
-import { SvgFillOption } from '../enums/SvgFillOption.enum';
-import { SvgStrokeOption } from '../enums/SvgStrokeOption.enum';
-import { SvgShapeOption } from '../enums/SvgShapeOption.enum';
+import { StyleSetting } from '../common/types/styleSetting.type';
+import { SvgRenderOption } from '../enums/svgRenderOption.enum';
+import { SvgFillOption } from '../enums/svgFillOption.enum';
+import { SvgStrokeOption } from '../enums/svgStrokeOption.enum';
+import { SvgShapeOption } from '../enums/svgShapeOption.enum';
 import { InputToolOption } from '../enums/inputToolOption.enum';
-import { IInputOptions } from '../interfaces/IInputOptions.interface';
-import { SvgStrokeLinecapOption } from '../enums/SvgStrokeLinecapOption.enum';
+import { InputSetting } from '../common/types/inputSetting.type';
+import { SvgStrokeLinecapOption } from '../enums/svgStrokeLinecapOption.enum';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InputService {
-	public inputOptions: IInputOptions = {
+	public inputOptions: InputSetting = {
 		tool: InputToolOption.draw,
 		shape: SvgShapeOption.path,
 	};
 
-	public objectStyleOptions: IStyleOptions = {
+	public styleOptions: StyleSetting = {
 		stroke: '#000000ff',
 		strokeWidth: 5,
 		strokeDasharray: '0',
@@ -56,8 +56,8 @@ export class InputService {
 	public zoomLevel: number;
 	public zoomLevelEvent: Subject<number> = new Subject<number>();
 
-	public inputOptionsEvent: Subject<IInputOptions> = new Subject<IInputOptions>();
-	public objectStyleOptionsEvent: Subject<object> = new Subject<object>();
+	public inputOptionsEvent: Subject<InputSetting> = new Subject<InputSetting>();
+	public styleOptionsEvent: Subject<object> = new Subject<object>();
 	public canvasViewBoxOptionEvent: Subject<object> = new Subject<object>();
 	public gridOptionsEvent: Subject<object> = new Subject<object>();
 
@@ -65,19 +65,19 @@ export class InputService {
 		return new Promise(() => {
 			this.currentObject = obj;
 			if (this.currentObject) {
-				this.objectStyleOptions = Object.assign({}, obj.style);
+				this.styleOptions = Object.assign({}, obj.style);
 				this.currentObjectEvent.next(this.currentObject);
 			}
 		});
 	}
 
 	// update and broadcast shape style options update
-	async updateObjectStyleOptions(style: string, value: string | number | boolean | number[]): Promise<void> {
+	async updateStyleOptions(style: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
-			if (style in this.objectStyleOptions) {
+			if (style in this.styleOptions) {
 				// check for valid key
-				this.objectStyleOptions[style] = value;
-				this.objectStyleOptionsEvent.next(this.objectStyleOptions);
+				this.styleOptions[style] = value;
+				this.styleOptionsEvent.next(this.styleOptions);
 			}
 		});
 	}

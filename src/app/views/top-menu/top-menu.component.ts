@@ -1,6 +1,6 @@
 import { Component, Renderer2, ElementRef, AfterViewInit, ViewChild } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
-import { SvgShapeOption } from '../../enums/SvgShapeOption.enum';
+import { SvgShapeOption } from '../../enums/svgShapeOption.enum';
 
 @Component({
 	selector: 'app-top-menu',

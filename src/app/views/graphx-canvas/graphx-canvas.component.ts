@@ -2,14 +2,14 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListene
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
-import { SvgFillOption } from '../../enums/SvgFillOption.enum';
-import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
+import { SvgRenderOption } from '../../enums/svgRenderOption.enum';
+import { SvgFillOption } from '../../enums/svgFillOption.enum';
+import { SvgStrokeOption } from '../../enums/svgStrokeOption.enum';
 import { DrawService } from '../../services/draw.service';
 import { MouseButtonOption } from '../../enums/mouseButtonOption.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
 import { InputToolOption } from 'src/app/enums/inputToolOption.enum';
-import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/svgStrokeLinecapOption.enum';
 
 @Component({
 	selector: 'app-graphx-canvas',

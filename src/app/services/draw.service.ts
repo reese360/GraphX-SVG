@@ -8,13 +8,13 @@ import { EllipseModel } from './../models/shapes/ellipse.model';
 import { PolylineModel } from '../models/shapes/polyline.model';
 import { PolygonModel } from '../models/shapes/polygon.model';
 import { PathModel } from '../models/shapes/path.model';
-import { SvgShapeOption } from '../enums/SvgShapeOption.enum';
+import { SvgShapeOption } from '../enums/svgShapeOption.enum';
 import { ObjectService } from './object.service';
 import { IShape } from '../Interfaces/IShape.interface';
 import { render } from 'ngx-color';
-import { SvgFillOption } from '../enums/SvgFillOption.enum';
-import { SvgRenderOption } from '../enums/SvgRenderOption.enum';
-import { SvgStrokeOption } from '../enums/SvgStrokeOption.enum';
+import { SvgFillOption } from '../enums/svgFillOption.enum';
+import { SvgRenderOption } from '../enums/svgRenderOption.enum';
+import { SvgStrokeOption } from '../enums/svgStrokeOption.enum';
 
 @Injectable({
 	providedIn: 'root',
@@ -133,13 +133,13 @@ export class DrawService {
 				return new Promise((res) => {
 					switch (spec['shape']) {
 						case SvgShapeOption.rect:
-							shape = new RectModel(this.renderer, this.inputSvc.objectStyleOptions);
+							shape = new RectModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 						case SvgShapeOption.line:
-							shape = new LineModel(this.renderer, this.inputSvc.objectStyleOptions);
+							shape = new LineModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 						case SvgShapeOption.ellipse:
-							shape = new EllipseModel(this.renderer, this.inputSvc.objectStyleOptions);
+							shape = new EllipseModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 					}
 					shape.startDraw([spec['x1'], spec['y1']]);
@@ -154,10 +154,10 @@ export class DrawService {
 				return new Promise((res) => {
 					switch (spec['shape']) {
 						case SvgShapeOption.polyline:
-							shape = new PolylineModel(this.renderer, this.inputSvc.objectStyleOptions);
+							shape = new PolylineModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 						case SvgShapeOption.polygon:
-							shape = new PolygonModel(this.renderer, this.inputSvc.objectStyleOptions);
+							shape = new PolygonModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 					}
 					shape.drawTo(spec['points']);
@@ -167,7 +167,7 @@ export class DrawService {
 				});
 			case SvgShapeOption.path:
 				return new Promise((res) => {
-					shape = new PathModel(this.renderer, this.inputSvc.objectStyleOptions);
+					shape = new PathModel(this.renderer, this.inputSvc.styleOptions);
 					// shape.startDraw([spec['points'].shift(), spec['points'].shift()]);
 					shape.drawTo(spec['points']);
 					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);

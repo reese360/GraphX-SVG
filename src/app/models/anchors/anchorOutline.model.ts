@@ -1,5 +1,5 @@
 import { Renderer2 } from '@angular/core';
-import { SvgShapeOption } from '../../enums/SvgShapeOption.enum';
+import { SvgShapeOption } from '../../enums/svgShapeOption.enum';
 
 export class AnchorOutline {
 	element: HTMLElement;

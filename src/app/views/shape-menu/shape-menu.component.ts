@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
-import { SvgShapeOption } from 'src/app/enums/SvgShapeOption.enum';
+import { SvgShapeOption } from 'src/app/enums/svgShapeOption.enum';
 import { InputToolOption } from 'src/app/enums/inputToolOption.enum';
 
 @Component({

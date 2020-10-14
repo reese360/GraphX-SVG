@@ -1,16 +1,16 @@
 import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
-import { IStyleOptions } from '../../Interfaces/IStyleOptions';
-import { SvgFillOption } from '../../enums/SvgFillOption.enum';
-import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
-import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
+import { StyleSetting } from '../../common/types/styleSetting.type';
+import { SvgFillOption } from '../../enums/svgFillOption.enum';
+import { SvgRenderOption } from '../../enums/svgRenderOption.enum';
+import { SvgStrokeOption } from '../../enums/svgStrokeOption.enum';
 import { faAllergies } from '@fortawesome/free-solid-svg-icons';
 
 export class PolygonModel extends ShapeModel implements IShape {
 	//#region variable declarations
 	element: HTMLElement;
-	style: IStyleOptions;
+	style: StyleSetting;
 	renderer: Renderer2;
 	points: number[] = [];
 	currentEndPoint: [number, number];
@@ -32,7 +32,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 	//#endregion
 
-	constructor(renderer: Renderer2, style: IStyleOptions) {
+	constructor(renderer: Renderer2, style: StyleSetting) {
 		super(renderer, 'polygon');
 		this.setStyle(style);
 	}
@@ -105,7 +105,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	// update style attributes
-	async setStyle(styling: IStyleOptions): Promise<void> {
+	async setStyle(styling: StyleSetting): Promise<void> {
 		this.style = Object.assign({}, styling); // create shallow copy of styling
 		Object.keys(this.style).forEach((style) => {
 			switch (style as string) {

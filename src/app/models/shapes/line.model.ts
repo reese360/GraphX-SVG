@@ -1,15 +1,15 @@
 import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
-import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
-import { IStyleOptions } from '../../Interfaces/IStyleOptions';
-import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
-import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
+import { SvgStrokeOption } from '../../enums/svgStrokeOption.enum';
+import { StyleSetting } from '../../common/types/styleSetting.type';
+import { SvgRenderOption } from '../../enums/svgRenderOption.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/svgStrokeLinecapOption.enum';
 
 export class LineModel extends ShapeModel implements IShape {
 	//#region variable declarations
 	element: HTMLElement;
-	style: IStyleOptions;
+	style: StyleSetting;
 	renderer: Renderer2;
 	x1: number;
 	y1: number;
@@ -36,7 +36,7 @@ export class LineModel extends ShapeModel implements IShape {
 	}
 	//#endregion
 
-	constructor(renderer: Renderer2, style: IStyleOptions) {
+	constructor(renderer: Renderer2, style: StyleSetting) {
 		super(renderer, 'line');
 		this.setStyle(style);
 	}
@@ -118,7 +118,7 @@ export class LineModel extends ShapeModel implements IShape {
 	}
 
 	// update style attributes
-	async setStyle(styling: IStyleOptions): Promise<void> {
+	async setStyle(styling: StyleSetting): Promise<void> {
 		this.style = Object.assign({}, styling); // create shallow copy of styling
 		Object.keys(this.style).forEach((style) => {
 			switch (style as string) {

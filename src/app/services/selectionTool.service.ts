@@ -21,7 +21,7 @@ export class SelectionService {
 	async initSubscriptions(): Promise<void> {
 		return new Promise((result) => {
 			// subscribe to any shape style changes
-			this.inputSvc.objectStyleOptionsEvent.subscribe((style) => {
+			this.inputSvc.styleOptionsEvent.subscribe((style) => {
 				Object.keys(this.selectedShapes).forEach((shape) => {
 					this.selectedShapes[shape].setStyle(style);
 				});
