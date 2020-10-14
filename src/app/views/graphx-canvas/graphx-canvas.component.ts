@@ -2,14 +2,14 @@ import { Component, AfterViewInit, ViewChild, ElementRef, Renderer2, HostListene
 import { InputService } from 'src/app/services/inputTool.service';
 import { SelectionService } from 'src/app/services/selectionTool.service';
 import { ObjectService } from 'src/app/services/object.service';
-import { SvgRenderOptions } from './../../enums/SvgRenderOptions.enum';
-import { SvgFillType } from './../../enums/SvgFillType.enum';
-import { SvgStrokeType } from './../../enums/SvgStrokeType.enum';
+import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
+import { SvgFillOption } from '../../enums/SvgFillOption.enum';
+import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
 import { DrawService } from '../../services/draw.service';
-import { MouseButtons } from '../../enums/mouseButtons.enum';
+import { MouseButtonOption } from '../../enums/mouseButtonOption.enum';
 import { RectModel } from 'src/app/models/shapes/rect.model';
-import { InputToolOptions } from 'src/app/enums/inputTools.enum';
-import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
+import { InputToolOption } from 'src/app/enums/inputToolOption.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
 
 @Component({
 	selector: 'app-graphx-canvas',
@@ -81,10 +81,10 @@ export class GraphxCanvasComponent implements AfterViewInit {
 			fill: '#c4c2c2ff',
 			strokeWidth: 1,
 			strokeDasharray: '0',
-			strokeLinecap: SvgStrokeLinecapType.round,
-			strokeType: SvgStrokeType.solid,
-			fillType: SvgFillType.solid,
-			shapeRendering: SvgRenderOptions.auto,
+			strokeLinecap: SvgStrokeLinecapOption.round,
+			strokeType: SvgStrokeOption.solid,
+			fillType: SvgFillOption.solid,
+			shapeRendering: SvgRenderOption.auto,
 		});
 		testSvg1.startDraw([400, 300]);
 		testSvg1.drawTo([600, 500]);
@@ -222,9 +222,9 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// mouse down event handler
 	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
 		// left mouse button click
-		if (e.button === MouseButtons.left) {
+		if (e.button === MouseButtonOption.left) {
 			switch (this.inputSvc.inputOptions.tool) {
-				case InputToolOptions.select: {
+				case InputToolOption.select: {
 					const hitObjectId = e.target.getAttribute('graphx-id'); // get id of hit object
 					const hitObjectRef = this.objectSvc.fetch(hitObjectId);
 					if (hitObjectRef) {
@@ -242,11 +242,11 @@ export class GraphxCanvasComponent implements AfterViewInit {
 					}
 					break;
 				}
-				case InputToolOptions.draw: {
+				case InputToolOption.draw: {
 					this.drawSvc.startDraw(this.calculateUserPosition(e.clientX, e.clientY));
 					break;
 				}
-				case InputToolOptions.pan: {
+				case InputToolOption.pan: {
 					this.panning = true;
 					break;
 				}
@@ -254,12 +254,12 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		}
 
 		// mousewheel button click
-		if (e.button === MouseButtons.middle) {
+		if (e.button === MouseButtonOption.middle) {
 			this.panning = true;
 		}
 
 		// right mouse button click
-		if (e.button === MouseButtons.right) {
+		if (e.button === MouseButtonOption.right) {
 			e.preventDefault(); // halt default context menu
 			this.drawSvc.handleRightClick(); // ends drawing process
 		}
@@ -278,7 +278,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
 		switch (this.inputSvc.inputOptions.tool) {
-			case InputToolOptions.select: {
+			case InputToolOption.select: {
 				if (this.selectionSvc.canDragSelected) {
 					this.selectionSvc.dragTo(this.calculateUserPosition(e.clientX, e.clientY));
 					break;
@@ -289,7 +289,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 				}
 				break;
 			}
-			case InputToolOptions.draw: {
+			case InputToolOption.draw: {
 				this.drawSvc.drawTo(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
@@ -307,7 +307,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	// mouse up event handler
 	@HostListener('mouseup', ['$event']) onMouseUp(e): void {
 		switch (this.inputSvc.inputOptions.tool) {
-			case InputToolOptions.select: {
+			case InputToolOption.select: {
 				if (this.selectionSvc.dragging)
 					// end drag process
 					this.selectionSvc.endDrag();
@@ -318,8 +318,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 				break;
 			}
-			case InputToolOptions.draw: {
-				if (e.button === MouseButtons.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
+			case InputToolOption.draw: {
+				if (e.button === MouseButtonOption.left) this.drawSvc.endDraw(this.calculateUserPosition(e.clientX, e.clientY));
 				break;
 			}
 		}

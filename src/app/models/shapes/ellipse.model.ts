@@ -2,9 +2,9 @@ import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
 import { IStyleOptions } from '../../Interfaces/IStyleOptions';
-import { SvgFillType } from '../../enums/SvgFillType.enum';
-import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
-import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { SvgFillOption } from '../../enums/SvgFillOption.enum';
+import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
+import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
 
 export class EllipseModel extends ShapeModel implements IShape {
 	//#region variable declarations
@@ -112,26 +112,26 @@ export class EllipseModel extends ShapeModel implements IShape {
 			switch (style as string) {
 				case 'fillType':
 					switch (this.style.fillType) {
-						case SvgFillType.solid:
+						case SvgFillOption.solid:
 							this.renderer.setAttribute(this.element, 'fill', this.style['fill']);
 							break;
-						case SvgFillType.none:
+						case SvgFillOption.none:
 							this.renderer.setAttribute(this.element, 'fill', 'none');
 							break;
 					}
 					break;
 				case 'strokeType':
 					switch (this.style.strokeType) {
-						case SvgStrokeType.solid:
+						case SvgStrokeOption.solid:
 							this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
 							break;
-						case SvgStrokeType.none:
+						case SvgStrokeOption.none:
 							this.renderer.setAttribute(this.element, 'stroke', 'none');
 							break;
 					}
 					break;
 				case 'shapeRendering':
-					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOption[this.style['shapeRendering']]);
 					break;
 				case 'strokeLinecap':
 					break;

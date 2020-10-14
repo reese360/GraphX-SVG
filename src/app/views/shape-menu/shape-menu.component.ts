@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
-import { SvgShapeType } from 'src/app/enums/SvgShapeType.enum';
-import { InputToolOptions } from 'src/app/enums/inputTools.enum';
+import { SvgShapeOption } from 'src/app/enums/SvgShapeOption.enum';
+import { InputToolOption } from 'src/app/enums/inputToolOption.enum';
 
 @Component({
 	selector: 'app-shape-menu',
@@ -10,7 +10,7 @@ import { InputToolOptions } from 'src/app/enums/inputTools.enum';
 })
 export class ShapeMenuComponent implements OnInit {
 	selectedTool: number;
-	selectedShape: SvgShapeType;
+	selectedShape: SvgShapeOption;
 
 	constructor(public inputSvc: InputService) {
 		this.selectedTool = this.inputSvc.inputOptions.tool;
@@ -25,7 +25,7 @@ export class ShapeMenuComponent implements OnInit {
 	}
 
 	handleShapeClick(clickValue: string): void {
-		this.selectedShape = SvgShapeType[clickValue];
-		this.inputSvc.updateInputShapeOptions(SvgShapeType[clickValue]);
+		this.selectedShape = SvgShapeOption[clickValue];
+		this.inputSvc.updateInputShapeOptions(SvgShapeOption[clickValue]);
 	}
 }

@@ -1,8 +1,7 @@
-import { SvgShapeType } from '../enums/SvgShapeType.enum';
-import { InputToolOptions } from '../enums/inputTools.enum';
-
+import { SvgShapeOption } from '../enums/SvgShapeOption.enum';
+import { InputToolOption } from '../enums/inputToolOption.enum';
 
 export interface IInputOptions {
-	tool: InputToolOptions;
-	shape: SvgShapeType;
+	tool: InputToolOption;
+	shape: SvgShapeOption;
 }

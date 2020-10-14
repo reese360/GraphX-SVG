@@ -1,10 +1,10 @@
 import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
-import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { SvgStrokeOption } from '../../enums/SvgStrokeOption.enum';
 import { IStyleOptions } from '../../Interfaces/IStyleOptions';
-import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
-import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
+import { SvgRenderOption } from '../../enums/SvgRenderOption.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
 
 export class LineModel extends ShapeModel implements IShape {
 	//#region variable declarations
@@ -126,19 +126,19 @@ export class LineModel extends ShapeModel implements IShape {
 					break;
 				case 'strokeType':
 					switch (this.style.strokeType) {
-						case SvgStrokeType.solid:
+						case SvgStrokeOption.solid:
 							this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
 							break;
-						case SvgStrokeType.none:
+						case SvgStrokeOption.none:
 							this.renderer.setAttribute(this.element, 'stroke', 'none');
 							break;
 					}
 					break;
 				case 'shapeRendering':
-					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOption[this.style['shapeRendering']]);
 					break;
 				case 'strokeLinecap':
-					this.renderer.setAttribute(this.element, 'stroke-linecap', SvgStrokeLinecapType[this.style['strokeLinecap']]);
+					this.renderer.setAttribute(this.element, 'stroke-linecap', SvgStrokeLinecapOption[this.style['strokeLinecap']]);
 					break;
 				default:
 					// convert style options to kabob casing for html styling

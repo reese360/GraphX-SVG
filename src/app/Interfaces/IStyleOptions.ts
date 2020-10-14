@@ -1,17 +1,17 @@
-import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
-import { SvgFillType } from '../enums/SvgFillType.enum';
-import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
-import { SvgStrokeLinecapType } from '../enums/SvgStrokeLinecap.enum';
+import { SvgStrokeOption } from '../enums/SvgStrokeOption.enum';
+import { SvgFillOption } from '../enums/SvgFillOption.enum';
+import { SvgRenderOption } from '../enums/SvgRenderOption.enum';
+import { SvgStrokeLinecapOption } from '../enums/SvgStrokeLinecapOption.enum';
 
 export interface IStyleOptions {
 	stroke: string;
 	strokeWidth: number;
 	strokeDasharray: string;
-	strokeType: SvgStrokeType;
-	strokeLinecap: SvgStrokeLinecapType;
+	strokeType: SvgStrokeOption;
+	strokeLinecap: SvgStrokeLinecapOption;
 
 	fill: string;
-	fillType: SvgFillType;
+	fillType: SvgFillOption;
 
-	shapeRendering: SvgRenderOptions;
+	shapeRendering: SvgRenderOption;
 }

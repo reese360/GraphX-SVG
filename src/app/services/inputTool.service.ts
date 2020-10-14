@@ -2,32 +2,32 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IShape } from '../Interfaces/IShape.interface';
 import { IStyleOptions } from '../interfaces/IStyleOptions';
-import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
-import { SvgFillType } from '../enums/SvgFillType.enum';
-import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
-import { SvgShapeType } from '../enums/SvgShapeType.enum';
-import { InputToolOptions } from '../enums/inputTools.enum';
+import { SvgRenderOption } from '../enums/SvgRenderOption.enum';
+import { SvgFillOption } from '../enums/SvgFillOption.enum';
+import { SvgStrokeOption } from '../enums/SvgStrokeOption.enum';
+import { SvgShapeOption } from '../enums/SvgShapeOption.enum';
+import { InputToolOption } from '../enums/inputToolOption.enum';
 import { IInputOptions } from '../interfaces/IInputOptions.interface';
-import { SvgStrokeLinecapType } from '../enums/SvgStrokeLinecap.enum';
+import { SvgStrokeLinecapOption } from '../enums/SvgStrokeLinecapOption.enum';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InputService {
 	public inputOptions: IInputOptions = {
-		tool: InputToolOptions.draw,
-		shape: SvgShapeType.path,
+		tool: InputToolOption.draw,
+		shape: SvgShapeOption.path,
 	};
 
 	public objectStyleOptions: IStyleOptions = {
 		stroke: '#000000ff',
 		strokeWidth: 5,
 		strokeDasharray: '0',
-		shapeRendering: SvgRenderOptions.auto,
-		strokeType: SvgStrokeType.solid,
-		strokeLinecap: SvgStrokeLinecapType.butt,
+		shapeRendering: SvgRenderOption.auto,
+		strokeType: SvgStrokeOption.solid,
+		strokeLinecap: SvgStrokeLinecapOption.butt,
 		fill: '#ccccccff',
-		fillType: SvgFillType.solid,
+		fillType: SvgFillOption.solid,
 	};
 
 	public canvasViewBoxOptions: object = {
@@ -116,14 +116,14 @@ export class InputService {
 		});
 	}
 
-	async updateInputToolOptions(tool: InputToolOptions): Promise<void> {
+	async updateInputToolOptions(tool: InputToolOption): Promise<void> {
 		return new Promise(() => {
 			this.inputOptions.tool = tool;
 			this.inputOptionsEvent.next(this.inputOptions);
 		});
 	}
 
-	async updateInputShapeOptions(shape: SvgShapeType): Promise<void> {
+	async updateInputShapeOptions(shape: SvgShapeOption): Promise<void> {
 		return new Promise(() => {
 			this.inputOptions.shape = shape;
 			this.inputOptionsEvent.next(this.inputOptions);

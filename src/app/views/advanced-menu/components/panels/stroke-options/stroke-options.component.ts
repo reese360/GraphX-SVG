@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { InputService } from 'src/app/services/inputTool.service';
 import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 // import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
-import { SvgRenderOptions } from '../../../../../enums/SvgRenderOptions.enum';
-import { SvgStrokeType } from '../../../../../enums/SvgStrokeType.enum';
+import { SvgRenderOption } from '../../../../../enums/SvgRenderOption.enum';
+import { SvgStrokeOption } from '../../../../../enums/SvgStrokeOption.enum';
 import { RangeSliderComponentInput } from '../../form-items/input-slider/input-slider.component';
 import { InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
-import { SvgStrokeLinecapType } from 'src/app/enums/SvgStrokeLinecap.enum';
+import { SvgStrokeLinecapOption } from 'src/app/enums/SvgStrokeLinecapOption.enum';
 
 @Component({
 	selector: 'app-stroke-options',
@@ -18,10 +18,10 @@ export class StrokeOptionsComponent implements OnInit {
 	// component variables
 	strokeColor: string;
 	strokeAlpha: number;
-	strokeType: SvgStrokeType;
+	strokeType: SvgStrokeOption;
 	strokeWidth: number;
-	strokeLinecap: SvgStrokeLinecapType;
-	shapeRendering: SvgRenderOptions;
+	strokeLinecap: SvgStrokeLinecapOption;
+	shapeRendering: SvgRenderOption;
 
 	// input fields component data
 	strokeTypeData: OptionSelectorComponentInput = {
@@ -84,8 +84,8 @@ export class StrokeOptionsComponent implements OnInit {
 	}
 
 	handleStrokeTypeChange(type): void {
-		this.strokeType = type === 0 ? SvgStrokeType.solid : SvgStrokeType.none;
-		this.inputSvc.updateObjectStyleOptions('strokeType', type === 0 ? SvgStrokeType.solid : SvgStrokeType.none);
+		this.strokeType = type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none;
+		this.inputSvc.updateObjectStyleOptions('strokeType', type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none);
 	}
 
 	handleColorChange(color): void {
@@ -99,8 +99,8 @@ export class StrokeOptionsComponent implements OnInit {
 	}
 
 	handleShapeRenderChange(option): void {
-		this.shapeRendering = option as SvgRenderOptions;
-		this.inputSvc.updateObjectStyleOptions('shapeRendering', option as SvgRenderOptions);
+		this.shapeRendering = option as SvgRenderOption;
+		this.inputSvc.updateObjectStyleOptions('shapeRendering', option as SvgRenderOption);
 	}
 
 	handleAlphaChange(alpha): void {
@@ -109,8 +109,8 @@ export class StrokeOptionsComponent implements OnInit {
 	}
 
 	handleStrokeLinecapChange(option: number): void {
-		this.strokeLinecap = option as SvgStrokeLinecapType;
-		this.inputSvc.updateObjectStyleOptions('strokeLinecap', option as SvgStrokeLinecapType);
+		this.strokeLinecap = option as SvgStrokeLinecapOption;
+		this.inputSvc.updateObjectStyleOptions('strokeLinecap', option as SvgStrokeLinecapOption);
 	}
 
 	// convert alpha hex value to decimal percentage

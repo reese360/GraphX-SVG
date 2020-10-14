@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SvgFillType } from 'src/app/enums/SvgFillType.enum';
+import { SvgFillOption } from 'src/app/enums/SvgFillOption.enum';
 import { InputService } from 'src/app/services/inputTool.service';
 import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 
@@ -12,7 +12,7 @@ export class FillOptionsComponent implements OnInit {
 	// component variables
 	fillColor: string;
 	fillAlpha: number;
-	fillType: SvgFillType;
+	fillType: SvgFillOption;
 
 	// input field component data
 	fillTypeData: OptionSelectorComponentInput = {
@@ -53,8 +53,8 @@ export class FillOptionsComponent implements OnInit {
 
 	// update fill type
 	handleFillTypeChange(option: number): void {
-		this.fillType = option as SvgFillType;
-		this.inputSvc.updateObjectStyleOptions('fillType', option as SvgFillType);
+		this.fillType = option as SvgFillOption;
+		this.inputSvc.updateObjectStyleOptions('fillType', option as SvgFillOption);
 	}
 
 	// convert alpha hex value to decimal percentage
