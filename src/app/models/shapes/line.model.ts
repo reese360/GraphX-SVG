@@ -70,7 +70,7 @@ export class LineModel extends ShapeModel implements IShape {
 	}
 
 	// begin drag process
-	async startDrag(pos): Promise<void> {
+	async startDrag(pos: number[]): Promise<void> {
 		return new Promise(() => {
 			this.dragging = true;
 			this.offsetX = pos[0];
@@ -79,7 +79,7 @@ export class LineModel extends ShapeModel implements IShape {
 	}
 
 	// drag object to position
-	async dragTo(pos): Promise<void> {
+	async dragTo(pos: number[]): Promise<void> {
 		return new Promise(() => {
 			this.dragX = pos[0] - this.offsetX;
 			this.dragY = pos[1] - this.offsetY;
@@ -120,14 +120,14 @@ export class LineModel extends ShapeModel implements IShape {
 	// update style attributes
 	async setStyle(styling: StyleSetting): Promise<void> {
 		this.style = Object.assign({}, styling); // create shallow copy of styling
-		Object.keys(this.style).forEach((style) => {
-			switch (style as string) {
+		for (const [key, value] of Object.entries(this.style)) {
+			switch (key as string) {
 				case 'fillType':
 					break;
 				case 'strokeType':
 					switch (this.style.strokeType) {
 						case SvgStrokeOption.solid:
-							this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
+							this.renderer.setAttribute(this.element, 'stroke', this.style.stroke);
 							break;
 						case SvgStrokeOption.none:
 							this.renderer.setAttribute(this.element, 'stroke', 'none');
@@ -135,17 +135,17 @@ export class LineModel extends ShapeModel implements IShape {
 					}
 					break;
 				case 'shapeRendering':
-					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOption[this.style['shapeRendering']]);
+					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOption[this.style.shapeRendering]);
 					break;
 				case 'strokeLinecap':
 					this.renderer.setAttribute(this.element, 'stroke-linecap', SvgStrokeLinecapOption[this.style['strokeLinecap']]);
 					break;
 				default:
 					// convert style options to kabob casing for html styling
-					const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
-					this.renderer.setAttribute(this.element, kabobStyle, this.style[style]);
+					const kabobStyle: string = key.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
+					this.renderer.setAttribute(this.element, kabobStyle, value as string);
 					break;
 			}
-		});
+		}
 	}
 }

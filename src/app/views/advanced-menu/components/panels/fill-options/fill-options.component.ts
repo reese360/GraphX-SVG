@@ -41,12 +41,12 @@ export class FillOptionsComponent implements OnInit {
 		this.fillType = this.inputSvc.styleOptions.fillType;
 	}
 
-	handleColorChange(color): void {
+	handleColorChange(color: string): void {
 		this.fillColor = color;
 		this.inputSvc.updateStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
 	}
 
-	handleAlphaChange(alpha): void {
+	handleAlphaChange(alpha: number): void {
 		this.fillAlpha = alpha * 100;
 		this.inputSvc.updateStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
 	}

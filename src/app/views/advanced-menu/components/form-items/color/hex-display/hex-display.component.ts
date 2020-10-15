@@ -13,7 +13,7 @@ export class HexDisplayComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	updateInputValue(value): void {
+	updateInputValue(value: string): void {
 		if (value === this.color) return; // return if no change
 		// check if value is 3 or 6 digit VALID hex color
 		if (/^#[0-9A-F]{6}$/i.test(value)) {

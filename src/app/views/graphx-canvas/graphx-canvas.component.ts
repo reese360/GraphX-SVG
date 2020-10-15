@@ -97,8 +97,8 @@ export class GraphxCanvasComponent implements AfterViewInit {
 		return new Promise(() => {
 			// gridline options subscription
 			this.inputSvc.gridOptionsEvent.subscribe((options) => {
-				this.gridDisplay = options['display'];
-				this.gridSnap = options['snap'];
+				this.gridDisplay = options['display'] === 0 ? true : false;
+				this.gridSnap = options['snap'] === 0 ? true : false;
 				this.gridDimensions = options['dimensions'];
 				this.gridOffset = options['offset'];
 
@@ -108,7 +108,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 
 			// viewbox options subscription
 			this.inputSvc.canvasViewBoxOptionEvent.subscribe((options) => {
-				this.canvasDisplay = options['display'];
+				this.canvasDisplay = options['display'] === 0 ? true : false;
 				this.canvasWidth = options['dimensions'][0];
 				this.canvasHeight = options['dimensions'][1];
 				this.canvasOutline = options['outline'].toString();
@@ -186,7 +186,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	// mousewheel listener for zoom controls
-	@HostListener('mousewheel', ['$event']) scroll(e): void {
+	@HostListener('mousewheel', ['$event']) scroll(e: { preventDefault: () => void; ctrlKey: any; deltaY: number }): void {
 		e.preventDefault();
 		// ctrl key must be pressed
 		if (e.ctrlKey) {
@@ -200,7 +200,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	// window resize event handler
-	@HostListener('window:resize', ['$event']) resize(e): void {
+	@HostListener('window:resize', ['$event']) resize(e: any): void {
 		// set svg viewBox dimensions
 		const containerSize = this.scgContainerElementRef.nativeElement.getBoundingClientRect();
 		this.svgWidth = containerSize.width;
@@ -220,7 +220,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	// mouse down event handler
-	@HostListener('mousedown', ['$event']) onMouseDown(e): void {
+	@HostListener('mousedown', ['$event']) onMouseDown(e: { button: MouseButtonOption; target: { getAttribute: (arg0: string) => any }; ctrlKey: any; clientX: number; clientY: number; preventDefault: () => void }): void {
 		// left mouse button click
 		if (e.button === MouseButtonOption.left) {
 			switch (this.inputSvc.inputOptions.tool) {
@@ -273,7 +273,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	// mouse move event handler
-	@HostListener('mousemove', ['$event']) onMouseMove(e): void {
+	@HostListener('mousemove', ['$event']) onMouseMove(e: { preventDefault: () => void; clientX: number; clientY: number }): void {
 		e.preventDefault();
 		this.updateMouseCoords([e.clientX - this.offsetX + this.svgMinX, e.clientY - this.offsetY + this.svgMinY]);
 
@@ -305,7 +305,7 @@ export class GraphxCanvasComponent implements AfterViewInit {
 	}
 
 	// mouse up event handler
-	@HostListener('mouseup', ['$event']) onMouseUp(e): void {
+	@HostListener('mouseup', ['$event']) onMouseUp(e: { button: MouseButtonOption; clientX: number; clientY: number }): void {
 		switch (this.inputSvc.inputOptions.tool) {
 			case InputToolOption.select: {
 				if (this.selectionSvc.dragging)

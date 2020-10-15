@@ -1,6 +1,6 @@
 import { ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { InputService } from './inputTool.service';
-import { AnchorOutline } from '../models/anchors/AnchorOutline.model';
+import { AnchorOutline, AnchorDrawingProperties } from '../models/anchors/AnchorOutline.model';
 import { AnchorPoint } from '../models/anchors/anchorPoint.model';
 import { RectModel } from './../models/shapes/rect.model';
 import { LineModel } from './../models/shapes/line.model';
@@ -97,8 +97,8 @@ export class DrawService {
 				case SvgShapeOption.path:
 					if (this.drawing) {
 						this.drawing = false;
-						this.anchorOutline.endDraw(point).then((spec) =>
-							this.drawShape(spec).then(() => {
+						this.anchorOutline.endDraw(point).then((props) =>
+							this.drawShape(props).then(() => {
 								this.resetAnchors();
 							})
 						);
@@ -110,8 +110,8 @@ export class DrawService {
 						/* poly shapes only end when user right clicks -- continue drawing */
 					} else {
 						// this is reached only when user right clicks
-						this.anchorOutline.endDraw(point).then((spec) => {
-							this.drawShape(spec).then(() => {
+						this.anchorOutline.endDraw(point).then((props) => {
+							this.drawShape(props).then(() => {
 								this.resetAnchors();
 							});
 						});
@@ -122,16 +122,16 @@ export class DrawService {
 	}
 
 	// render shape to canvas
-	async drawShape(spec: object): Promise<void> {
+	async drawShape(props: AnchorDrawingProperties): Promise<void> {
 		let shape: RectModel | LineModel | EllipseModel | PolylineModel | PathModel;
 		switch (this.inputSvc.inputOptions.shape) {
 			case SvgShapeOption.line:
 			case SvgShapeOption.rect:
 			case SvgShapeOption.ellipse:
 				// request: make minimum distance a custom setting
-				if (Math.sqrt((spec['x1'] - spec['x2']) ** 2 + (spec['y1'] - spec['y2']) ** 2) <= 10) return;
+				if (Math.sqrt((props.x1 - props.x2) ** 2 + (props.y1 - props.y2) ** 2) <= 10) return;
 				return new Promise((res) => {
-					switch (spec['shape']) {
+					switch (props.shape) {
 						case SvgShapeOption.rect:
 							shape = new RectModel(this.renderer, this.inputSvc.styleOptions);
 							break;
@@ -142,8 +142,8 @@ export class DrawService {
 							shape = new EllipseModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 					}
-					shape.startDraw([spec['x1'], spec['y1']]);
-					shape.drawTo([spec['x2'], spec['y2']]);
+					shape.startDraw([props.x1, props.y1]);
+					shape.drawTo([props.x2, props.y2]);
 					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);
 					this.objectSvc.add(shape); // add shape to object service map
 					res();
@@ -152,7 +152,7 @@ export class DrawService {
 			case SvgShapeOption.polygon:
 				// request: validity check for small poly shapes
 				return new Promise((res) => {
-					switch (spec['shape']) {
+					switch (props.shape) {
 						case SvgShapeOption.polyline:
 							shape = new PolylineModel(this.renderer, this.inputSvc.styleOptions);
 							break;
@@ -160,7 +160,7 @@ export class DrawService {
 							shape = new PolygonModel(this.renderer, this.inputSvc.styleOptions);
 							break;
 					}
-					shape.drawTo(spec['points']);
+					shape.drawTo(props.points);
 					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);
 					this.objectSvc.add(shape); // add shape to object service map
 					res();
@@ -169,7 +169,7 @@ export class DrawService {
 				return new Promise((res) => {
 					shape = new PathModel(this.renderer, this.inputSvc.styleOptions);
 					// shape.startDraw([spec['points'].shift(), spec['points'].shift()]);
-					shape.drawTo(spec['points']);
+					shape.drawTo(props.points);
 					this.renderer.appendChild(this.canvasElRef.nativeElement, shape.element);
 					this.objectSvc.add(shape); // add shape to object service map
 					res();

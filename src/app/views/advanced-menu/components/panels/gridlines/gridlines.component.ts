@@ -99,7 +99,7 @@ export class GridlinesMenuItemComponent implements OnInit {
 	}
 
 	// enable/ disable displaying gridlines
-	toggleGridLines(option): void {
+	toggleGridLines(option: number): void {
 		// disable grid snapping if grid display is off
 		if (option === 0 && this.gridSnapOption === 1) {
 			this.gridSnapOption = 0;

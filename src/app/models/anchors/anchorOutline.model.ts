@@ -1,6 +1,15 @@
 import { Renderer2 } from '@angular/core';
 import { SvgShapeOption } from '../../enums/svgShapeOption.enum';
 
+export type AnchorDrawingProperties = {
+	shape: SvgShapeOption;
+	x1: number | null;
+	y1: number | null;
+	x2: number | null;
+	y2: number | null;
+	points: number[] | null;
+};
+
 export class AnchorOutline {
 	element: HTMLElement;
 	x: number;
@@ -71,29 +80,36 @@ export class AnchorOutline {
 	}
 
 	// get anchor outline specifications
-	async endDraw(pos: [number, number]): Promise<object> {
-		return new Promise((specs) => {
+	async endDraw(pos: [number, number]): Promise<AnchorDrawingProperties> {
+		return new Promise((props) => {
+			let shapeProps: AnchorDrawingProperties = null;
 			switch (this.shape) {
 				case SvgShapeOption.rect:
 				case SvgShapeOption.line:
 				case SvgShapeOption.ellipse:
-					specs({
+					shapeProps = {
 						shape: this.shape,
 						x1: this.origin[0],
 						y1: this.origin[1],
 						x2: pos[0],
 						y2: pos[1],
-					});
+						points: null,
+					};
 					break;
 				case SvgShapeOption.polygon:
 				case SvgShapeOption.polyline:
 				case SvgShapeOption.path:
-					specs({
+					shapeProps = {
 						shape: this.shape,
 						points: this.points,
-					});
+						x1: null,
+						y1: null,
+						x2: null,
+						y2: null,
+					};
 					break;
 			}
+			props(shapeProps);
 		});
 	}
 }

@@ -15,7 +15,7 @@ export class HuePickerComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	updateHue(colorEvent): void {
+	updateHue(colorEvent: { color: { hex: string } }): void {
 		this.color = colorEvent.color.hex;
 		this.colorEvent.emit(this.color);
 	}

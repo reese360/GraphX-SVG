@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { InputService } from '../../../../../services/inputTool.service';
 import { InputNumberComponent, InputNumberComponentInput } from '../../form-items/input-number/input-number.component';
-
+import { CanvasViewBoxSettings } from '../../../../../common/types/canvasViewBoxSettings.type';
 import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 
 @Component({

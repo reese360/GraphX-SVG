@@ -15,7 +15,7 @@ export class SaturationPickerComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	updateSaturation(colorEvent): void {
+	updateSaturation(colorEvent: { color: { hex: string } }): void {
 		this.color = colorEvent.color.hex;
 		this.colorEvent.emit(this.color);
 	}

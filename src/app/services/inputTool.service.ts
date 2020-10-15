@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IShape } from '../Interfaces/IShape.interface';
 import { StyleSetting } from '../common/types/styleSetting.type';
+import { CanvasViewBoxSettings } from '../common/types/canvasViewBoxSettings.type';
+import { GridSettings } from '../common/types/gridSettings.type';
 import { SvgRenderOption } from '../enums/svgRenderOption.enum';
 import { SvgFillOption } from '../enums/svgFillOption.enum';
 import { SvgStrokeOption } from '../enums/svgStrokeOption.enum';
@@ -30,7 +32,7 @@ export class InputService {
 		fillType: SvgFillOption.solid,
 	};
 
-	public canvasViewBoxOptions: object = {
+	public canvasViewBoxOptions: CanvasViewBoxSettings = {
 		dimensions: [1000, 800],
 		display: 1,
 		outline: 1,
@@ -38,7 +40,7 @@ export class InputService {
 		vbRatio: null,
 	};
 
-	public gridOptions: object = {
+	public gridOptions: GridSettings = {
 		snap: 0,
 		display: 0,
 		dimensions: [100, 100],
@@ -57,9 +59,9 @@ export class InputService {
 	public zoomLevelEvent: Subject<number> = new Subject<number>();
 
 	public inputOptionsEvent: Subject<InputSetting> = new Subject<InputSetting>();
-	public styleOptionsEvent: Subject<object> = new Subject<object>();
-	public canvasViewBoxOptionEvent: Subject<object> = new Subject<object>();
-	public gridOptionsEvent: Subject<object> = new Subject<object>();
+	public styleOptionsEvent: Subject<StyleSetting> = new Subject<StyleSetting>();
+	public canvasViewBoxOptionEvent: Subject<CanvasViewBoxSettings> = new Subject<CanvasViewBoxSettings>();
+	public gridOptionsEvent: Subject<GridSettings> = new Subject<GridSettings>();
 
 	async updateCurrentObject(obj: IShape): Promise<void> {
 		return new Promise(() => {
@@ -76,17 +78,16 @@ export class InputService {
 		return new Promise(() => {
 			if (style in this.styleOptions) {
 				// check for valid key
-				this.styleOptions[style] = value;
+				(this.styleOptions as any)[style] = value;
 				this.styleOptionsEvent.next(this.styleOptions);
 			}
 		});
 	}
-
 	// update and broadcast canvas options update
 	async updateCanvasViewBoxOptions(option: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
 			if (option in this.canvasViewBoxOptions) {
-				this.canvasViewBoxOptions[option] = value;
+				(this.canvasViewBoxOptions as any)[option] = value;
 				this.canvasViewBoxOptionEvent.next(this.canvasViewBoxOptions);
 			}
 		});
@@ -96,7 +97,7 @@ export class InputService {
 	async updateGridOptions(option: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
 			if (option in this.gridOptions) {
-				this.gridOptions[option] = value;
+				(this.gridOptions as any)[option] = value;
 				this.gridOptionsEvent.next(this.gridOptions);
 			}
 		});

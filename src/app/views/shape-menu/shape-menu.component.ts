@@ -25,7 +25,7 @@ export class ShapeMenuComponent implements OnInit {
 	}
 
 	handleShapeClick(clickValue: string): void {
-		this.selectedShape = SvgShapeOption[clickValue];
-		this.inputSvc.updateInputShapeOptions(SvgShapeOption[clickValue]);
+		this.selectedShape = SvgShapeOption[clickValue as keyof typeof SvgShapeOption];
+		this.inputSvc.updateInputShapeOptions(SvgShapeOption[clickValue as keyof typeof SvgShapeOption]);
 	}
 }

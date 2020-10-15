@@ -83,12 +83,12 @@ export class StrokeOptionsComponent implements OnInit {
 		this.shapeRendering = this.inputSvc.styleOptions.shapeRendering;
 	}
 
-	handleStrokeTypeChange(type): void {
+	handleStrokeTypeChange(type: number): void {
 		this.strokeType = type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none;
 		this.inputSvc.updateStyleOptions('strokeType', type === 0 ? SvgStrokeOption.solid : SvgStrokeOption.none);
 	}
 
-	handleColorChange(color): void {
+	handleColorChange(color: string): void {
 		this.strokeColor = color;
 		this.inputSvc.updateStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
 	}
@@ -98,12 +98,12 @@ export class StrokeOptionsComponent implements OnInit {
 		this.inputSvc.updateStyleOptions('strokeWidth', width);
 	}
 
-	handleShapeRenderChange(option): void {
+	handleShapeRenderChange(option: SvgRenderOption): void {
 		this.shapeRendering = option as SvgRenderOption;
 		this.inputSvc.updateStyleOptions('shapeRendering', option as SvgRenderOption);
 	}
 
-	handleAlphaChange(alpha): void {
+	handleAlphaChange(alpha: number): void {
 		this.strokeAlpha = alpha * 100;
 		this.inputSvc.updateStyleOptions('stroke', `${this.strokeColor}${this.strokeAlphaHex}`);
 	}
