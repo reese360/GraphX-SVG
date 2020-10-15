@@ -32,6 +32,8 @@ import { ShapeMenuComponent } from './views/shape-menu/shape-menu.component';
 import { MenuIconDirective } from './directives/menu-icon.directive';
 import { DropDownMenuComponent } from './common/components/drop-down-menu/drop-down-menu.component';
 import { DropDownMenuItemComponent } from './common/components/drop-down-menu-item/drop-down-menu-item.component';
+import { ObjectsComponent } from './views/advanced-menu/components/panels/objects/objects.component';
+import { EditableTableCellComponent } from './common/form-items/table/editable-table-cell/editable-table-cell.component';
 
 @NgModule({
 	declarations: [
@@ -61,6 +63,8 @@ import { DropDownMenuItemComponent } from './common/components/drop-down-menu-it
 		MenuIconDirective,
 		DropDownMenuComponent,
 		DropDownMenuItemComponent,
+		ObjectsComponent,
+		EditableTableCellComponent,
 	],
 	imports: [BrowserModule, FontAwesomeModule, ColorSketchModule, BrowserAnimationsModule, ColorHueModule, ColorAlphaModule],
 	providers: [],

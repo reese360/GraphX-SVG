@@ -1,0 +1,48 @@
+.mi-content {
+	padding-top: 40px;
+	display: grid;
+	grid-column-gap: 5px;
+	grid-template-columns: repeat(3, 1fr);
+	grid-row-gap: 20px;
+	min-width: 280px;
+	max-width: 280px;
+}
+
+#objects-tbl {
+	border-collapse: collapse;
+	width: 280px;
+	font-size: 12px;
+}
+
+#objects-tbl td, #objects-tbl th {
+	border: 1px solid var(--graphx-dark-gray);
+}
+
+#objects-tbl th {
+	text-align: left;
+	color: #fff;
+	background-color: var(--graphx-dark-gray);
+	font-weight: normal;
+	padding: 5px;
+}
+
+#objects-tbl td {
+	
+}
+
+#obejcts-tbl td .object-id-cell {
+	cursor: pointer;
+}
+
+
+/* input[type="text"] {
+	width: 95%;
+	outline: none;
+	border: none;
+	font-family: var(--graphx-font-ubuntu);
+	font-size: 12px;
+} */
+
+.object-type {
+	user-select: text;
+}
