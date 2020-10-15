@@ -17,7 +17,7 @@ export class AlphaPickerComponent implements OnInit {
 
 	ngOnInit(): void {}
 
-	updateAlpha(colorEvent): void {
+	updateAlpha(colorEvent: { color: { rgb: { a: string } } }): void {
 		this.colorEvent.emit(colorEvent.color.rgb.a);
 	}
 }

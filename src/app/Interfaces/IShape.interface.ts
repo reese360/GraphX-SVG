@@ -1,11 +1,11 @@
 import { Renderer2 } from '@angular/core';
-import { IStyleOptions } from './IStyleOptions';
+import { StyleSetting } from '../common/types/styleSetting.type';
 
 export interface IShape {
 	shape: string;
 	id: string;
 	element: HTMLElement;
-	style: IStyleOptions;
+	style: StyleSetting;
 	renderer: Renderer2;
 	origin: number[];
 	dragging: boolean;

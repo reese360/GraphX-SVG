@@ -1,4 +1,4 @@
-export enum SvgShapeType {
+export enum SvgShapeOption {
 	line = 'line',
 	rect = 'rect',
 	ellipse = 'ellipse',

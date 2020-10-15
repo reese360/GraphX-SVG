@@ -1,0 +1,31 @@
+<div class="mi-container">
+	<div appMenuItemTitle contenteditable>
+		<i class="fas fa-cubes"></i> Objects
+	</div>
+	<div class="mi-content">
+		<table id="objects-tbl">
+			<th id="object-id-col">GraphX ID</th>
+			<th id="object-type-col">SVG Type</th>
+			<!-- <tr *ngFor="let obj of objectMap| keyvalue">
+				<td>
+					<div>
+						<input class="test" type="text" [attr.value]="obj.value.id" maxlength="50" spellcheck="false"
+							autocomplete="false" (blur)="handleDataUpdate($event.target.value)"
+							(keyup.enter)="handleDataUpdate($event.target.value)">
+					</div>
+				</td>
+				<td class="object-type">
+					{{ objectSvc.objects[obj.key].shape }}
+				</td>
+			</tr> -->
+			<tr>
+				<td>
+				<app-editable-table-cell></app-editable-table-cell>
+				</td>
+			<td>
+				migobutt
+			</td></tr>
+			
+		</table>
+	</div>
+</div>

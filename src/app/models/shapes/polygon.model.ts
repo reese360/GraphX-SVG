@@ -1,15 +1,16 @@
 import { IShape } from '../../Interfaces/IShape.interface';
 import { ShapeModel } from '../shape.model';
 import { Renderer2 } from '@angular/core';
-import { IStyleOptions } from '../../Interfaces/IStyleOptions';
-import { SvgFillType } from '../../enums/SvgFillType.enum';
-import { SvgRenderOptions } from '../../enums/SvgRenderOptions.enum';
-import { SvgStrokeType } from '../../enums/SvgStrokeType.enum';
+import { StyleSetting } from '../../common/types/styleSetting.type';
+import { SvgFillOption } from '../../enums/svgFillOption.enum';
+import { SvgRenderOption } from '../../enums/svgRenderOption.enum';
+import { SvgStrokeOption } from '../../enums/svgStrokeOption.enum';
+import { faAllergies } from '@fortawesome/free-solid-svg-icons';
 
 export class PolygonModel extends ShapeModel implements IShape {
 	//#region variable declarations
 	element: HTMLElement;
-	style: IStyleOptions;
+	style: StyleSetting;
 	renderer: Renderer2;
 	points: number[] = [];
 	currentEndPoint: [number, number];
@@ -31,7 +32,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 	//#endregion
 
-	constructor(renderer: Renderer2, style: IStyleOptions) {
+	constructor(renderer: Renderer2, style: StyleSetting) {
 		super(renderer, 'polygon');
 		this.setStyle(style);
 	}
@@ -68,7 +69,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	// begin drag process
-	async startDrag(pos): Promise<void> {
+	async startDrag(pos: number[]): Promise<void> {
 		return new Promise(() => {
 			this.dragging = true;
 			this.offsetX = pos[0];
@@ -77,7 +78,7 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	// drag object to position
-	async dragTo(pos): Promise<void> {
+	async dragTo(pos: number[]): Promise<void> {
 		return new Promise(() => {
 			this.dragX = pos[0] - this.offsetX;
 			this.dragY = pos[1] - this.offsetY;
@@ -104,39 +105,41 @@ export class PolygonModel extends ShapeModel implements IShape {
 	}
 
 	// update style attributes
-	async setStyle(styling: IStyleOptions): Promise<void> {
+	async setStyle(styling: StyleSetting): Promise<void> {
 		this.style = Object.assign({}, styling); // create shallow copy of styling
-		Object.keys(this.style).forEach((style) => {
-			switch (style as string) {
+		for (const [key, value] of Object.entries(this.style)) {
+			switch (key as string) {
 				case 'fillType':
 					switch (this.style.fillType) {
-						case SvgFillType.solid:
-							this.renderer.setAttribute(this.element, 'fill', this.style['fill']);
+						case SvgFillOption.solid:
+							this.renderer.setAttribute(this.element, 'fill', this.style.fill);
 							break;
-						case SvgFillType.none:
+						case SvgFillOption.none:
 							this.renderer.setAttribute(this.element, 'fill', 'none');
 							break;
 					}
 					break;
 				case 'strokeType':
 					switch (this.style.strokeType) {
-						case SvgStrokeType.solid:
-							this.renderer.setAttribute(this.element, 'stroke', this.style['stroke']);
+						case SvgStrokeOption.solid:
+							this.renderer.setAttribute(this.element, 'stroke', this.style.stroke);
 							break;
-						case SvgStrokeType.none:
+						case SvgStrokeOption.none:
 							this.renderer.setAttribute(this.element, 'stroke', 'none');
 							break;
 					}
 					break;
 				case 'shapeRendering':
-					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOptions[this.style['shapeRendering']]);
+					this.renderer.setAttribute(this.element, 'shape-rendering', SvgRenderOption[this.style.shapeRendering]);
+					break;
+				case 'strokeLinecap':
 					break;
 				default:
 					// convert style options to kabob casing for html styling
-					const kabobStyle: string = style.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
-					this.renderer.setAttribute(this.element, kabobStyle, this.style[style]);
+					const kabobStyle: string = key.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase(); // html kabob casing
+					this.renderer.setAttribute(this.element, kabobStyle, value as string);
 					break;
 			}
-		});
+		}
 	}
 }

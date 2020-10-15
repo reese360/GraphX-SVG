@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 
-export interface IRangeSliderInput {
+export type RangeSliderComponentInput = {
 	label: string;
 	minimum: number;
 	maximum: number;
 	step: number;
-}
+};
 
 @Component({
 	selector: 'app-input-slider',
@@ -16,7 +16,7 @@ export class InputSliderComponent {
 	@ViewChild('slider') sliderElRef: ElementRef; // reference to element for gradient control
 
 	@Input() value: number;
-	@Input() data: IRangeSliderInput;
+	@Input() data: RangeSliderComponentInput;
 	@Output() updateEvent: EventEmitter<number> = new EventEmitter<number>();
 
 	get sliderGradient(): object {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SvgFillType } from 'src/app/enums/SvgFillType.enum';
+import { SvgFillOption } from 'src/app/enums/svgFillOption.enum';
 import { InputService } from 'src/app/services/inputTool.service';
-import { IOptionSelectorInput } from '../../form-items/option-selector/option-selector.component';
+import { OptionSelectorComponentInput } from '../../form-items/option-selector/option-selector.component';
 
 @Component({
 	selector: 'app-fill-options',
@@ -12,19 +12,19 @@ export class FillOptionsComponent implements OnInit {
 	// component variables
 	fillColor: string;
 	fillAlpha: number;
-	fillType: SvgFillType;
+	fillType: SvgFillOption;
 
 	// input field component data
-	fillTypeData: IOptionSelectorInput = {
+	fillTypeData: OptionSelectorComponentInput = {
 		label: 'Fill Type',
 		options: ['Solid', 'None'],
 	};
 
 	constructor(private inputSvc: InputService) {
 		// set input values
-		this.fillColor = this.inputSvc.objectStyleOptions.fill.substr(0, 7);
-		this.fillAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.fill.substr(7, 9));
-		this.fillType = this.inputSvc.objectStyleOptions.fillType;
+		this.fillColor = this.inputSvc.styleOptions.fill.substr(0, 7);
+		this.fillAlpha = this.alphaHexToDecimal(this.inputSvc.styleOptions.fill.substr(7, 9));
+		this.fillType = this.inputSvc.styleOptions.fillType;
 
 		// subscription to a single selected object
 		inputSvc.currentObjectEvent.subscribe((obj) => {
@@ -36,25 +36,25 @@ export class FillOptionsComponent implements OnInit {
 
 	ngOnInit(): void {
 		// set input values
-		this.fillColor = this.inputSvc.objectStyleOptions.fill.substr(0, 7);
-		this.fillAlpha = this.alphaHexToDecimal(this.inputSvc.objectStyleOptions.fill.substr(7, 9));
-		this.fillType = this.inputSvc.objectStyleOptions.fillType;
+		this.fillColor = this.inputSvc.styleOptions.fill.substr(0, 7);
+		this.fillAlpha = this.alphaHexToDecimal(this.inputSvc.styleOptions.fill.substr(7, 9));
+		this.fillType = this.inputSvc.styleOptions.fillType;
 	}
 
-	handleColorChange(color): void {
+	handleColorChange(color: string): void {
 		this.fillColor = color;
-		this.inputSvc.updateObjectStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
+		this.inputSvc.updateStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
 	}
 
-	handleAlphaChange(alpha): void {
+	handleAlphaChange(alpha: number): void {
 		this.fillAlpha = alpha * 100;
-		this.inputSvc.updateObjectStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
+		this.inputSvc.updateStyleOptions('fill', `${this.fillColor}${this.fillAlphaHex}`);
 	}
 
 	// update fill type
 	handleFillTypeChange(option: number): void {
-		this.fillType = option as SvgFillType;
-		this.inputSvc.updateObjectStyleOptions('fillType', option as SvgFillType);
+		this.fillType = option as SvgFillOption;
+		this.inputSvc.updateStyleOptions('fillType', option as SvgFillOption);
 	}
 
 	// convert alpha hex value to decimal percentage

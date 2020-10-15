@@ -1,0 +1,7 @@
+input[type="text"] {
+	border: none;
+	outline: none;
+	user-select: none;
+	color: #000;
+	background-color: transparent;
+} 

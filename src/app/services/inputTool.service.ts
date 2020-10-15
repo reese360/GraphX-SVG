@@ -1,36 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { IShape } from '../Interfaces/IShape.interface';
-import { IStyleOptions } from '../interfaces/IStyleOptions';
-import { SvgRenderOptions } from '../enums/SvgRenderOptions.enum';
-import { SvgFillType } from '../enums/SvgFillType.enum';
-import { SvgStrokeType } from '../enums/SvgStrokeType.enum';
-import { SvgShapeType } from '../enums/SvgShapeType.enum';
-import { InputToolOptions } from '../enums/inputTools.enum';
-import { IInputOptions } from '../interfaces/IInputOptions.interface';
-import { SvgStrokeLinecap } from '../enums/SvgStrokeLinecap.enum';
+import { StyleSetting } from '../common/types/styleSetting.type';
+import { CanvasViewBoxSettings } from '../common/types/canvasViewBoxSettings.type';
+import { GridSettings } from '../common/types/gridSettings.type';
+import { SvgRenderOption } from '../enums/svgRenderOption.enum';
+import { SvgFillOption } from '../enums/svgFillOption.enum';
+import { SvgStrokeOption } from '../enums/svgStrokeOption.enum';
+import { SvgShapeOption } from '../enums/svgShapeOption.enum';
+import { InputToolOption } from '../enums/inputToolOption.enum';
+import { InputSetting } from '../common/types/inputSetting.type';
+import { SvgStrokeLinecapOption } from '../enums/svgStrokeLinecapOption.enum';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class InputService {
-	public inputOptions: IInputOptions = {
-		tool: InputToolOptions.draw,
-		shape: SvgShapeType.path,
+	public inputOptions: InputSetting = {
+		tool: InputToolOption.draw,
+		shape: SvgShapeOption.path,
 	};
 
-	public objectStyleOptions: IStyleOptions = {
+	public styleOptions: StyleSetting = {
 		stroke: '#000000ff',
 		strokeWidth: 5,
 		strokeDasharray: '0',
-		shapeRendering: SvgRenderOptions.auto,
-		strokeType: SvgStrokeType.solid,
-		strokeLinecap: SvgStrokeLinecap.round,
+		shapeRendering: SvgRenderOption.auto,
+		strokeType: SvgStrokeOption.solid,
+		strokeLinecap: SvgStrokeLinecapOption.butt,
 		fill: '#ccccccff',
-		fillType: SvgFillType.solid,
+		fillType: SvgFillOption.solid,
 	};
 
-	public canvasViewBoxOptions: object = {
+	public canvasViewBoxOptions: CanvasViewBoxSettings = {
 		dimensions: [1000, 800],
 		display: 1,
 		outline: 1,
@@ -38,7 +40,7 @@ export class InputService {
 		vbRatio: null,
 	};
 
-	public gridOptions: object = {
+	public gridOptions: GridSettings = {
 		snap: 0,
 		display: 0,
 		dimensions: [100, 100],
@@ -56,37 +58,36 @@ export class InputService {
 	public zoomLevel: number;
 	public zoomLevelEvent: Subject<number> = new Subject<number>();
 
-	public inputOptionsEvent: Subject<IInputOptions> = new Subject<IInputOptions>();
-	public objectStyleOptionsEvent: Subject<object> = new Subject<object>();
-	public canvasViewBoxOptionEvent: Subject<object> = new Subject<object>();
-	public gridOptionsEvent: Subject<object> = new Subject<object>();
+	public inputOptionsEvent: Subject<InputSetting> = new Subject<InputSetting>();
+	public styleOptionsEvent: Subject<StyleSetting> = new Subject<StyleSetting>();
+	public canvasViewBoxOptionEvent: Subject<CanvasViewBoxSettings> = new Subject<CanvasViewBoxSettings>();
+	public gridOptionsEvent: Subject<GridSettings> = new Subject<GridSettings>();
 
 	async updateCurrentObject(obj: IShape): Promise<void> {
 		return new Promise(() => {
 			this.currentObject = obj;
 			if (this.currentObject) {
-				this.objectStyleOptions = Object.assign({}, obj.style);
+				this.styleOptions = Object.assign({}, obj.style);
 				this.currentObjectEvent.next(this.currentObject);
 			}
 		});
 	}
 
 	// update and broadcast shape style options update
-	async updateObjectStyleOptions(style: string, value: string | number | boolean | number[]): Promise<void> {
+	async updateStyleOptions(style: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
-			if (style in this.objectStyleOptions) {
+			if (style in this.styleOptions) {
 				// check for valid key
-				this.objectStyleOptions[style] = value;
-				this.objectStyleOptionsEvent.next(this.objectStyleOptions);
+				(this.styleOptions as any)[style] = value;
+				this.styleOptionsEvent.next(this.styleOptions);
 			}
 		});
 	}
-
 	// update and broadcast canvas options update
 	async updateCanvasViewBoxOptions(option: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
 			if (option in this.canvasViewBoxOptions) {
-				this.canvasViewBoxOptions[option] = value;
+				(this.canvasViewBoxOptions as any)[option] = value;
 				this.canvasViewBoxOptionEvent.next(this.canvasViewBoxOptions);
 			}
 		});
@@ -96,7 +97,7 @@ export class InputService {
 	async updateGridOptions(option: string, value: string | number | boolean | number[]): Promise<void> {
 		return new Promise(() => {
 			if (option in this.gridOptions) {
-				this.gridOptions[option] = value;
+				(this.gridOptions as any)[option] = value;
 				this.gridOptionsEvent.next(this.gridOptions);
 			}
 		});
@@ -116,14 +117,14 @@ export class InputService {
 		});
 	}
 
-	async updateInputToolOptions(tool: InputToolOptions): Promise<void> {
+	async updateInputToolOptions(tool: InputToolOption): Promise<void> {
 		return new Promise(() => {
 			this.inputOptions.tool = tool;
 			this.inputOptionsEvent.next(this.inputOptions);
 		});
 	}
 
-	async updateInputShapeOptions(shape: SvgShapeType): Promise<void> {
+	async updateInputShapeOptions(shape: SvgShapeOption): Promise<void> {
 		return new Promise(() => {
 			this.inputOptions.shape = shape;
 			this.inputOptionsEvent.next(this.inputOptions);

@@ -1,4 +1,4 @@
-export enum InputToolOptions {
+export enum InputToolOption {
 	select = 0,
 	draw = 1,
 	pan = 2,
